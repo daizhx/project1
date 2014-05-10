@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+	
+	<EditText 
+		android:id="@+id/naevus_save_edittext"
+	 	android:background="@drawable/edit_text_x"
+	 	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+	 	android:hint="@string/please_enter_a_name"
+	 	android:singleLine="true"
+	 	android:layout_weight="1"
+	 	android:textColor="#00ffff"
+	 	android:textSize="18dip"
+	 	android:gravity="center_vertical"
+	 	android:textColorHint="#00ffff"
+	 	android:layout_marginLeft="10dip"
+    	android:layout_marginRight="10dip"
+    	android:layout_marginTop="10dip"
+    	android:layout_marginBottom="10dip"/>
+    	
+    <Button
+    	android:id="@+id/naevus_save_button"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_weight="2"
+    	android:text="@string/save"
+    	android:textSize="18dip"
+    	android:textColor="@color/white"
+    	android:layout_marginLeft="10dip"
+    	android:layout_marginRight="10dip"
+    	android:layout_marginTop="10dip"
+    	android:layout_marginBottom="10dip"
+    	android:background="@drawable/android_big_button_x"/>
+
+</LinearLayout>

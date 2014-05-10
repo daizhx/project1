@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<RelativeLayout android:id="@+id/user_title" 
+	    android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:paddingTop="20dp"
+    	android:paddingBottom="20dp">
+	    
+	    <ImageView android:id="@+id/user_photo"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:src="@drawable/user_head_demo"/>
+	    <TextView android:id="@+id/user_name"
+	        android:layout_below="@+id/user_photo"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="20dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/user_name"
+	        />
+	</RelativeLayout>
+	<ListView android:id="@+id/list1"
+	    android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	 />
+	
+	<TextView android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="5dp"
+	    android:paddingBottom="5dp"
+	    android:paddingLeft="10dp"
+	    android:background="#687679"
+	    android:text="@string/my_products"
+	    android:textAppearance="@android:style/TextAppearance"
+	    />
+	
+	<ListView android:id="@+id/list2"
+	    android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:footerDividersEnabled="true"
+    	 />
+</LinearLayout>

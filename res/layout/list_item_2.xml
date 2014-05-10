@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+  <View android:layout_width="fill_parent"
+  		android:layout_height="15dip"/>
+    <RelativeLayout android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginRight="10dip">
+    	<ImageView android:id="@+id/icon"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_centerVertical="true"
+    	    android:layout_marginLeft="10dp"
+    	/>
+    	<LinearLayout android:id="@+id/two_line_text"
+    	    android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_toRightOf="@+id/icon"
+    		android:layout_marginLeft="5dp"
+    		android:layout_centerVertical="true"
+    		android:orientation="vertical">
+
+    	<TextView android:id="@+id/title"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textSize="16dp"/>
+    	
+    	<TextView android:id="@+id/comment"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textSize="12dp"/>
+    	</LinearLayout>
+    	
+    	<ImageView android:id="@+id/rightindex"
+    	android:layout_width="14dip" 
+    	android:layout_height="22dip" 
+    	android:src="@drawable/right_arrow"
+    	android:layout_alignParentRight="true" 
+    	android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <View android:layout_width="fill_parent"
+    android:layout_height="15dip"/>
+</LinearLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F6" >
+    
+	<ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:src="@drawable/head_icon"
+		android:paddingTop="20dp"
+		android:id="@+id/head_icon"/>
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/head_icon"
+		android:text="@string/user_name_hint"
+		android:layout_marginLeft="50dp"
+		android:layout_marginTop="20dp"
+		android:id="@+id/text_user_name"
+		/>
+	<EditText android:layout_alignLeft="@+id/text_user_name"
+	    android:layout_below="@+id/text_user_name"
+	    android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/user_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_username"
+	    />
+
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/edit_username"
+		android:layout_alignLeft="@+id/edit_username"
+		android:layout_marginTop="10dp"
+		android:text="@string/password_hint"
+		android:id="@+id/text_password"
+		/>
+	<EditText android:layout_alignLeft="@+id/text_password"
+	    android:layout_below="@+id/text_password"
+	    android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/passworld_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_pw"
+	    />
+	
+	<LinearLayout android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_below="@+id/edit_pw"
+	    android:layout_alignLeft="@+id/edit_pw"
+	    android:id="@+id/btns"
+	    >
+	    <Button android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/login_btn"
+	        android:text="@string/log_in"
+	        android:layout_weight="1"
+	        android:layout_marginRight="10dp"
+	        android:id="@+id/login_btn"
+	        />
+
+	    <Button android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/register_btn"
+	        android:id="@+id/register_btn"
+	        android:text="@string/register"
+	        android:layout_marginLeft="10dp"
+	        android:layout_weight="1"/>	    	    
+	</LinearLayout>
+		
+	<EditText android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:editable="false"
+	    android:layout_below="@+id/btns"
+	    android:drawableLeft="@drawable/question_icon"
+	    android:drawablePadding="6dp"
+	    android:text="@string/forget_pw"
+	    android:background="@null"
+	    android:layout_alignLeft="@+id/btns"
+	    android:layout_marginTop="20dp"
+	    />
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bottom_bar"
+        android:id="@+id/bottom_bar"
+        android:layout_alignParentBottom="true"/>	
+</RelativeLayout>

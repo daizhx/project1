@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_title_poor_network">网络不佳</string>
+    <string name="alert_message_poor_network">您当前的网络情况不佳，\n请稍后再次尝试。</string>
+    <string name="alert_title_poor_network2">网络不佳</string> 
+    <string name="alert_message_poor_network2">网络不佳，可选择重试，或者取消。</string>
+    
+    <string name="massager_comment">十倍于传统甩脂机的效果</string>
+    <string name="iris_comment">家居必备的健康检测仪器</string>    
+</resources>

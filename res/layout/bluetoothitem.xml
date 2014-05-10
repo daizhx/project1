@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/bluetooth_list_item" 
+android:paddingLeft="10dip"
+android:paddingTop="10dip"
+android:paddingBottom="10dip"
+android:layout_width="fill_parent" android:layout_height="wrap_content" 
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="18.0dip" android:ellipsize="end" android:id="@+id/bluetooth_item_name1" android:text="@string/bluetoothname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:textColor="#00ffff" android:layout_marginBottom="5dip"/>
+	<TextView android:textSize="18.0dip" android:ellipsize="end" android:id="@+id/bluetooth_item_name2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_alignParentTop="true" android:layout_toRightOf="@id/bluetooth_item_name1" android:textColor="#00ffff"/>
+	<TextView android:textSize="18.0dip" android:ellipsize="end" android:id="@+id/bluetooth_item_mac1" android:text="@string/bluetoothmac" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_below="@id/bluetooth_item_name1" android:textColor="#00ffff" android:layout_marginBottom="10dip"/>
+	<TextView android:textSize="18.0dip" android:ellipsize="end" android:id="@+id/bluetooth_item_mac2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_toRightOf="@id/bluetooth_item_mac1" android:layout_below="@id/bluetooth_item_name2" android:textColor="#00ffff"/>
+	<Button android:id="@+id/connection_item" android:background="@drawable/android_big_button_x" android:layout_width="150dip" android:layout_height="wrap_content" android:layout_marginRight="6.0dip" android:layout_below="@id/bluetooth_item_mac1" android:textSize="20dip" android:textColor="#ffffffff" android:text="@string/toconnect" android:layout_alignLeft="@+id/bluetooth_item_name1"/>
+</RelativeLayout>

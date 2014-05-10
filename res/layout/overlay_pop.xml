@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:id="@id/bubble" 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bubble_background"
+    android:paddingLeft="10px"
+    android:paddingRight="10px"
+    android:paddingTop="5px"
+    android:paddingBottom="35px">
+    <TextView
+    	android:id="@+id/map_bubbleTitle"
+    	android:ellipsize="marquee"
+    	style="@style/map_BubblePrimary"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="center_horizontal"
+    	android:singleLine="true"/>
+    <TextView
+    	android:id="@+id/map_bubbleText"
+    	style="@style/map_BubbleSecondary"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="center_horizontal"
+    	android:singleLine="false"/>
+</LinearLayout>

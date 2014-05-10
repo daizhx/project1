@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">EHealthPlatform</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="massage_setting">Massage settings</string>
+	<string name="massage">Massage</string>
+	<string name="massager">Massager</string>
+	<string name="massage_machine_modle1">Thump</string>
+    <string name="massage_machine_modle2">Acupuncture</string>
+    <string name="massage_machine_modle3">Manipulation</string>
+    <string name="massage_machine_modle4">Cupping</string>
+    <string name="massage_machine_modle5">Massage</string>
+    <string name="massage_machine_modle6">Scrapping</string>
+    <string name="massage_machine_modle7">Auto</string>
+    <string name="massage_machine_modle8">Music</string>
+    <string name="massage_machine_time_title">Time</string>
+    <string name="minute">Minute</string>
+    <string name="massage_machine_strength_title">Strength</string>
+    <string name="frequency_and_strength">Freqency&#038;Strenth</string>
+    <string name="frequency">Frequency</string>
+    <string name="low">Low</string>
+    <string name="mid">Middle</string>
+    <string name="high">High</string>
+    <string name="disconnectbluetooth">Bluetooth is disconnected</string>
+    
+    <string name="searching_device">Search for devices</string>
+    <string name="search_is_completed">Search is completed</string>
+    <string name="disconnect">disconnect</string>
+    <string name="connect">connect</string>
+    <string name="pair">Pair</string>
+    <string name="startpair">Start pairing</string>
+    <string name="pairing">Pairing</string>
+    <string name="paired">Complete pairing</string>
+    <string name="cancelpair">Cancel pairing</string>
+    <string name="bluetooth">Massage connection</string>
+    <string name="not_open_device">Bluetooth is not turned on massage machine</string>
+    <string name="not_support_device">Error device, only support massage machine now</string>
+    <string name="disconnected">Disconnecting massage machine</string>
+    <string name ="bluetoothname">Bluetooth name:</string>
+    <string name ="bluetoothmac">MAC address:</string>
+    <string name="toconnect">connect</string>
+    <string name="disconnectedstate">Massage machine is not connected</string>
+    
+    <string name="lens_choice">Lens Chioce</string>
+    <string name="iris_miriam">Iris</string>
+    <string name="skan_detector">Skin analysis</string>
+    <string name="hair_testing_instrument">Hair analysis</string>
+    <string name="naevus_analysis">Naevus Analysis</string>
+    
+    <string name="examination">Examination</string>
+    <string name="health_bar">Health Bar</string>
+    <string name="shop">Shopping</string>
+    
+    <string name="mydianjiu">Acus</string>
+    
+    <string name="get_naevus_picture">Get naevus image</string>
+    <string name="analysis_naevus_picture">Analysis naevus image</string>
+    <string name="search_wifi">Search Lens WIFI</string>
+    <string name="no_lens">please open the Lens first</string>
+    
+    <string name="photograph_text">Shooting</string>
+    <string name="back">Back</string>
+    
+    <string name="operation">Operation</string>
+    <string name="build_selection">Make a selection</string>
+    <string name="cancel_selection">Undo constituency</string>
+    <string name="delete_selection">Delete the selection</string>
+    <string name="analysis_text">Analyze</string>
+    <string name="check_file">Check the file</string>
+    
+    <string name="low_risk">Low risk</string>
+    <string name="moderate_risk">Moderate risk</string>
+    <string name="high_risk">High risk</string>
+    
+    <string name="pg_home_exit_confrim_string">Sure to quit platform?</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">cancel</string>
+    <string name="analysis_result">Analysis result</string>
+    <string name="file">File</string>
+    <string name="return_text">Return</string>
+    <string name="successfully_saved">Successfully saved</string>
+    
+    <string name="saving">saving</string>
+    <string name="please_enter_a_name">Please enter a name</string>
+    <string name="save">Save</string>
+    
+    <string name="storage_file">Storage file</string>
+    <string name="create_a_new_archive">Create a new archive</string>
+    <string name="save_to_the_exising_archive">Save to the exising archive</string>
+    <string name="please_make_selection">Please make a selection</string>
+    
+    <string name="loading">loading...</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="whether_delete_file">Do you want to delete the file?</string>
+    <string name="my_products">My currently using products</string>
+    
+    <string name="music_massage">Music Massage</string>
+    <string name="user_login">User Login</string>
+    <string name="user_name_hint">User Name :</string>
+    <string name="password_hint">Password :</string>
+    <string name="user_name">User Name</string>
+    
+    
+    
+    <string name="user_info">Information Settings</string>
+    <string name="physical_report">Physical Report</string>
+    <string name="system_settings">System Settings</string>
+    
+
+    <string name="time_setting">Time Setting</string>
+    
+    <string name="mode">Mode</string>
+    <string name="no_device_found">No device found</string>
+    <string name="device_connected">device connected!</string>
+    <string name="open_lens">please open lens first!</string>
+    <string name="confirm">confirm</string>
+    <string name="cancel">cancel</string>
+    <string name="touch_enable">Touch Enable</string>
+    <string name="assist_line">Assist Line</string>
+    <string name="lens_shoot_hint">Please align iris to the center</string>
+    <string name="left_eye">Left eye</string>
+    <string name="Right_eye">Right eye</string>
+    
+    
+    <string name="login_user_name_hint">Please enter name</string>
+    <string name="login_user_password_hint">Please enter password</string>
+    
+    <!-- Http -->
+    <string name="no_image">no image</string>
+    <string name="mess_is_retry">Retry now?</string> 
+    <string name="mess_retry">Retry</string> 
+    <string name="mess_wifi_cert">WIFI certification</string> 
+    <string name="mess_wifi_need_cert">Connected to network may need to verify, open the browser for authentication?</string>
+    <string name="ok">ok</string>
+    <string name="retry">Retry</string>
+    
+    <!-- login -->
+    <string name="log_in">Login</string>
+    <string name="register">Register</string>
+    <string name="register_success">Regist success</string>
+    <string name="forget_pw">Forget password</string>
+    <string name="login_failed_message">Login failure: name or password error</string>
+    <string name="login_data_error">name or password is incorrect</string>
+    <string name="password_confirm">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="user_name_hint">Please enter name in length between 4-20 words, by Chinese, letters, numbers,\"_\",\"-\" composition</string>
+    <string name="user_password_hint">Please enter a password, the length between 6-16 characters, letters, numbers,\"_\",\"-\".</string>
+    <string name="password_not_same">Passwords do not match, please re-enter</string>
+    <string name="register_err_busy">server is busy, please try again later ...</string>
+    <string name="register_error_username_repeat">Name is already registered, please re-enter</string>
+    
+    <string name="verifiedPrompt">Device serial number:</string>
+    <string name="enternum">Please enter serial number</string>
+    <string name="verified">Verified ok</string>
+    <string name="verify_failed">Verified failed</string>
+    
+    <string name="not_mail_format">Mailbox format is not correct, please verify</string>
+    <string name="register_mail_addr">Please input email</string>
+    <string name="isOrNot">Are you sure this is a central point?</string>
+    <string name="merge_image">Merge images</string>
+    <string name="merge_wait">Please waiting ...</string>
+    <string name="color_light">Light-colored is selected</string>
+    <string name="color_dark_brown">Dark brown is selected</string>
+    <string name="color_dead_brown">Deep brown is selected</string>
+    <string name="color_deeply_black">Dark black is selected</string>
+    
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#faf8f6">
+    
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container">
+        
+    </FrameLayout>
+    
+<!--     
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		>
+		<RelativeLayout android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						android:id="@+id/container">
+			<RelativeLayout android:id="@+id/anmorl"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+			</RelativeLayout>
+			
+			<RelativeLayout android:id="@+id/anmobottom"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/anmorl"
+				android:layout_marginLeft="20dip"
+				android:layout_marginRight="20dip"
+				android:layout_marginTop="20dp">
+				
+			    
+			    <Button android:layout_width="120dp"
+			        android:layout_height="120dp"
+			        android:background="@drawable/frequence"
+			        android:text="@string/frequency_and_strength"
+			        android:singleLine="true"
+			        android:scrollHorizontally="true"
+			        android:paddingBottom="20dp"
+			        android:paddingLeft="20dp"
+			        android:paddingRight="20dp"
+			        android:textColor="#B6D99F"
+			        android:gravity="bottom"
+			        android:id="@+id/setting_frequence"/>
+			    
+			    <Button android:layout_width="120dp"
+			        android:layout_height="120dp"
+			        android:background="@drawable/time_setting"
+			        android:text="@string/time_setting"
+			        android:singleLine="true"
+			        android:scrollHorizontally="true"
+			        android:paddingBottom="20dp"
+			        android:paddingLeft="20dp"
+			        android:paddingRight="20dp"
+			        android:textColor="#B6D99F"
+			        android:gravity="bottom"
+			        android:id="@+id/setting_time"
+			        android:layout_alignParentRight="true"/>
+			    
+			</RelativeLayout>
+		</RelativeLayout>
+	</ScrollView>
+ -->	
+	
+	<ImageView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bottom_bar"/>
+</RelativeLayout>

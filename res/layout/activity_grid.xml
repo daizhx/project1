@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:background="#FAF8F6">
+        <GridView android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="auto_fit"
+            android:columnWidth="80dp"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            />
+            
+    </FrameLayout>
+    
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bottom_bar"
+        android:id="@+id/bottom_bar"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

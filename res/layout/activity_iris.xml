@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F6" 
+    android:layout_above="@+id/bottom"
+    android:layout_weight="1">
+	<com.hengxuan.ehealthplatform.lens.LensMonitorView
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:id="@+android:id/lens_monitor_view"
+    	android:layout_centerInParent="true"
+    	android:drawSelectorOnTop="false"/>
+		
+	<RelativeLayout android:layout_width="match_parent"
+	    android:layout_height="50dp"
+	    android:background="@drawable/half_translucent"
+	    android:id="@+id/setting">
+	    <ImageView android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:src="@drawable/setting"/>
+	</RelativeLayout>
+	<LinearLayout android:layout_width="200dp"
+	    android:layout_height="80dp"
+	    android:background="@drawable/drop_menu_bg"
+	    android:layout_below="@+id/setting"
+	    android:layout_centerHorizontal="true"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal"
+	    android:visibility="gone">
+	    <LinearLayout android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_weight="1"
+	        android:gravity="center">
+	        <ImageView android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/finger_touch"
+	            android:id="@+id/finger_touch"/>
+	        <TextView android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/touch_enable"
+	            android:textColor="@android:color/white"/>
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_weight="1"
+	        android:gravity="center">
+	        <ImageView android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/gridline_icon"
+	            android:id="@+id/assist_line"/>
+	        <TextView android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/assist_line"
+	            android:textColor="@android:color/white"/>
+	    </LinearLayout>	    
+	</LinearLayout>
+	<ImageView android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:src="@drawable/shoot_bound"
+	    android:layout_centerInParent="true"
+	    android:id="@+id/center"/>
+	<TextView android:layout_width="200dp"
+	    android:layout_height="40dp"
+	    android:id="@+id/tv_hint"
+	    android:text="@string/lens_shoot_hint"
+	    android:textColor="@android:color/white"
+	    android:background="@drawable/hint_text_bg"
+	    android:layout_below="@+id/center"
+	    android:layout_marginTop="80dp"
+	    android:layout_centerHorizontal="true"
+	    android:gravity="center"/>
+	
+	<TextView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="#0F86FE"
+	    android:text="@string/left_eye"
+	    android:layout_marginLeft="4dp"
+	    android:layout_marginBottom="4dp"
+	    android:id="@+id/eye_label"
+	    android:layout_alignParentBottom="true"/>
+	
+	<LinearLayout android:layout_alignParentBottom="true"
+	    android:layout_width="match_parent"
+	    android:layout_height="40dp"
+	    android:orientation="horizontal"
+	    android:background="@drawable/half_translucent"
+	    android:id="@+id/eye_choose_bar"
+	    android:visibility="gone">
+	    <TextView android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:text="@string/left_eye"
+	        android:id="@+id/tv_left_eye"
+	        android:padding="4dp"
+	        android:layout_marginLeft="4dp"
+	        android:textSize="18dp"
+	        android:textColor="@android:color/white"
+	        android:background="#0F86FE"/>
+	    <TextView android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:text="@string/Right_eye"
+	        android:id="@+id/tv_right_eye"
+	        android:padding="4dp"
+	        android:layout_marginLeft="8dp"
+	        android:textSize="18dp"
+	        android:textColor="@android:color/white"
+	        />
+	</LinearLayout>
+</RelativeLayout>
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:id="@+id/bottom"
+    android:layout_alignParentBottom="true"
+    android:background="@android:color/background_dark"
+    >
+	<ImageView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/chacha"
+	    android:src="@drawable/chacha"
+	    android:layout_gravity="center_vertical"
+	    android:layout_weight="1"
+	    android:padding="10dp"
+	    />
+    <ImageView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/shoot"
+	    android:src="@drawable/camera"
+	    android:layout_weight="1"
+	    android:padding="10dp"/>
+
+    <ImageView
+        android:id="@+id/eyes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:src="@drawable/eyes" />
+
+</LinearLayout>
+
+</RelativeLayout>

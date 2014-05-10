@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.hengxuan.ehealthplatform"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#faf8f6" >
+    
+    <TextView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/bubble"
+	    android:text="30"
+	    android:textColor="@android:color/white"
+	    android:gravity="center"
+	    android:layout_marginTop="10dp"
+	    android:textAppearance="@android:style/TextAppearance.Medium"
+	    android:layout_centerHorizontal="true"
+	    android:id="@+id/bubble"
+	    />
+
+    <TextView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="min"
+	    android:textSize="24dp"
+	    android:textColor="#0290FE"
+	    android:layout_toRightOf="@+id/bubble"
+	    android:layout_alignTop="@+id/bubble"
+	    android:paddingTop="8dp"/>
+    
+	<com.hengxuan.ehealthplatform.massager.CircleSettingView 
+	    android:layout_width="250dp"
+	    android:layout_height="250dp"
+	    android:layout_centerHorizontal="true"
+	    android:id="@+id/circle_setting"
+	    android:layout_below="@+id/bubble"
+	    custom:maxValue="30"
+	    custom:valueSteps="15"
+	    custom:unit="min"/>
+	
+    <TextView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/bubble2"
+	    android:text="15"
+	    android:textColor="@android:color/white"
+	    android:gravity="center"
+	    android:layout_below="@+id/circle_setting"
+	    android:textAppearance="@android:style/TextAppearance.Medium"
+	    android:layout_centerHorizontal="true"
+	    android:id="@+id/bubble2"
+	    />
+    <TextView android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="min"
+	    android:textSize="24dp"
+	    android:textColor="#0290FE"
+	    android:layout_toRightOf="@+id/bubble2"
+	    android:layout_alignTop="@+id/bubble2"
+	    android:paddingTop="8dp"/>
+		
+    
+    			<RelativeLayout android:id="@+id/anmobottom"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/bubble2"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:layout_marginTop="0dp">
+				
+			    
+			    <Button android:layout_width="120dp"
+			        android:layout_height="120dp"
+			        android:background="@drawable/mode"
+			        android:text="@string/mode"
+			        android:singleLine="true"
+			        android:scrollHorizontally="true"
+			        android:paddingBottom="20dp"
+			        android:paddingLeft="40dp"
+			        android:paddingRight="20dp"
+			        android:textColor="#B6D99F"
+			        android:gravity="bottom"
+			        android:id="@+id/setting_mode"/>
+			    
+			    <Button android:layout_width="120dp"
+			        android:layout_height="120dp"
+			        android:background="@drawable/frequence"
+			        android:text="@string/frequency_and_strength"
+			        android:singleLine="true"
+			        android:scrollHorizontally="true"
+			        android:paddingBottom="20dp"
+			        android:paddingLeft="20dp"
+			        android:paddingRight="20dp"
+			        android:textColor="#B6D99F"
+			        android:gravity="bottom"
+			        android:id="@+id/setting_strength"
+			        android:layout_alignParentRight="true"/>
+			    
+			</RelativeLayout>
+</RelativeLayout>

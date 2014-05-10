@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F6"
+    android:orientation="vertical" >
+     
+    <ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:src="@drawable/head_icon"
+		android:paddingTop="10dp"
+		android:id="@+id/head_icon"/>
+    
+     <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head_icon"
+        android:layout_marginLeft="60dp"
+        android:orientation="vertical">
+        
+    <TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/user_name_hint"
+		/>
+	<EditText android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/user_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_username"
+	    />
+
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:text="@string/password_hint"
+		/>
+	<EditText 
+	    android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/passworld_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_pw"
+	    />
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:text="@string/password_confirm"
+		/>
+	<EditText 
+	    android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/passworld_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_pw2"
+	 />
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:text="@string/email"
+		/>
+	<EditText android:layout_marginTop="2dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/email_icon"
+	    android:paddingLeft="1dp"
+	    android:background="@drawable/edit_text_bg"
+	    android:singleLine="true"
+	    android:id="@+id/edit_email"/>
+	
+	<Button android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/register_btn"
+	    android:text="@string/register"
+	    android:id="@+id/register"
+	    android:layout_marginTop="10dp"/>		
+        
+    </LinearLayout>
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bottom_bar"
+        android:id="@+id/bottom_bar"
+        android:layout_alignParentBottom="true"/>	
+</RelativeLayout>
