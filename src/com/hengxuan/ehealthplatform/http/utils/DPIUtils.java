@@ -41,4 +41,7 @@ public class DPIUtils {
 		mDensity = density;
 	}
 
+	public static float getDensity(){
+		return mDensity;
+	}
 }

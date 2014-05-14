@@ -101,6 +101,7 @@
     <string name="user_login">User Login</string>
     <string name="password_hint">Password :</string>
     <string name="user_name">User Name</string>
+    <string name="title">Title</string>
     
     
     
@@ -160,9 +161,27 @@
     <string name="isOrNot">Are you sure this is a central point?</string>
     <string name="merge_image">Merge images</string>
     <string name="merge_wait">Please waiting ...</string>
+    <string name="color">Color</string>
     <string name="color_light">Light-colored is selected</string>
     <string name="color_dark_brown">Dark brown is selected</string>
     <string name="color_dead_brown">Deep brown is selected</string>
     <string name="color_deeply_black">Dark black is selected</string>
+    
+    <string name="iris_color_light">Light-colored period</string> 
+    <string name="iris_color_dark_brown">Dark brown period</string> 
+    <string name="iris_color_dead_brown">Deep brown period</string> 
+    <string name="iris_color_deeply_black">Dark black</string>
+    <string name="iris_result">Diagnostic results</string>
+    <string name="iris_result_organ_name">Parts:</string> 
+    <string name="iris_result_color">Color:</string> 
+    <string name="iris_result_symptomDesc">Symptom:</string> 
+    <string name="iris_result_announcements">Announcements:</string> 
+    <string name="iris_result_maintenanceSuggestion">Maintenance recommendations:</string>  
+    <string name="addto_report">Add to report</string>
+    <string name="addtoreport">Add to examination report success</string>
+    <string name="failedtoadd">Add to the medical report failed</string>
+    <string name="notalldata">Get incomplete data, to analyze interface retry</string>
+    <string name="disconnect_lens">Reconnecting the internet from the Lens for get analysis data</string>
+    <string name="iris_analysis">Iris Analysis</string>
     
 </resources>

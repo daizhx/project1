@@ -15,6 +15,7 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.log.Log;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +24,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -31,6 +34,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -169,6 +176,9 @@ public class IrisImageView extends View {
 					if (fs != null) {
 						Bitmap bm = BitmapFactory.decodeFileDescriptor(
 								fs.getFD(), null, bfOptions);
+						//test
+						int w = bm.getWidth();
+						int h = bm.getHeight();
 						to.init(this.getContext(), bm, 0, 3.0f);
 					}
 				} catch (IOException e) {
@@ -449,8 +459,12 @@ public class IrisImageView extends View {
 		return true;
 	}
 
+	/**
+	 * analysis result
+	 * @param currentColor
+	 * @param organ
+	 */
 	private void intentData(int currentColor, Organ organ) {
-		if (currentColor != 0) {
 			Intent it = new Intent(IrisImageView.this.getContext(),
 					IrisDetailInfoActivity.class);
 			Bundle bundle = new Bundle();
@@ -458,14 +472,68 @@ public class IrisImageView extends View {
 			bundle.putInt("colorId", currentColor);
 			it.putExtras(bundle);
 			IrisImageView.this.getContext().startActivity(it);
-		} else {
-			// Toast.makeText(getContext(),
-			// getResources().getString(R.string.nocolor),
-			// Toast.LENGTH_SHORT).show();
-		}
 	}
+	
+	
+	private void showColorSelectorWindow(final Organ organ, int x, int y, int width, int height){
+		Context context = getContext();
+		View popView = ((Activity)this.getContext()).getLayoutInflater().inflate(R.layout.popwindow_list_menu, null);
+		ListView listMenu = (ListView)popView.findViewById(R.id.list_menu);
+		listMenu.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long rowId) {
+				// TODO Auto-generated method stub
+				int colorId = position;
+				setColorId(colorId);
+				intentData(colorId, organ);
+//				switch (position) {
+//				case 0:
+//					
+//					break;
+//				case 1:
+//					break;
+//				case 2:
+//					break;
+//				case 3:
+//					break;
+//
+//				default:
+//					break;
+//				}
+			}
+		});
+		TextView title = (TextView)popView.findViewById(R.id.title);
+		title.setText(R.string.color);
+		String[] strings = {
+				context.getString(R.string.iris_color_light),
+				context.getString(R.string.iris_color_dark_brown),
+				context.getString(R.string.iris_color_dead_brown),
+				context.getString(R.string.iris_color_deeply_black)
+		};
+		ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, strings);
+		listMenu.setAdapter(arrayAdapter);
+		popView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+		PopupWindow popWindow = new PopupWindow(popView, popView.getMeasuredWidth(), LayoutParams.WRAP_CONTENT, true);
+		popWindow.setOutsideTouchable(false);
+//		BitmapDrawable drawable = new BitmapDrawable(getResources(), ((BaseActivity)context).readBitmap(context, R.drawable.half_translucent));
+		popWindow.setBackgroundDrawable(context.getResources().getDrawable(android.R.color.transparent));
+		popWindow.showAtLocation(((Activity)context).findViewById(R.id.container), Gravity.CENTER, 0, 0);
+		popWindow.update();
+		
+		
+	}
+	/**
+	 * 显示对应的器官
+	 * @param organ
+	 * @param x
+	 * @param y
+	 */
 	private void displayPopupInfo(final Organ organ, float x, float y) {
+		//y坐标加上actionBar的高度
+		y += IrisAnalysisActivity.actionBarHeight;
+		y += IrisAnalysisActivity.statusBarHeight;
 		// PopupWindow popWin = null;
 		View popView = null;
 		popView = LayoutInflater.from(this.getContext()).inflate(
@@ -477,19 +545,19 @@ public class IrisImageView extends View {
 				if (Log.D) {
 					Log.d(TAG, "在弹出框中按下按钮操作！！！");
 				}
-				if (colorId != 0) {
-					Intent it = new Intent(IrisImageView.this.getContext(),
-							IrisDetailInfoActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("organ_info", organ);
-					bundle.putInt("colorId", colorId);
-					it.putExtras(bundle);
-					IrisImageView.this.getContext().startActivity(it);
-				} else {
-					// Toast.makeText(getContext(),
-					// getResources().getString(R.string.nocolor),
-					// Toast.LENGTH_SHORT).show();
-				}
+//				if (colorId != 0) {
+//					//打开分析报告界面
+//					Intent it = new Intent(IrisImageView.this.getContext(),
+//							IrisDetailInfoActivity.class);
+//					Bundle bundle = new Bundle();
+//					bundle.putSerializable("organ_info", organ);
+//					bundle.putInt("colorId", colorId);
+//					it.putExtras(bundle);
+//					IrisImageView.this.getContext().startActivity(it);
+//				} else {
+//					
+//				}
+				showColorSelectorWindow(organ, 0, 0, 0, 0);
 			}
 		});
 		TextView title = (TextView) popView.findViewById(R.id.map_bubbleTitle);

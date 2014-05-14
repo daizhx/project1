@@ -69,14 +69,17 @@
         </activity>
         <activity android:name="com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity">
         </activity>
-        <activity android:name=".lens.iris.IrisAnalysisActivity"></activity>
-        <activity android:name=".lens.LensConnectActivity"
-            android:launchMode="singleInstance">
-			<intent-filter>
+        <activity android:name=".lens.iris.IrisAnalysisActivity">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".lens.LensConnectActivity"
+            android:launchMode="singleInstance">
+			
+        </activity>
+        <activity android:name=".lens.iris.IrisDetailInfoActivity"></activity>
     </application>
 
 </manifest>

@@ -1,18 +1,23 @@
 package com.hengxuan.ehealthplatform.lens.iris;
 
+import java.io.File;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
@@ -23,8 +28,9 @@ public class IrisAnalysisActivity extends BaseActivity {
 	private static final String TAG = "IrisAnalysisActivity";
 	// photo image path
 	private String imagePath;
-	private int iris_index;
+	private int iris_index = -1;
 	private String[] iris_image_paths = { null };
+	//虹膜照片
 	private IrisImageView irisImageView;
 	private int displayHeight;
 	private LinearLayout linearL;
@@ -37,16 +43,61 @@ public class IrisAnalysisActivity extends BaseActivity {
 	private boolean irisMergedTag[] = null;
 	//合并按钮
 	private ImageView ivMergeBtn;
+	//父控件 FrameLayout的大小
+	public static int mContainerWidth;
+	public static int mContainerHeight;
+	public static int actionBarHeight;
+	public static int statusBarHeight;
+
+	public IrisAnalysisActivity(){
+		this.irisMergedTag = new boolean[2];
+		//初始化为false
+		this.irisMergedTag[0] = false;
+		this.irisMergedTag[1] = false;
+		
+	}
+
+	public View getStandardView() {
+		float center_x = mContainerWidth / 2;
+		float center_y = mContainerHeight / 2;
+		View irisView = new CanvasIris(IrisAnalysisActivity.this, iris_index,
+				center_x, center_y);
+		return irisView;
+	}
 
 	private void initView() {
+		
 		irisImageView = (IrisImageView) findViewById(R.id.irisMyView);
-		// initial the photo image
-		irisImageView.initObjList(iris_image_paths, iris_index);
-
-		// 开始执行CanvasIris.java类，不断更新所画的标尺，直至第三环画好结束
-		getIrisView = getStandardView();
-		linearL = (LinearLayout) findViewById(R.id.irisll);
-		linearL.addView(getIrisView);
+		
+		final FrameLayout container = (FrameLayout)findViewById(R.id.container);
+		ViewTreeObserver viewTreeObserver = container.getViewTreeObserver();
+		viewTreeObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@Override
+			public void onGlobalLayout() {
+				// TODO Auto-generated method stub
+				container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				
+				mContainerWidth = container.getWidth();
+				mContainerHeight = container.getHeight();
+//				Log.d(TAG, "container FL -- width="+width+",height="+height);
+				irisImageView.initObjList(iris_image_paths, 0);
+				
+				getIrisView = getStandardView();
+				linearL = (LinearLayout) findViewById(R.id.irisll);
+				linearL.addView(getIrisView);
+			}
+		});
+		viewTreeObserver.addOnPreDrawListener(new OnPreDrawListener() {
+			
+			@Override
+			public boolean onPreDraw() {
+				// TODO Auto-generated method stub
+				mContainerWidth = container.getWidth();
+				mContainerHeight = container.getHeight();
+				return true;
+			}
+		});
 		
 		ivMergeBtn = (ImageView)findViewById(R.id.merge_btn);
 		ivMergeBtn.setOnClickListener(new OnClickListener() {
@@ -63,63 +114,26 @@ public class IrisAnalysisActivity extends BaseActivity {
 				
 			}
 		});
-	}
-
-	public View getStandardView() {
-		float center_x = getWindowManager().getDefaultDisplay().getWidth();
-		float center_y = getWindowManager().getDefaultDisplay().getHeight();
-		center_x = center_x / 2;
-		center_y = center_y / 2;
-		View irisView = new CanvasIris(IrisAnalysisActivity.this, iris_index,
-				center_x, center_y);
-		return irisView;
-	}
-
-	private void initImage() {
-		ViewTreeObserver vto = irisImageView.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-			@Override
-			public void onGlobalLayout() {
-				irisImageView.getViewTreeObserver()
-						.removeGlobalOnLayoutListener(this);
-				if (Log.D) {
-					Log.d(TAG, "zoom in height = " + irisImageView.getHeight());
-				}
-			}
-
-		});
-		vto.addOnPreDrawListener(new OnPreDrawListener() {
-
-			private int irisViewWidth;
-			private int irisViewHeight;
-
-			@Override
-			public boolean onPreDraw() {
-				// TODO Auto-generated method stub
-
-				if (Log.D) {
-					Log.d(TAG,
-							"set iris view de width and height----------------------------");
-				}
-				irisViewWidth = irisImageView.getMeasuredWidth();
-				irisViewHeight = irisImageView.getMeasuredHeight();
-				if (Log.D) {
-					Log.d(TAG, "irisView--width=" + irisViewWidth);
-					Log.d(TAG, "irisView--height=" + irisViewHeight);
-				}
-
-				irisImageView.resetGalleryWidth(getDisplayHeight()
-						- irisViewHeight);
-				return true;
-
-			}
-		});
+		
 		// set default display
 		DPIUtils.setDefaultDisplay(super.getWindowManager().getDefaultDisplay());
 		DPIUtils.setDensity(super.getResources().getDisplayMetrics().density);
+		actionBarHeight = getActionBarHeight();
+		statusBarHeight = getStatusBarHeight();
 	}
-
+	
+	/**
+	 * not safety,maybe return 0
+	 * @return
+	 */
+	public int getStatusBarHeight(){
+		int result = 0;
+		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+	      if (resourceId > 0) {
+	          result = getResources().getDimensionPixelSize(resourceId);
+	      }
+	      return result;
+	}
 	public int getDisplayHeight() {
 		if (displayHeight == -1) {
 			DisplayMetrics metrics = super.getResources().getDisplayMetrics();
@@ -140,13 +154,24 @@ public class IrisAnalysisActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		imagePath = bundle.getString("image_path");
-		iris_index = bundle.getInt("iris_image_index");
-		iris_image_paths[0] = imagePath;
-
+		if(bundle != null){
+			imagePath = bundle.getString("image_path");
+			iris_index = bundle.getInt("iris_image_index");
+			putInt2Preference("currentIndex", iris_index);
+			iris_image_paths[0] = imagePath;
+		}else{
+			//TODO
+			//test remember to del
+//			iris_index = 0;
+//			putInt2Preference("currentIndex", iris_index);
+//			iris_image_paths[0] = Environment.getExternalStorageDirectory()+File.separator+"dxlphoto" + File.separator + "1399878532644.png";
+			Log.e("iris", "iris analysis can not get args,finished!");
+			finish();
+		}
 		setContentView(R.layout.actvity_iris_analysis);
+		setTitle(R.string.iris_analysis);
 		initView();
-
+		
 	}
 
 	// 合并网格到虹膜照片中

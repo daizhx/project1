@@ -26,6 +26,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewParent;
@@ -33,6 +34,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
 public class BaseActivity extends Activity {
 	public TextView mTitle;
 	public ImageView leftIcon;
@@ -78,6 +91,20 @@ public class BaseActivity extends Activity {
 			}
 		});
 		handler = new Handler();
+	}
+	
+	public void setTitle(int resId){
+		mTitle.setText(resId);
+	}
+	
+	public int getActionBarHeight(){
+		int actionBarHeight = 0;
+		TypedValue tv = new TypedValue();
+		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+		{
+		    actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
+		return actionBarHeight;
 	}
 	
 	public static Bitmap readBitmap(Context context, int resId){
@@ -230,5 +257,19 @@ public class BaseActivity extends Activity {
 				mSharedPreferences = getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
 			}
 			mSharedPreferences.edit().putBoolean(key, value).commit();
+		}
+		public void putInt2Preference(String key, int value){
+			if(mSharedPreferences == null){
+				mSharedPreferences = getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
+			}
+			mSharedPreferences.edit().putInt(key, value).commit();
+		}
+		public int getIntFromPreference(String key){
+			int ret = -1;
+			if(mSharedPreferences == null){
+				mSharedPreferences = getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
+			}
+			ret = mSharedPreferences.getInt(key, -1);
+			return ret;
 		}
 }

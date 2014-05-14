@@ -1,5 +1,6 @@
 package com.hengxuan.ehealthplatform.lens.iris;
 
+import com.hengxuan.ehealthplatform.http.utils.DPIUtils;
 import com.hengxuan.ehealthplatform.lens.iris.MultiTouchController.PointInfo;
 import com.hengxuan.ehealthplatform.lens.iris.MultiTouchController.PositionAndScale;
 import com.hengxuan.ehealthplatform.log.Log;
@@ -288,17 +289,17 @@ MultiTouchController.MultiTouchObjectCanvas{
 		 */
 		private void resetScreenMargin() {
 			//重新设置左右边距
-			if (width * scaleX > displayWidth) {//如果大于屏幕的宽度，则设为屏幕宽度
-				SCREEN_MARGIN_WIDTH_LEFT = (float) displayWidth;
-				SCREEN_MARGIN_WIDTH_RIGHT = (float) displayWidth;
+			if (width * scaleX > IrisAnalysisActivity.mContainerWidth) {//如果大于屏幕的宽度，则设为屏幕宽度
+				SCREEN_MARGIN_WIDTH_LEFT = (float) IrisAnalysisActivity.mContainerWidth;
+				SCREEN_MARGIN_WIDTH_RIGHT = (float) IrisAnalysisActivity.mContainerWidth;
 			} else {//否则设为实际的大小
 				SCREEN_MARGIN_WIDTH_LEFT = width * scaleX;
 				SCREEN_MARGIN_WIDTH_RIGHT = width * scaleX;
 			}
 			//重新设置上下边距
-			if (height * scaleY > displayHeight) {
-				SCREEN_MARGIN_HEIGHT_TOP = (float) (displayHeight - BOTTOM_FIX);
-				SCREEN_MARGIN_HEIGHT_BOTTOM = (float) (displayHeight + BOTTOM_FIX);
+			if (height * scaleY > IrisAnalysisActivity.mContainerHeight) {
+				SCREEN_MARGIN_HEIGHT_TOP = (float) (IrisAnalysisActivity.mContainerHeight - BOTTOM_FIX);
+				SCREEN_MARGIN_HEIGHT_BOTTOM = (float) (IrisAnalysisActivity.mContainerHeight + BOTTOM_FIX);
 			} else {
 				SCREEN_MARGIN_HEIGHT_TOP = height * scaleY - BOTTOM_FIX;
 				SCREEN_MARGIN_HEIGHT_BOTTOM = height * scaleY + BOTTOM_FIX;
@@ -306,7 +307,7 @@ MultiTouchController.MultiTouchObjectCanvas{
 		}
 		/**
 		 * 设置图片的位置和缩放信息
-		 * @param screen_center_x
+		 * @param screen_center_x the center of content
 		 * @param screen_center_y
 		 * @param scale_x
 		 * @param scale_y
@@ -332,39 +333,35 @@ MultiTouchController.MultiTouchObjectCanvas{
 				float scaled_half_height = (float) (height / 2) * scale_y;
 				float left_margin = screen_center_x - scaled_half_width;
 				float top_margin = screen_center_y - scaled_half_height;
-				float right_margin = screen_center_x + scaled_half_width;
-				float bottom_margin = screen_center_y + scaled_half_height;
-				if (left_margin > (displayWidth - SCREEN_MARGIN_WIDTH_RIGHT)) {//图片的有边界移除屏幕，调节坐标将图片显示在屏幕之内
-					minX = displayWidth - SCREEN_MARGIN_WIDTH_RIGHT;//不让图像移除屏幕
+				float right_margin = IrisAnalysisActivity.mContainerWidth - screen_center_x - scaled_half_width;
+				float bottom_margin = IrisAnalysisActivity.mContainerHeight - screen_center_y - scaled_half_height;
+				
+				minX = left_margin;
+				maxX = minX + scaled_half_width * 2F;
+				if (left_margin < 0) {//图片的有边界移除屏幕，调节坐标将图片显示在屏幕之内
+					minX = 0;//不让图像移除屏幕
 					maxX = minX + scaled_half_width * 2F;
-				} else {
-					if (right_margin < SCREEN_MARGIN_WIDTH_LEFT) {
-						maxX = SCREEN_MARGIN_WIDTH_LEFT;
-						minX = maxX - scaled_half_width * 2F;
-					} else {
-						minX = left_margin;
-						maxX = right_margin;
-					}
+				} 
+				if (right_margin < 0) {
+					maxX = IrisAnalysisActivity.mContainerWidth;
+					minX = maxX - scaled_half_width * 2F;
 				}
-				if (top_margin > (displayHeight - SCREEN_MARGIN_HEIGHT_BOTTOM)) {
-					minY = displayHeight - SCREEN_MARGIN_HEIGHT_BOTTOM;
-					maxY = minY + scaled_half_height * 2F;
-				} else {
-					if (bottom_margin < SCREEN_MARGIN_HEIGHT_TOP) {
-						maxY = SCREEN_MARGIN_HEIGHT_TOP;
-						minY = maxY - scaled_half_height * 2F;
-					} else {
-						minY = top_margin;
-						maxY = bottom_margin;
-					}
-				}
-				/*minX = left_margin;
-				maxX = right_margin;
+				
 				minY = top_margin;
-				maxY = bottom_margin;*/
+				maxY = minY + scaled_half_height * 2F;
+				if (top_margin < 0) {
+					minY = 0;
+					maxY = minY + scaled_half_height * 2F;
+				}
+				if (bottom_margin < 0) {
+						maxY = IrisAnalysisActivity.mContainerHeight;
+						minY = maxY - scaled_half_height * 2F;
+				}
+
 				//计算图片的中间位置
 				centerX = minX + (maxX - minX) / 2F;
 				centerY = minY + (maxY - minY) / 2F;
+				
 				//scaleX = scale_x;
 				//scaleY = scale_y;
 				return true;
@@ -456,7 +453,12 @@ MultiTouchController.MultiTouchObjectCanvas{
 					Log.d(TAG, "first load------------++++++++++++");
 				}
 				firstLoad = false;
-				setPos(displayWidth/2, displayHeight/2, 1F, 1F);
+				float density = DPIUtils.getDensity();
+				
+				setPos(IrisAnalysisActivity.mContainerWidth/2, IrisAnalysisActivity.mContainerHeight/2, density, density);
+//				width = width*3;
+//				height = height*3;
+//				setPos(0, 0, 1F, 1F);
 			}
 		}
 

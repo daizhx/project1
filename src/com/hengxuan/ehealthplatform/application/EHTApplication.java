@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hengxuan.ehealthplatform.R;
+import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.product.Product;
 
 import android.app.Application;
 import android.content.ContextWrapper;
+import android.net.wifi.WifiManager;
 
 public class EHTApplication extends Application {
 	private int currentNetWorkId;
@@ -49,5 +51,18 @@ public class EHTApplication extends Application {
 		return instance;
 	}
 	
-	
+	public void restoreWifiInfo(){
+			Log.d("daizhx", "restoreWifiInfo");
+			WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
+			wifiManager.disconnect();
+			int networkId = getCurrentNetWorkId();
+			if(networkId >= 0){
+				wifiManager.enableNetwork(networkId, true);
+				wifiManager.reconnect();
+			}else{
+				//3G
+				wifiManager.setWifiEnabled(false);
+			}
+
+	}
 }

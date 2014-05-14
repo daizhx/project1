@@ -167,12 +167,5 @@ public class LensConnectActivity extends Activity {
 		alertDialog.show();
 	}
 	
-	private void restoreWifiInfo(){
-		if(currentWifiInfo != null){
-			Log.d("daizhx", "restoreWifiInfo");
-			mWifiManager.disconnect();
-			mWifiManager.enableNetwork(((EHTApplication)getApplication()).getCurrentNetWorkId(), true);
-			mWifiManager.reconnect();
-		}
-	}
+	
 }

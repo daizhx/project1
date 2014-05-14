@@ -10,6 +10,7 @@ import com.hengxuan.ehealthplatform.xml.XMLPullParserUtils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -554,46 +555,12 @@ public class CanvasIris extends View implements Runnable {
 				isCurrent = true;
 				Log.i("isCurrent", "ACTION_UP "+crossFlag + "_2");
 				
-				/*AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-				builder.setIcon(R.drawable.icon);
-				builder.setTitle(getResources().getString(R.string.music_tip));
-				builder.setMessage(getResources().getString(R.string.isOrNot));
-				builder.setPositiveButton(getResources().getString(R.string.alertY), new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						crossFlag = true;
-						isCurrent = false;
-						isFirst = false;
-					}
-				});
-				builder.setNegativeButton(getResources().getString(R.string.alertN), new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						crossFlag = false;
-						isCurrent = true;
-						isFirst = true;
-						center_x = reportCurrentX;
-						center_y = reportCurrentY;
-					}
-				});
-				builder.show();*/
 				final AlertDialog dialog = (new AlertDialog.Builder(getContext())).create();
-				dialog.show();
-				Window window = dialog.getWindow();
-				window.setContentView(R.layout.myalert);
-				((TextView) window.findViewById(R.id.msgtv)).setText(getResources().getString(R.string.isOrNot));
-				((LinearLayout) window.findViewById(R.id.btnll)).setVisibility(View.VISIBLE);
-				((Button) window.findViewById(R.id.btn3)).setVisibility(View.GONE);
-				Button btn1 = (Button) window.findViewById(R.id.btn1);
-				btn1.setText(getResources().getString(R.string.yes));
-				btn1.setOnClickListener(new OnClickListener() {
-					
+				dialog.setMessage(getResources().getString(R.string.isOrNot));
+				dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.yes), new DialogInterface.OnClickListener(){
+
 					@Override
-					public void onClick(View arg0) {
+					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						crossFlag = true;
 						isCurrent = false;
@@ -601,13 +568,12 @@ public class CanvasIris extends View implements Runnable {
 						maxRadius = Math.min(Math.min(current_x, screenWidth - current_x) ,Math.min(current_y, screenHeight - current_y));
 						dialog.dismiss();
 					}
-				});
-				Button btn2 = (Button) window.findViewById(R.id.btn2);
-				btn2.setText(getResources().getString(R.string.no));
-				btn2.setOnClickListener(new OnClickListener() {
 					
+				});
+				dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getResources().getString(R.string.no), new DialogInterface.OnClickListener(){
+
 					@Override
-					public void onClick(View arg0) {
+					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						crossFlag = false;
 						isCurrent = true;
@@ -616,7 +582,45 @@ public class CanvasIris extends View implements Runnable {
 						center_y = reportCurrentY;
 						dialog.dismiss();
 					}
+					
 				});
+				dialog.show();
+//				final AlertDialog dialog = (new AlertDialog.Builder(getContext())).create();
+//				dialog.show();
+//				Window window = dialog.getWindow();
+//				window.setContentView(R.layout.myalert);
+//				((TextView) window.findViewById(R.id.msgtv)).setText(getResources().getString(R.string.isOrNot));
+//				((LinearLayout) window.findViewById(R.id.btnll)).setVisibility(View.VISIBLE);
+//				((Button) window.findViewById(R.id.btn3)).setVisibility(View.GONE);
+//				Button btn1 = (Button) window.findViewById(R.id.btn1);
+//				btn1.setText(getResources().getString(R.string.yes));
+//				btn1.setOnClickListener(new OnClickListener() {
+//					
+//					@Override
+//					public void onClick(View arg0) {
+//						// TODO Auto-generated method stub
+//						crossFlag = true;
+//						isCurrent = false;
+//						isFirst = false;
+//						maxRadius = Math.min(Math.min(current_x, screenWidth - current_x) ,Math.min(current_y, screenHeight - current_y));
+//						dialog.dismiss();
+//					}
+//				});
+//				Button btn2 = (Button) window.findViewById(R.id.btn2);
+//				btn2.setText(getResources().getString(R.string.no));
+//				btn2.setOnClickListener(new OnClickListener() {
+//					
+//					@Override
+//					public void onClick(View arg0) {
+//						// TODO Auto-generated method stub
+//						crossFlag = false;
+//						isCurrent = true;
+//						isFirst = true;
+//						center_x = reportCurrentX;
+//						center_y = reportCurrentY;
+//						dialog.dismiss();
+//					}
+//				});
 			}
 			break;
 		default: break;
