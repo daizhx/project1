@@ -62,7 +62,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 		};
 	};
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.iris_detail);
@@ -197,7 +197,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 		if(!TextUtils.isEmpty(getssid)
 				&&getssid.substring(0, 3).equals("EHT")){
 			//¶Ï¿ª¾µÍ·
-			((EHTApplication)getApplicationContext()).restoreWifiInfo();
+//			((EHTApplication)getApplicationContext()).restoreWifiInfo();
 			//start
 			mProgressDialog = new ProgressDialog(this);
 			mProgressDialog.setMessage(getText(R.string.disconnect_lens));

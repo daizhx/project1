@@ -2,12 +2,19 @@
 <resources>
 
     <string name="app_name">EHealthPlatform</string>
+    <string name="soft_update">Soft Update</string>
+    <string name="soft_update_message">Please update the application!</string>
+    <string name="update">Update</string>
+    <string name="downloading">Loading</string>
+    <string name="download_complete">Download Completed</string>
+    <string name="download_fail">Download Fail</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-	<string name="massage_setting">Massage settings</string>
-	<string name="massage">Massage</string>
-	<string name="massager">Massager</string>
-	<string name="massage_machine_modle1">Thump</string>
+    <string name="massage_setting">Massage settings</string>
+    <string name="massage">Massage</string>
+    <string name="massager">Massager</string>
+    <string name="instruments">Instruments</string>
+    <string name="massage_machine_modle1">Thump</string>
     <string name="massage_machine_modle2">Acupuncture</string>
     <string name="massage_machine_modle3">Manipulation</string>
     <string name="massage_machine_modle4">Cupping</string>
@@ -24,11 +31,13 @@
     <string name="mid">Middle</string>
     <string name="high">High</string>
     <string name="disconnectbluetooth">Bluetooth is disconnected</string>
-    
+    <string name="massager_comment">Ten times the effect of the traditional rejection of fat</string>
+    <string name="iris_comment">Home health testing equipment necessary</string>
     <string name="searching_device">Search for devices</string>
     <string name="search_is_completed">Search is completed</string>
     <string name="disconnect">disconnect</string>
     <string name="connect">connect</string>
+    <string name="lens_connecting">lens connecting...</string>
     <string name="pair">Pair</string>
     <string name="startpair">Start pairing</string>
     <string name="pairing">Pairing</string>
@@ -38,42 +47,36 @@
     <string name="not_open_device">Bluetooth is not turned on massage machine</string>
     <string name="not_support_device">Error device, only support massage machine now</string>
     <string name="disconnected">Disconnecting massage machine</string>
-    <string name ="bluetoothname">Bluetooth name:</string>
-    <string name ="bluetoothmac">MAC address:</string>
-    <string name="toconnect">connect</string>
+    <string name="bluetoothname">Bluetooth name:</string>
+    <string name="bluetoothmac">MAC address:</string>
     <string name="disconnectedstate">Massage machine is not connected</string>
-    
     <string name="lens_choice">Lens Chioce</string>
-    <string name="iris_miriam">Iris</string>
-    <string name="skan_detector">Skin analysis</string>
-    <string name="hair_testing_instrument">Hair analysis</string>
+    <string name="iris">Iris</string>
+    <string name="iris_detection">Iris Detection</string>
+    <string name="skin_detection">Skin Detection</string>
+    <string name="hair_detection">Hair Detection</string>
+    <string name="naevus_detection">Naevus Detection</string>
+    <string name="hair_analysis">Hair Analysis</string>
     <string name="naevus_analysis">Naevus Analysis</string>
-    
     <string name="examination">Examination</string>
     <string name="health_bar">Health Bar</string>
     <string name="shop">Shopping</string>
-    
     <string name="mydianjiu">Acus</string>
-    
     <string name="get_naevus_picture">Get naevus image</string>
     <string name="analysis_naevus_picture">Analysis naevus image</string>
     <string name="search_wifi">Search Lens WIFI</string>
     <string name="no_lens">please open the Lens first</string>
-    
     <string name="photograph_text">Shooting</string>
     <string name="back">Back</string>
-    
     <string name="operation">Operation</string>
     <string name="build_selection">Make a selection</string>
     <string name="cancel_selection">Undo constituency</string>
     <string name="delete_selection">Delete the selection</string>
     <string name="analysis_text">Analyze</string>
     <string name="check_file">Check the file</string>
-    
     <string name="low_risk">Low risk</string>
     <string name="moderate_risk">Moderate risk</string>
     <string name="high_risk">High risk</string>
-    
     <string name="pg_home_exit_confrim_string">Sure to quit platform?</string>
     <string name="exit">Exit</string>
     <string name="cancel">cancel</string>
@@ -81,37 +84,29 @@
     <string name="file">File</string>
     <string name="return_text">Return</string>
     <string name="successfully_saved">Successfully saved</string>
-    
     <string name="saving">saving</string>
     <string name="please_enter_a_name">Please enter a name</string>
     <string name="save">Save</string>
-    
     <string name="storage_file">Storage file</string>
     <string name="create_a_new_archive">Create a new archive</string>
     <string name="save_to_the_exising_archive">Save to the exising archive</string>
     <string name="please_make_selection">Please make a selection</string>
-    
     <string name="loading">loading...</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="whether_delete_file">Do you want to delete the file?</string>
     <string name="my_products">My currently using products</string>
-    
     <string name="music_massage">Music Massage</string>
     <string name="user_login">User Login</string>
     <string name="password_hint">Password :</string>
     <string name="user_name">User Name</string>
     <string name="title">Title</string>
-    
-    
-    
     <string name="user_info">Information Settings</string>
+    <string name="share">Share</string>
+    <string name="sharecontent">EHT health software is very easy to use, you have to try it</string>
     <string name="physical_report">Physical Report</string>
     <string name="system_settings">System Settings</string>
-    
-
     <string name="time_setting">Time Setting</string>
-    
     <string name="mode">Mode</string>
     <string name="no_device_found">No device found</string>
     <string name="device_connected">device connected!</string>
@@ -122,20 +117,18 @@
     <string name="lens_shoot_hint">Please align iris to the center</string>
     <string name="left_eye">Left eye</string>
     <string name="Right_eye">Right eye</string>
-    
-    
     <string name="login_user_name_hint">Please enter name</string>
     <string name="login_user_password_hint">Please enter password</string>
-    
+
     <!-- Http -->
     <string name="no_image">no image</string>
-    <string name="mess_is_retry">Retry now?</string> 
-    <string name="mess_retry">Retry</string> 
-    <string name="mess_wifi_cert">WIFI certification</string> 
+    <string name="mess_is_retry">Retry now?</string>
+    <string name="mess_retry">Retry</string>
+    <string name="mess_wifi_cert">WIFI certification</string>
     <string name="mess_wifi_need_cert">Connected to network may need to verify, open the browser for authentication?</string>
     <string name="ok">ok</string>
     <string name="retry">Retry</string>
-    
+
     <!-- login -->
     <string name="log_in">Login</string>
     <string name="register">Register</string>
@@ -144,18 +137,19 @@
     <string name="login_failed_message">Login failure: name or password error</string>
     <string name="login_data_error">name or password is incorrect</string>
     <string name="password_confirm">Confirm Password</string>
+    <string name="addr">Address</string>
+    <string name="phone">Phone</string>
+    <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="user_name_hint">Please enter name in length between 4-20 words, by Chinese, letters, numbers,\"_\",\"-\" composition</string>
     <string name="user_password_hint">Please enter a password, the length between 6-16 characters, letters, numbers,\"_\",\"-\".</string>
     <string name="password_not_same">Passwords do not match, please re-enter</string>
     <string name="register_err_busy">server is busy, please try again later ...</string>
     <string name="register_error_username_repeat">Name is already registered, please re-enter</string>
-    
     <string name="verifiedPrompt">Device serial number:</string>
     <string name="enternum">Please enter serial number</string>
     <string name="verified">Verified ok</string>
     <string name="verify_failed">Verified failed</string>
-    
     <string name="not_mail_format">Mailbox format is not correct, please verify</string>
     <string name="register_mail_addr">Please input email</string>
     <string name="isOrNot">Are you sure this is a central point?</string>
@@ -166,22 +160,111 @@
     <string name="color_dark_brown">Dark brown is selected</string>
     <string name="color_dead_brown">Deep brown is selected</string>
     <string name="color_deeply_black">Dark black is selected</string>
-    
-    <string name="iris_color_light">Light-colored period</string> 
-    <string name="iris_color_dark_brown">Dark brown period</string> 
-    <string name="iris_color_dead_brown">Deep brown period</string> 
+    <string name="iris_color_light">Light-colored period</string>
+    <string name="iris_color_dark_brown">Dark brown period</string>
+    <string name="iris_color_dead_brown">Deep brown period</string>
     <string name="iris_color_deeply_black">Dark black</string>
     <string name="iris_result">Diagnostic results</string>
-    <string name="iris_result_organ_name">Parts:</string> 
-    <string name="iris_result_color">Color:</string> 
-    <string name="iris_result_symptomDesc">Symptom:</string> 
-    <string name="iris_result_announcements">Announcements:</string> 
-    <string name="iris_result_maintenanceSuggestion">Maintenance recommendations:</string>  
+    <string name="iris_result_organ_name">Parts:</string>
+    <string name="iris_result_color">Color:</string>
+    <string name="iris_result_symptomDesc">Symptom:</string>
+    <string name="iris_result_announcements">Announcements:</string>
+    <string name="iris_result_maintenanceSuggestion">Maintenance recommendations:</string>
     <string name="addto_report">Add to report</string>
     <string name="addtoreport">Add to examination report success</string>
     <string name="failedtoadd">Add to the medical report failed</string>
     <string name="notalldata">Get incomplete data, to analyze interface retry</string>
     <string name="disconnect_lens">Reconnecting the internet from the Lens for get analysis data</string>
     <string name="iris_analysis">Iris Analysis</string>
+    <string name="skin_photo">Skin Photo</string>
+    <string name="oil_analysis">Oil analysis</string>
+    <string name="oil">Oil</string>
+    <string name="water_analysis">Moisture analysis</string>
+    <string name="water">Moisture</string>
+    <string name="pigment_analysis">Pigment analysis</string>
+    <string name="pigment">Pigment</string>
+    <string name="elastic_analysis">Elastic analysis</string>
+    <string name="collagen_analysis">Collagen analysis</string>
+    <string name="collagen">Collagen</string>
+    <string name="other_analysis">Other analysis</string>
+    <string name="mean_radius">Mean radius：</string>
+    <string name="acne_num">Acne number:</string>
+    <string name="blood_streak_num">Blood streak number：</string>
+    <string name="blood_streak_area">Blood streak area：</string>
+    <string name="whether_start_point">Whether this as the starting point?</string>
+    <string name="whether_continue_mark">Whether to continue marking?</string>
+    <string name="cause_of_formation">Cause of formation：</string>
+    <string name="recommendations_for_improvement">Recommendations for improvement：</string>
+    <string name="skin_result">Analysis results of skin</string>
+    <string name="oil_state">Oil condition：</string>
+    <string name="oil_content">Oil content：</string>
+    <string name="water_state">Water conditions：</string>
+    <string name="water_content">Water content：</string>
+    <string name="pigment_state">Pigment status：</string>
+    <string name="pigment_content">Pigment content：</string>
+    <string name="elastic_state">Elasticity of skin：</string>
+    <string name="elastic_content">Elastic state：</string>
+    <string name="collagen_state">Collagen fiber status：</string>
+    <string name="collagen_content">Collagen fiber content：</string>
+    <string name="pore_state">Situation of pores：</string>
+    <string name="pore_radius">Pore size：</string>
+    <string name="acne_radius">Acne radius：</string>
+    <string name="pore_analysis">Pore analysis</string>
+    <string name="pore">Pore</string>
+    <string name="acne_analysis">Acne analysis</string>
+    <string name="acne">Acne</string>
+    <string name="sensi_analysis">Sensibility analysis</string>
+    <string name="sensibility">Sensibility</string>
+    <string name="zoom">Zoom</string>
+    <string name="reset1">Reset</string>
+    <string name="draw_line">Line</string>
+    <string name="draw_circle">Area</string>
+    <string name="num">Num</string>
+    <string name="area">Area</string>
+    <string name="please_draw_radius">Please draw radius</string>
+    <string name="please_draw_size">Please draw the size</string>
+    <string name="please_draw_num">Please draw the number size</string>
+    <string name="hair_photo">Hair Photo</string>
+    <string name="hair_result">Analysis Result</string>
+    <string name="hair_water_state">Moist condition：</string>
+    <string name="hair_water_content">Moisture content：</string>
+    <string name="hair_gloss_state">Gloss state：</string>
+    <string name="hair_gloss_content">Gloss content：</string>
+    <string name="hair_elastic">Hair elastic：</string>
+    <string name="hair_elastic_content">Elastic state：</string>
+    <string name="rooting_state">Root Condition：</string>
+    <string name="rooting_radius">Root radius：</string>
+    <string name="hair_water_analysis">Moist degree</string>
+    <string name="hair_gloss_analysis">Gloss</string>
+    <string name="elastic">Elastic</string>
+    <string name="blood_pressure_monitor">Blood Pressure Monitor</string>
+    <string name="weighting_scale">Weighting Scale</string>
     
+    
+    <string name="app_error_tag_des">You can brief description of the error condition and submitting a bug report, so that we can fix perfect.</string> 
+    <string name="app_error_tag_hint">Please describe the error message (optional)</string> 
+    <string name="app_error_checkbox">Restart after Submitted</string> 
+    <string name="app_error_submit">Submit</string> 
+    <string name="app_error_close">Close</string> 
+    <string name="app_error_msg">Application errors, and will be shut down.</string> 
+    <string name="app_error_title">Warning</string> 
+    <string name="app_error_tag_send">Sending...</string> 
+    <string name="app_error_tag_restart">Has been sent, automatically restart ... please wait</string>
+    <string name="app_error_tag_close">Has been sent, application has been closed ...</string>
+
+    <string name="first_month">Jan</string>
+    <string name="second_month">Feb</string>
+    <string name="third_month">Mar</string>
+    <string name="fourth_month">Apr</string>
+    <string name="fifth_month">May</string>
+    <string name="sixth_month">Jun</string>
+    <string name="seventh_month">Jul</string>
+    <string name="eighth_month">Aug</string>
+    <string name="ninth_month">Sep</string>
+    <string name="tenth_month">Oct</string>
+    <string name="eleven_month">Nov</string>
+    <string name="twelve_month">Dec</string>
+    
+    <string name="new_password">New Password</string>
+    <string name="skin_analysis">Skin Analysis</string>
 </resources>

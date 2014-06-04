@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+    <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/half_translucent"
+            android:id="@+id/menu"
+            android:paddingTop="10dp">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv1"
+                android:text="@string/oil"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                />
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv2"
+                android:textColor="@color/white"
+                android:text="@string/water"
+                android:textSize="16sp"
+                android:layout_toRightOf="@+id/tv1"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv3"
+                android:textColor="@color/white"
+                android:text="@string/pigment"
+                android:textSize="16sp"
+                android:layout_toRightOf="@+id/tv2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv4"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/elastic"
+                android:layout_toRightOf="@+id/tv3"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv5"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/collagen"
+                android:singleLine="true"
+                android:layout_toRightOf="@+id/tv4"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv6"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/pore"
+                android:layout_below="@+id/tv1"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv7"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/acne"
+                android:layout_toRightOf="@+id/tv6"
+                android:layout_alignTop="@+id/tv6"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv8"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:text="@string/sensibility"
+                android:layout_toRightOf="@+id/tv7"
+                android:layout_alignTop="@+id/tv7"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+        </RelativeLayout>
+
+</RelativeLayout>

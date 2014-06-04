@@ -2,19 +2,24 @@ package com.hengxuan.ehealthplatform;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.activity.MassageActivity;
 import com.hengxuan.ehealthplatform.activity.PhysicalExamActivity;
+import com.hengxuan.ehealthplatform.activity.ReportActivity;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.product.Product;
+import com.hengxuan.ehealthplatform.update.UpdateManager;
+import com.hengxuan.ehealthplatform.update.UpdateService;
+import com.hengxuan.ehealthplatform.user.UserInformationActivity;
 import com.hengxuan.ehealthplatform.user.UserLoginActivity;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -41,6 +46,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -48,7 +55,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class MainActivity extends SlidingActivity implements OnClickListener {
+public class MainActivity extends SlidingActivity implements OnClickListener{
 	private int mDisplayWidth = 0;
 	private int mDisplayHeight = 0;
 	private ViewPager mViewPager;
@@ -76,6 +83,8 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		initActionBar();
 		initView();
 		getLoginState();
+		
+
 	}
 	
 	@Override
@@ -194,11 +203,38 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		maps.add(map2);
 		
 		Map<String, Object> map3 = new HashMap<String, Object>();
-		map3.put("icon", R.drawable.setting_icon);
-		map3.put("text", getString(R.string.system_settings));
+		map3.put("icon", R.drawable.icon_share);
+		map3.put("text", getString(R.string.share));
 		maps.add(map3);
 		SimpleAdapter simpleAdapter1 = new SimpleAdapter(this, maps, R.layout.list_item_1, new String[]{"icon", "text"}, new int[]{R.id.icon, R.id.text});
 		list1.setAdapter(simpleAdapter1);
+		list1.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				switch (position) {
+				case 0:
+					startActivity(new Intent(MainActivity.this, UserInformationActivity.class));
+					break;
+				case 1:
+					startActivity(new Intent(MainActivity.this, ReportActivity.class));
+					break;
+				case 2:
+					//·ÖÏí
+					Intent intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("text/plain");
+					intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.share));
+					intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.sharecontent));
+					startActivity(Intent.createChooser(intent, getTitle()));
+					break;
+
+				default:
+					break;
+				}
+			}
+		});
 		
 		//list2 is up to user info
 		ListView list2 = (ListView)findViewById(R.id.list2);
@@ -250,6 +286,32 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			}
 		};
 		list2.setAdapter(baseAdapter);
+		
+		initDateView();
+	}
+	
+	private void initDateView(){
+		int[] monthsId = {
+				R.string.first_month,
+				R.string.second_month,
+				R.string.third_month,
+				R.string.fourth_month,
+				R.string.fifth_month,
+				R.string.sixth_month,
+				R.string.seventh_month,
+				R.string.eighth_month,
+				R.string.ninth_month,
+				R.string.tenth_month,
+				R.string.eleven_month,
+				R.string.twelve_month
+		};
+ 		TextView tvMonth = (TextView)findViewById(R.id.tv_month);
+		TextView tvDay = (TextView)findViewById(R.id.tv_date);
+		Calendar calendar = Calendar.getInstance();
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		tvMonth.setText(getText(monthsId[month]));
+		tvDay.setText(Integer.toString(day));
 	}
 	
 	 public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight){

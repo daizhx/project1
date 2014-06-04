@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <View android:layout_width="fill_parent"
+  android:layout_height="15dip"/>
+    <RelativeLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dip">
+    	<TextView android:id="@+id/getcurrentdate"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:textColor="#00ffff"
+    	android:layout_marginLeft="10dip"
+    	android:textSize="18dip"/>
+    	<ImageView android:id="@+id/rightindex" 
+    	android:layout_width="14dip" 
+    	android:layout_height="22dip" 
+    	android:src="@drawable/android_list_idex2" 
+    	android:layout_alignParentRight="true" 
+    	android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <View android:layout_width="fill_parent"
+    android:layout_height="15dip"/>
+</LinearLayout>

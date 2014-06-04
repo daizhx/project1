@@ -16,7 +16,8 @@
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textSize="24dp"
+        android:textAppearance="@android:style/Widget.Holo.Light.ActionBar"
+        android:textSize="20sp"
         android:id="@+id/title"
         android:text="EHT"/>
     

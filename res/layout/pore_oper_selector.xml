@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+	<RadioGroup	
+		android:id="@+id/pore_oper" 
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:background="@color/gray"
+		>
+		<RadioButton 
+			android:id="@+id/pore_zoom"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/zoom"
+			/>
+		<RadioButton 
+			android:id="@+id/pore_draw"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/draw_line"
+			/>
+		<RadioButton 
+			android:id="@+id/pore_analysis"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/analysis_text"
+			/>
+		<RadioButton 
+			android:id="@+id/pore_reset"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/reset1"
+			/>
+	</RadioGroup>
+</LinearLayout>

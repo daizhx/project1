@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/preid"
+        android:layout_width="fill_parent"
+        android:layout_height="130dip"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="15dip" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/verifiedPrompt"
+                android:textSize="15dip" />
+
+            <EditText
+                android:id="@+id/getnum"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:layout_weight="2"
+                android:background="@drawable/edit_text_x"
+                android:gravity="center_vertical"
+                android:hint="@string/enternum"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColorHint="#00ffff"
+                android:textSize="15dip" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dip"
+        android:gravity="center_horizontal" >
+
+        <Button
+            android:id="@+id/mybtn"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:paddingLeft="35dip"
+            android:paddingRight="35dip"
+            android:text="@string/ok"
+            android:textSize="18dip" />
+
+        <View
+            android:layout_width="15dip"
+            android:layout_height="1dip" />
+
+        <Button
+            android:id="@+id/mybtnCancle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:layout_weight="1"
+            android:paddingLeft="35dip"
+            android:paddingRight="35dip"
+            android:text="@string/cancel"
+            android:textSize="18dip" />
+    </LinearLayout>
+
+</RelativeLayout>

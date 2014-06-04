@@ -125,7 +125,7 @@ public class Product {
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		Window window = dialog.getWindow();
-		window.setContentView(R.layout.dialog2);
+		window.setContentView(R.layout.dialog_input);
 		
 		// final EditText codeet = (EditText) window.findViewById(R.id.getcode);
 		final EditText numet = (EditText) window.findViewById(R.id.getnum);

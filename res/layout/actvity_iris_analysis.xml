@@ -2,57 +2,62 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-	 <FrameLayout 
-    	android:layout_height="fill_parent"
-    	android:layout_width="fill_parent"
-    	android:layout_above="@+id/bottom"
-    	android:background="#00000000"
-    	android:id="@+id/container"
-    	>
-    	    	
-    	 <com.hengxuan.ehealthplatform.lens.iris.IrisImageView
-	    	android:id="@+id/irisMyView"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="fill_parent"/>
-	    	<LinearLayout
-	    	android:id="@+id/irisll"
-	    	android:orientation="horizontal"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="fill_parent"/>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom"
+        android:background="#00000000" >
+
+        <com.hengxuan.ehealthplatform.lens.iris.IrisImageView
+            android:id="@+id/irisMyView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <LinearLayout
+            android:id="@+id/irisll"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" />
     </FrameLayout>
-    
-    <LinearLayout android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="horizontal"
-    android:id="@+id/bottom"
-    android:layout_alignParentBottom="true"
-    android:background="@android:color/background_dark"
-    >
-	<ImageView android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:id="@+id/chacha"
-	    android:src="@drawable/chacha"
-	    android:layout_gravity="center_vertical"
-	    android:layout_weight="1"
-	    android:padding="10dp"
-	    />
-    <ImageView android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:id="@+id/merge_btn"
-	    android:src="@drawable/analysis_disable_btn"
-	    android:clickable="false"
-	    android:layout_weight="1"
-	    android:padding="10dp"/>
 
-    <ImageView
-        android:id="@+id/eyes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="10dp"
-        android:src="@drawable/eyes" 
-        android:visibility="invisible"/>
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/background_dark"
+        android:orientation="horizontal" >
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/chacha"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/chacha" />
+
+        <Button
+            android:id="@+id/merge_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/ic_bg_selector"
+            android:clickable="false"
+            android:padding="10dp"
+            android:text="@string/merge_image" />
+
+        <ImageView
+            android:id="@+id/eyes"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/eyes"
+            android:visibility="invisible" />
+    </LinearLayout>
+
 </RelativeLayout>

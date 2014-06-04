@@ -258,6 +258,9 @@ public class SocketCamera implements CameraSource {
 	{
 		matrix = new Matrix();
 		matrix.postRotate(90);
+		if(bitmap == null){
+			return null;
+		}
 		Bitmap tempBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
 		return tempBmp;
 	}

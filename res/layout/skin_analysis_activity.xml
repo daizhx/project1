@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg"
+    >
+    
+    <FrameLayout android:layout_above="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"
+        >
+    
+    </FrameLayout>
+    <include layout="@layout/skin_analysis_menu"/>
+    
+    <TextView
+    	android:id="@+id/skin_other_data"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/mean_radius"
+    	android:layout_alignParentLeft="true"
+    	android:layout_above="@+id/bottom"
+    	android:visibility="gone"
+    	android:textSize="20sp"/>
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/background_dark" >
+<!-- 
+        <ImageView
+            android:id="@+id/chacha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:src="@drawable/chacha" />
+
+        <Button
+            android:id="@+id/analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"	
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:text="@string/analysis_text"
+            android:textColor="@color/white"
+            android:background="@drawable/ic_bg_selector" />
+
+        <ImageView
+            android:id="@+id/eyes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="5dp"
+            android:src="@drawable/reset"
+            android:visibility="visible" />
+             -->
+    </RelativeLayout>
+
+</RelativeLayout>

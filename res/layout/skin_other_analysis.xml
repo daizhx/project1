@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  android:background="@color/bg" 
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@+id/skan_container" android:layout_width="fill_parent" android:layout_height="fill_parent">
+     
+    </RelativeLayout>
+    <RelativeLayout
+    	android:layout_width="fill_parent"
+    	android:layout_height="65dip"
+    	android:background="@color/bg"
+    	android:gravity="center_vertical">
+    	<Button    
+       		android:id="@+id/other_ana"    
+        	android:layout_width="wrap_content"    
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentLeft="true"
+        	android:text="@string/pore_analysis"
+    		android:layout_marginTop="2dip"
+   			android:layout_marginLeft="5dip">    
+    	</Button>
+    	<Button
+    		android:id="@+id/skan_other_oper"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_alignParentRight="true"
+    		android:layout_marginTop="2dip"
+    		android:layout_marginRight="5dip"
+    		android:text="@string/operation"/>
+    </RelativeLayout>
+    <TextView
+    	android:id="@+id/skan_other_data"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/mean_radius"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignParentBottom="true"
+    	android:textSize="20sp"/>
+
+</RelativeLayout>
+

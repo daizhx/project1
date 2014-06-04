@@ -226,7 +226,7 @@ public class MassagerActivity extends BaseActivity implements FragmentChangeList
 	
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		rightIcon.setImageResource(R.drawable.bt_connectting_indicate);

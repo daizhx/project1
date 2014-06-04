@@ -14,6 +14,7 @@ import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
 import com.hengxuan.ehealthplatform.log.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -42,7 +43,7 @@ public class UserLoginActivity extends BaseActivity {
 	
 	private String intentAction;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mTitle.setText(R.string.user_login);
@@ -141,7 +142,6 @@ public class UserLoginActivity extends BaseActivity {
 							if (Log.D) {
 								Log.d(TAG, "onLogin.httpsetting.listenter.onError");
 							}
-							
 //							clearRemember(UserLoginActivity.this);
 						}
 	
@@ -206,23 +206,20 @@ public class UserLoginActivity extends BaseActivity {
 							// alertDialog = dialogBuilder.show();
 							final AlertDialog dialog = (new AlertDialog.Builder(UserLoginActivity.this)).create();
 							dialog.show();
-							Window window = dialog.getWindow();
-							window.setContentView(R.layout.myalert);
-							TextView tv = (TextView) window.findViewById(R.id.msgtv);
+							
 							if("".equals(tip))
-								tv.setText(getResources().getString(R.string.login_failed_message));
+								dialog.setMessage(getString(R.string.login_failed_message));
 							else
-								tv.setText(tip);
-							Button btn = (Button) window.findViewById(R.id.btn3);
-							btn.setText(getResources().getString(R.string.ok));
-							btn.setOnClickListener(new OnClickListener() {
+								dialog.setMessage(tip);
+							dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
 								
 								@Override
-								public void onClick(View arg0) {
+								public void onClick(DialogInterface arg0, int arg1) {
 									// TODO Auto-generated method stub
 									dialog.dismiss();
 								}
 							});
+							
 						}
 					});					
 				}

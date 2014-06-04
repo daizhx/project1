@@ -47,7 +47,7 @@ public class UserRegisterActivity extends BaseActivity {
 	private String sRegUuid;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);

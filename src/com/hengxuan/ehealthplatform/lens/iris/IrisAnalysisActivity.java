@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.http.utils.DPIUtils;
+import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
 import com.hengxuan.ehealthplatform.log.Log;
 
 public class IrisAnalysisActivity extends BaseActivity {
@@ -42,7 +44,7 @@ public class IrisAnalysisActivity extends BaseActivity {
 	//左右眼是否合并操作完成的数据
 	private boolean irisMergedTag[] = null;
 	//合并按钮
-	private ImageView ivMergeBtn;
+	private Button ivMergeBtn;
 	//父控件 FrameLayout的大小
 	public static int mContainerWidth;
 	public static int mContainerHeight;
@@ -99,7 +101,7 @@ public class IrisAnalysisActivity extends BaseActivity {
 			}
 		});
 		
-		ivMergeBtn = (ImageView)findViewById(R.id.merge_btn);
+		ivMergeBtn = (Button)findViewById(R.id.merge_btn);
 		ivMergeBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -149,24 +151,28 @@ public class IrisAnalysisActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		Bundle bundle = intent.getExtras();
-		if(bundle != null){
-			imagePath = bundle.getString("image_path");
-			iris_index = bundle.getInt("iris_image_index");
-			putInt2Preference("currentIndex", iris_index);
-			iris_image_paths[0] = imagePath;
-		}else{
-			//TODO
-			//test remember to del
-//			iris_index = 0;
+//		Bundle bundle = intent.getExtras();
+//		if(bundle != null){
+//			imagePath = bundle.getString("image_path");
+//			iris_index = bundle.getInt("iris_image_index");
 //			putInt2Preference("currentIndex", iris_index);
-//			iris_image_paths[0] = Environment.getExternalStorageDirectory()+File.separator+"dxlphoto" + File.separator + "1399878532644.png";
-			Log.e("iris", "iris analysis can not get args,finished!");
+//			iris_image_paths[0] = imagePath;
+//		}else{
+//			//TODO
+//			Log.e("iris", "iris analysis can not get args,finished!");
+//			finish();
+//		}
+		imagePath = intent.getStringExtra(LensBaseActivity.PHOTO_PATH);
+		iris_index = intent.getIntExtra("irisIndex", 0);
+		putInt2Preference("currentIndex", iris_index);
+		iris_image_paths[0] = imagePath;
+		if(iris_index == 0){
 			finish();
+			return;
 		}
 		setContentView(R.layout.actvity_iris_analysis);
 		setTitle(R.string.iris_analysis);

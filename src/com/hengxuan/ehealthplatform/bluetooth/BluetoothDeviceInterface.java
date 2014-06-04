@@ -153,18 +153,10 @@ public class BluetoothDeviceInterface extends BaseActivity {
 				String as[] = { "name", "mac" };
 				int ai[] = { R.id.bluetooth_item_name2,
 						R.id.bluetooth_item_mac2 };
-				/*if (NewDevices.size() <= 0) {
-					blueToothInfo = new HashMap<String, String>();
-					blueToothInfo.put("name", "А¶СА1");
-					blueToothInfo.put("mac", "00:11:03:21:00:43");
-					NewDevices.add(blueToothInfo);
-					BlueToothDeviceBoundState.put(blueToothInfo.get("mac"),
-							false);
 
-				}*/
 
 				myArrayAdapter = new SimpleAdapter(BluetoothDeviceInterface.this,
-						NewDevices, R.layout.bluetoothitem, as, ai) {
+						NewDevices, R.layout.bluetooth_device_listitem, as, ai) {
 
 					@Override
 					public View getView(int position, View convertView,
@@ -442,22 +434,10 @@ public class BluetoothDeviceInterface extends BaseActivity {
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bluetooth_device_list);
-		title = ((TextView) findViewById(R.id.titleText2));
-		title.setText(R.string.bluetooth);
-		Button returnBtn = ((Button) findViewById(R.id.swich_btn));
-		// returnBtn.setVisibility(View.GONE);
-		returnBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
 		bluetoothdeviceInfoList = (ListView) findViewById(R.id.bluetoothdevice_list);
 		NewDevices = new ArrayList<Map<String, String>>();
 		BlueToothDeviceConnectState = new HashMap<String, Boolean>();

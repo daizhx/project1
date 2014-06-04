@@ -12,10 +12,8 @@
 	 	android:hint="@string/please_enter_a_name"
 	 	android:singleLine="true"
 	 	android:layout_weight="1"
-	 	android:textColor="#00ffff"
 	 	android:textSize="18dip"
 	 	android:gravity="center_vertical"
-	 	android:textColorHint="#00ffff"
 	 	android:layout_marginLeft="10dip"
     	android:layout_marginRight="10dip"
     	android:layout_marginTop="10dip"
@@ -28,11 +26,10 @@
     	android:layout_weight="2"
     	android:text="@string/save"
     	android:textSize="18dip"
-    	android:textColor="@color/white"
     	android:layout_marginLeft="10dip"
     	android:layout_marginRight="10dip"
     	android:layout_marginTop="10dip"
     	android:layout_marginBottom="10dip"
-    	android:background="@drawable/android_big_button_x"/>
+    	/>
 
 </LinearLayout>

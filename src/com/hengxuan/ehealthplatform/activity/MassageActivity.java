@@ -4,6 +4,7 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
+import com.hengxuan.ehealthplatform.update.UpdateManager;
 
 
 import android.app.ActionBar.LayoutParams;
@@ -24,7 +25,7 @@ import android.widget.TextView;
 public class MassageActivity extends BaseActivity{
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_grid);
@@ -44,7 +45,9 @@ public class MassageActivity extends BaseActivity{
 			
 		});
 		
-		
+		//¸üÐÂ
+		UpdateManager updateManager = UpdateManager.getUpdateManager(this);
+		updateManager.checkAndUpdate();
 	}
 
 	class GridAdapter extends BaseAdapter{

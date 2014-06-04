@@ -17,20 +17,21 @@ import android.view.SurfaceView;
 
 public class LensMonitorView extends SurfaceView implements SurfaceHolder.Callback{
 
-	public IrisMonitorThread thread;
-	public static final String TAG = "CamMonitorView";
+	public static final String TAG = "LensMonitorView";
+	private IrisMonitorThread thread;
 	private LensMonitorParameter cmPara;
 	private Bitmap capture_bitmap = null;
 	private boolean retry = true;
     private HttpURLConnection httpURLconnection;
     private float previewRatio = (float) (16.0/9.0);
+    private Context mContext;
     
 	public LensMonitorView(Context context, AttributeSet attrs) {
 		super(context,attrs);
 		// TODO Auto-generated constructor stub
 		SurfaceHolder holder = getHolder();
-        holder.addCallback(this);        
-        thread = new IrisMonitorThread(holder);
+        holder.addCallback(this);
+        mContext = context;
 	}
 	
 	@Override
@@ -39,7 +40,7 @@ public class LensMonitorView extends SurfaceView implements SurfaceHolder.Callba
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int width = getMeasuredWidth();
 		int height = getMeasuredHeight();
-		Log.d("daizhx", "LensMonitorView get suggested size:"+width+"x"+height);
+		Log.d(TAG, "LensMonitorView get suggested size:"+width+"x"+height);
 		if(width == 0 || height == 0){
 			return;
 		}
@@ -54,43 +55,52 @@ public class LensMonitorView extends SurfaceView implements SurfaceHolder.Callba
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// TODO Auto-generated method stub
-		Log.d("daizhx", "LensMonitorView:"+width+"x"+height);
+		Log.d(TAG, "LensMonitorView:"+width+"x"+height);
 		thread.setSurfaceSize(width, height);
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-//		thread.setRunning(true);
-//		try{
-//			thread.start();
-//		}catch(IllegalThreadStateException e){}
+        thread = new IrisMonitorThread(holder);
+		thread.setRunning(true);
+		try{
+			setCmPara(initParam());
+			thread.start();
+		}catch(IllegalThreadStateException e){}
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
+		Log.d(TAG, "LensMonitorView--Destroyed");
 		thread.closeCameraSource();
 		if(null != httpURLconnection)
 			httpURLconnection.disconnect(); 
 			
 		if(capture_bitmap != null) {
-			if(!capture_bitmap.isRecycled()){   
+			if(!capture_bitmap.isRecycled()){
 				capture_bitmap.recycle();   //回收图片所占的内存   
 		        System.gc();  //提醒系统及时回收   
 			}
 		}
-			
-		/*
-	     while (retry) {
-	    	 try {
-	    		 thread.join();
-	             retry = false;
-
-	         } catch (InterruptedException e) {
-	         }
-	    }
-	    */
+		stop();
+	}
+	
+	private LensMonitorParameter initParam()
+	{
+		LensMonitorParameter param = new LensMonitorParameter();
+		param.setId(1);
+		param.setConnectType(0);
+		param.setIp("10.10.10.254");
+		param.setLocal_dir("/sdcard");
+		param.setName("192.168.1.102");
+		param.setUsername("aaaaa");
+		param.setPassword("123456");
+		param.setPort(8080);
+		param.setTime_out(2000);
+		param.setConnectType(mContext.BIND_AUTO_CREATE);
+		return param;
 	}
 	
 	public void setRetry(boolean flag) {
@@ -170,12 +180,19 @@ public class LensMonitorView extends SurfaceView implements SurfaceHolder.Callba
                 mCanvasHeight = height;    
             }
 		}
+		
+		/**
+		 * 从socketcamera获取图片并画到surface上
+		 * @param width
+		 * @param height
+		 * @param httpURLconnection
+		 * @return
+		 */
 		private boolean captureImage(int width, int height,HttpURLConnection httpURLconnection){		
 			
 			cs = new SocketCamera(width, height, true);
 	        cs.capture(c, httpURLconnection); //capture the frame onto the canvas
-	        capture_bitmap = cs.getCaptureImage();
-
+	        capture_bitmap = cs.getCaptureImage();	
 	        return true;
 		}
 		
@@ -218,9 +235,11 @@ public class LensMonitorView extends SurfaceView implements SurfaceHolder.Callba
 		this.thread.start();
 	}
 	public void stop(){
-		this.thread.setRunning(false);
-		this.thread.interrupt();
-		this.thread = null;
+		if(thread.mRun){
+			this.thread.setRunning(false);
+			this.thread.interrupt();
+			this.thread = null;
+		}
 	}
 	
 	public boolean getRunning(){

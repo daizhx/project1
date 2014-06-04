@@ -13,7 +13,7 @@
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/head_icon"
-		android:text="@string/user_name_hint"
+		android:text="@string/user_name"
 		android:layout_marginLeft="50dp"
 		android:layout_marginTop="20dp"
 		android:id="@+id/text_user_name"

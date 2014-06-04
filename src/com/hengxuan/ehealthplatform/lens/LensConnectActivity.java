@@ -1,14 +1,17 @@
-/*author: daizhx
- * this activity only used to connect to the Lens AP,if connected, jump to the next activity or exit
- * */
-
+/**
+ * 
+ */
 package com.hengxuan.ehealthplatform.lens;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.List;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
+import com.hengxuan.ehealthplatform.lens.skin.SkinShootActivity;
 import com.hengxuan.ehealthplatform.log.Log;
 
 import android.app.Activity;
@@ -30,8 +33,10 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 public class LensConnectActivity extends Activity {
+	private static final String TAG = "LensConnect";
 	private WifiManager mWifiManager;
 	private WifiInfo currentWifiInfo;
+	private int index;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 		
@@ -63,6 +68,7 @@ public class LensConnectActivity extends Activity {
 		lp.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
 		text.setLayoutParams(lp);
 		setContentView(text);
+		index = getIntent().getIntExtra("index", 0);
 		
 		mWifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
 		registerReceiver(mBroadcastReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
@@ -87,10 +93,10 @@ public class LensConnectActivity extends Activity {
 			if(scanResult.SSID.equals("EHT")){
 				List<WifiConfiguration> list = mWifiManager.getConfiguredNetworks();
 				for(WifiConfiguration wifiConfiguration : list){
-					Log.v("daizhx", "ssid:"+wifiConfiguration.SSID);
+					Log.v(TAG, "ssid:"+wifiConfiguration.SSID);
 					if(wifiConfiguration.SSID != null && wifiConfiguration.SSID.equals("\"" + "EHT" + "\"")){
 						currentWifiInfo = mWifiManager.getConnectionInfo();
-						((EHTApplication)getApplication()).setCurrentNetWorkId(currentWifiInfo.getNetworkId());
+//						((EHTApplication)getApplication()).setCurrentNetWorkId(currentWifiInfo.getNetworkId());
 						mWifiManager.disconnect();
 						mWifiManager.enableNetwork(wifiConfiguration.networkId, true);
 						mWifiManager.reconnect();
@@ -106,7 +112,7 @@ public class LensConnectActivity extends Activity {
 				for(WifiConfiguration wifiConfiguration : list){
 					if(wifiConfiguration.SSID != null && wifiConfiguration.SSID.equals("\"" + "EHT" + "\"")){
 						currentWifiInfo = mWifiManager.getConnectionInfo();
-						((EHTApplication)getApplication()).setCurrentNetWorkId(currentWifiInfo.getNetworkId());
+//						((EHTApplication)getApplication()).setCurrentNetWorkId(currentWifiInfo.getNetworkId());
 						mWifiManager.disconnect();
 						mWifiManager.enableNetwork(wifiConfiguration.networkId, true);
 						mWifiManager.reconnect();
@@ -136,22 +142,35 @@ public class LensConnectActivity extends Activity {
 
 	public void onConnectSuccess() {
 		// TODO Auto-generated method stub
-		Log.d("daizhx", "onConnectSuccess");
+		Log.d(TAG, "onConnectSuccess");
 		unregisterReceiver(mBroadcastReceiver);
+		
 		//delay 2s
-		new Handler().postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(LensConnectActivity.this, IrisInspectionActivity.class));
-				finish();
-			}
-		}, 2000);
+//		new Handler().postDelayed(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				//startActivity(new Intent(LensConnectActivity.this, IrisInspectionActivity.class));
+//				startActivity(new Intent(LensConnectActivity.this, SkinShootActivity.class));
+//				finish();
+//			}
+//		}, 2000);
+		Log.d(TAG, "index="+index);
+		if(index == LensShootBaseActivity.IRIS_PHOTO_INDEX){
+			Intent intent = new Intent(LensConnectActivity.this, IrisInspectionActivity.class);
+			intent.putExtra("index", index);
+			startActivity(intent);
+		}else{
+			Intent intent = new Intent(LensConnectActivity.this, LensShootBaseActivity.class);
+			intent.putExtra("index", index);
+			startActivity(intent);
+		}
+		finish();
 	}
 
 	public void onConnectFail() {
-		Log.d("daizhx", "onConnectFail");
+		Log.d(TAG, "onConnectFail");
 		unregisterReceiver(mBroadcastReceiver);
 		// TODO Auto-generated method stub
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
