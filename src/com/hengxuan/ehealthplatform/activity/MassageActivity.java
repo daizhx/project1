@@ -4,6 +4,7 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
+import com.hengxuan.ehealthplatform.massager.musicMassage.MusicMassagerActivity;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
 
 
@@ -40,6 +41,8 @@ public class MassageActivity extends BaseActivity{
 				// TODO Auto-generated method stub
 				if(position == 0){
 					startActivity(new Intent(MassageActivity.this, MassagerActivity.class));
+				}else if(position == 1){
+					startActivity(new Intent(MassageActivity.this, MusicMassagerActivity.class));
 				}
 			}
 			

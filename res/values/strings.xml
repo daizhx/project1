@@ -267,4 +267,7 @@
     
     <string name="new_password">New Password</string>
     <string name="skin_analysis">Skin Analysis</string>
+    
+    <string name="musicname">Song name</string>
+    <string name="musicartist">Writter</string>
 </resources>

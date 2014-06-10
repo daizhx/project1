@@ -20,7 +20,10 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <supports-screens android:largeScreens="true"/>
     <application
         android:name=".application.EHTApplication"
         android:allowBackup="true"
@@ -114,6 +117,11 @@
         
         <activity android:name=".user.UserInformationActivity"></activity>
         <activity android:name=".activity.ReportActivity"></activity>
+        
+        <activity android:name=".massager.musicMassage.MusicMassagerActivity">
+            
+        </activity>
+        <service android:name=".massager.musicMassage.MusicService"></service>
     </application>
 
 </manifest>
