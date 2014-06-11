@@ -19,11 +19,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <supports-screens android:largeScreens="true"/>
+    <supports-screens android:largeScreens="true" />
+
     <application
         android:name=".application.EHTApplication"
         android:allowBackup="true"
@@ -50,7 +52,9 @@
             android:label="@string/lens_choice"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
-        <activity android:name="com.hengxuan.ehealthplatform.activity.MassageActivity" >
+        <activity
+            android:name="com.hengxuan.ehealthplatform.activity.MassageActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="ehealthplatform.intent.action.MASSAGE" />
 
@@ -61,7 +65,9 @@
         </activity>
         <activity android:name="com.hengxuan.ehealthplatform.user.UserRegisterActivity" >
         </activity>
-        <activity android:name="com.hengxuan.ehealthplatform.activity.PhysicalExamActivity" >
+        <activity
+            android:name="com.hengxuan.ehealthplatform.activity.PhysicalExamActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="ehealthplatform.intent.action.PHYSICAL" />
 
@@ -74,7 +80,7 @@
         </activity>
         <activity
             android:name=".lens.LensConnectActivity"
-            android:launchMode="singleInstance" >
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="com.hengxuan.ehealthplatform.ACTION_SKIN_ANALYSIS" />
 
@@ -90,7 +96,6 @@
         <activity android:name=".lens.ShootConfirmActivity" >
         </activity>
         <activity android:name=".lens.skin.SkinAnalysisActivity" >
-            
         </activity>
         <activity android:name=".lens.skin.SkinOtherAnalysisActivity" >
         </activity>
@@ -111,17 +116,33 @@
         <activity android:name=".lens.naevus.FileDataActivity" />
         <activity android:name=".activity.ErrorActivity" >
         </activity>
-        
-        <activity android:name=".lens.LensBaseActivity"
-            android:launchMode="singleInstance"></activity>
-        
-        <activity android:name=".user.UserInformationActivity"></activity>
-        <activity android:name=".activity.ReportActivity"></activity>
-        
-        <activity android:name=".massager.musicMassage.MusicMassagerActivity">
-            
+        <activity android:name=".lens.LensBaseActivity" >
         </activity>
-        <service android:name=".massager.musicMassage.MusicService"></service>
+        <activity android:name=".user.UserInformationActivity" >
+        </activity>
+        <activity android:name=".activity.ReportActivity" >
+        </activity>
+        <activity android:name=".massager.musicMassage.MusicMassagerActivity" >
+        </activity>
+
+        <service android:name=".massager.musicMassage.MusicService" >
+        </service>
+
+        <activity
+            android:name=".activity.HealthClub"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".activity.GameCenterActivity"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".game.Hamster"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
     </application>
 
 </manifest>

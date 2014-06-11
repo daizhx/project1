@@ -2,86 +2,68 @@ package com.hengxuan.ehealthplatform.activity;
 
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
-import com.hengxuan.ehealthplatform.application.EHTApplication;
-import com.hengxuan.ehealthplatform.log.Log;
+import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter;
+import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter.Holder;
+import com.hengxuan.ehealthplatform.game.Hamster;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
 import com.hengxuan.ehealthplatform.massager.musicMassage.MusicMassagerActivity;
-import com.hengxuan.ehealthplatform.update.UpdateManager;
 
-
-import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class MassageActivity extends BaseActivity{
-	
+public class GameCenterActivity extends BaseActivity {
+
+	private GridView mGridView;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.game);
 		setContentView(R.layout.activity_grid);
-		mTitle.setText(R.string.massage);
-		setLeftIconClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent parentIntent = new Intent(MassageActivity.this, MainActivity.class);
-				parentIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(parentIntent);
-				finish();
-			}
-		});
-		GridView gridView = (GridView)findViewById(R.id.gridview);
-		gridView.setAdapter(new GridAdapter(this));
-		gridView.setOnItemClickListener(new OnItemClickListener() {
+		mGridView = (GridView)findViewById(R.id.gridview);
+		mGridView.setAdapter(new GridAdapter(this));
+		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
 				if(position == 0){
-					startActivity(new Intent(MassageActivity.this, MassagerActivity.class));
-				}else if(position == 1){
-					startActivity(new Intent(MassageActivity.this, MusicMassagerActivity.class));
+					startActivity(new Intent(GameCenterActivity.this, Hamster.class));
 				}
 			}
 			
 		});
-		
-		//¸üÐÂ
-		UpdateManager updateManager = UpdateManager.getUpdateManager(this);
-		updateManager.checkAndUpdate();
 	}
-
+	
 	class GridAdapter extends BaseAdapter{
 		private Context mContext;
 		
-		public GridAdapter(Context context){
-			this.mContext = context;
+		public GridAdapter(Context context) {
+			// TODO Auto-generated constructor stub
+			mContext = context;
 		}
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return 2;
+			return 1;
 		}
 
 		@Override
-		public Object getItem(int position) {
+		public Object getItem(int arg0) {
 			// TODO Auto-generated method stub
-			return position;
+			return null;
 		}
 
 		@Override
@@ -104,13 +86,9 @@ public class MassageActivity extends BaseActivity{
 			}else{
 				holder = (Holder)convertView.getTag();
 			}
-			holder.icon.setImageResource(R.drawable.massager_icon);
-			holder.labelText.setText(R.string.massager);
-			//TODO
-			if(position == 1){
-				holder.hintIcon.setVisibility(View.VISIBLE);
-				holder.labelText.setText(R.string.music_massage);
-			}
+			
+			holder.icon.setImageResource(R.drawable.hamster);
+			holder.labelText.setText(R.string.hamster);
 			return convertView;
 		}
 		
@@ -119,15 +97,15 @@ public class MassageActivity extends BaseActivity{
 			public ImageView hintIcon;
 			public TextView labelText;
 		}
+		
 	}
-
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			Intent parentIntent = new Intent(MassageActivity.this, MainActivity.class);
+			Intent parentIntent = new Intent(GameCenterActivity.this, MainActivity.class);
 			parentIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(parentIntent);
 			finish();

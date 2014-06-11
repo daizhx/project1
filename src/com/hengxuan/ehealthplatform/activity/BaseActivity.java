@@ -99,6 +99,7 @@ public class BaseActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();
+
 			}
 		});
 		rightIcon = (ImageView) view.findViewById(R.id.right_icon);
@@ -295,6 +296,10 @@ public class BaseActivity extends Activity {
 
 	public void setLeftIcon(int resId) {
 		leftIcon.setImageResource(resId);
+	}
+	
+	public void setLeftIconClickListener(OnClickListener l) {
+		leftIcon.setOnClickListener(l);
 	}
 
 	public int getActionBarHeight() {

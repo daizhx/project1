@@ -270,4 +270,6 @@
     
     <string name="musicname">Song name</string>
     <string name="musicartist">Writter</string>
+    <string name="game">Game</string>
+    <string name="hamster">Hamster</string>
 </resources>

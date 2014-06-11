@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
+import com.hengxuan.ehealthplatform.activity.GameCenterActivity;
+import com.hengxuan.ehealthplatform.activity.HealthClub;
 import com.hengxuan.ehealthplatform.activity.MassageActivity;
 import com.hengxuan.ehealthplatform.activity.PhysicalExamActivity;
 import com.hengxuan.ehealthplatform.activity.ReportActivity;
@@ -494,8 +496,10 @@ public class MainActivity extends SlidingActivity implements OnClickListener{
 			}
 			break;
 		case R.id.img3:
+			startActivity(new Intent(this, HealthClub.class));
 			break;
 		case R.id.img4:
+			startActivity(new Intent(this, GameCenterActivity.class));
 			break;
 		default:
 			break;
