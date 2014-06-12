@@ -397,4 +397,5 @@ public class CommonUtil {
 	public static SharedPreferences getGySharedPreferences() {
 		return EHTApplication.getInstance().getSharedPreferences(ConstSysConfig.SYS_CUST_CLIENT, 0);
 	}
+	
 }

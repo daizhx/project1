@@ -10,6 +10,7 @@ import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
 import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
+import com.hengxuan.ehealthplatform.weight.BodyfatMainActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +74,7 @@ public class PhysicalExamActivity extends BaseActivity {
 				case 4:
 					return;
 				case 5:
+					startActivity(new Intent(PhysicalExamActivity.this, BodyfatMainActivity.class));
 					return;
 				}
 				Intent intent = new Intent(PhysicalExamActivity.this,

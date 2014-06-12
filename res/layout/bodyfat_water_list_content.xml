@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView android:id="@+id/bodyfat_water_age"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dip"
+    	android:textColor="#ffffff"
+    	android:textSize="12dip"
+    	android:gravity="center"
+    	android:layout_weight="1"
+    	android:background="#808080"/>
+    <TextView android:id="@+id/bodyfat_water_low"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dip"
+    	android:textColor="#ffffff"
+    	android:textSize="12dip"
+    	android:gravity="center"
+    	android:layout_weight="1"
+    	android:background="#9ebd0e"/>
+    <TextView android:id="@+id/bodyfat_water_normal"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dip"
+    	android:textColor="#ffffff"
+    	android:textSize="12dip"
+    	android:gravity="center"
+    	android:layout_weight="1"
+    	android:background="#4aaf00"/>
+    <TextView android:id="@+id/bodyfat_water_high"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dip"
+    	android:textColor="#ffffff"
+    	android:textSize="12dip"
+    	android:gravity="center"
+    	android:layout_weight="1"
+    	android:background="#e3db00"/>
+</LinearLayout>

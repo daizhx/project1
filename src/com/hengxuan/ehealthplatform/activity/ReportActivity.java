@@ -16,6 +16,6 @@ public class ReportActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.physical_report);
-		setContentView(R.layout.activity_report);
+		setContentView(R.layout.activity_grid);
 	}
 }
