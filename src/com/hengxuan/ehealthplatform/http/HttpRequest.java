@@ -32,6 +32,7 @@ import com.hengxuan.ehealthplatform.http.constant.ConstFileProp;
 import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.http.constant.ConstSysConfig;
+import com.hengxuan.ehealthplatform.http.json.JSONArrayPoxy;
 import com.hengxuan.ehealthplatform.http.json.JSONObjectProxy;
 import com.hengxuan.ehealthplatform.http.utils.CacheFileItem;
 import com.hengxuan.ehealthplatform.http.utils.CacheFileTableDBHelper;
@@ -45,6 +46,7 @@ import com.hengxuan.ehealthplatform.http.utils.Md5Encrypt;
 import com.hengxuan.ehealthplatform.http.utils.NetUtils;
 import com.hengxuan.ehealthplatform.log.Log;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -57,10 +59,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 public class HttpRequest implements HttpGroup.StopController {
+//	private android.os.Handler mHandler = new android.os.Handler();
 
 	class HttpDialogController extends DialogController {
 		protected ArrayList<HttpRequest> httpRequestList;
-		protected BaseActivity myActivity;
+		protected Activity myActivity;
 
 		HttpDialogController() {
 		}
@@ -107,7 +110,7 @@ public class HttpRequest implements HttpGroup.StopController {
 			actionCommon(true);
 		}
 
-		public void init(ArrayList<HttpRequest> arrayList, BaseActivity activity) {
+		public void init(ArrayList<HttpRequest> arrayList, Activity activity) {
 			if (Log.D) { 
 				Log.d("HttpRequest", "HttpDialogController.init");
 			}
@@ -570,6 +573,9 @@ public class HttpRequest implements HttpGroup.StopController {
 					if (httpSetting.getType() == ConstHttpProp.TYPE_JSON) {
 						jsonContent();
 					}
+					if (httpSetting.getType() == ConstHttpProp.TYPE_JSONARRAY) {
+						jsonArrayContent();
+					}
 					if (httpSetting.getType() == ConstHttpProp.TYPE_IMAGE) {
 						imageContent();
 					}
@@ -624,6 +630,7 @@ public class HttpRequest implements HttpGroup.StopController {
 
 	private class AttestationWIFIDialogController extends HttpDialogController {
 		private int state;
+		
 
 		public void onClick(DialogInterface dialoginterface, int i) {
 			if (Log.D) { 
@@ -637,25 +644,25 @@ public class HttpRequest implements HttpGroup.StopController {
 					if (Log.D)
 						Log.d("HttpGroup", "http dialog BUTTON_POSITIVE -->> 1");
 					state = 1;
-					myActivity.post(new Runnable() {
-
-						@Override
-						public void run() {
-							if (Log.D) { 
-								Log.d("HttpRequest", "HttpRequest.AttestationWIFIDialogController.onClick.run");
-							}
-							
-							setMessage(myActivity.getResources().getString(R.string.mess_is_retry));
-							setPositiveButton(myActivity.getResources().getString(R.string.mess_retry));
-							// if(AttestationWIFIDialogController.this.isShowing())
-							AttestationWIFIDialogController.this.show();
-							Uri localUri = Uri.parse(Configuration.getProperty("guanyi_url"));
-							Intent intent = new Intent(Intent.ACTION_VIEW, localUri);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							EHTApplication.getInstance().startActivity(intent);
-						}
-
-					});
+//					mHandler.post(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							if (Log.D) { 
+//								Log.d("HttpRequest", "HttpRequest.AttestationWIFIDialogController.onClick.run");
+//							}
+//							
+//							setMessage(myActivity.getResources().getString(R.string.mess_is_retry));
+//							setPositiveButton(myActivity.getResources().getString(R.string.mess_retry));
+//							// if(AttestationWIFIDialogController.this.isShowing())
+//							AttestationWIFIDialogController.this.show();
+//							Uri localUri = Uri.parse(Configuration.getProperty("guanyi_url"));
+//							Intent intent = new Intent(Intent.ACTION_VIEW, localUri);
+//							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//							EHTApplication.getInstance().startActivity(intent);
+//						}
+//
+//					});
 					break;
 				case 1:
 					if (Log.D)
@@ -696,7 +703,7 @@ public class HttpRequest implements HttpGroup.StopController {
 		if (Log.D) { 
 			Log.d("HttpRequest", "alertAttestationWIFIDialog");
 		}
-		final BaseActivity myActivity = httpGroup.getHttpGroupSetting().getMyActivity();
+		final Activity myActivity = httpGroup.getHttpGroupSetting().getMyActivity();
 		AttestationWIFIDialogController wifiDialogController = new AttestationWIFIDialogController();
 		wifiDialogController.setTitle(myActivity.getResources().getString(R.string.mess_wifi_cert));
 		wifiDialogController.setMessage(myActivity.getResources().getString(R.string.mess_wifi_need_cert));
@@ -848,6 +855,7 @@ public class HttpRequest implements HttpGroup.StopController {
 			Log.d("HttpGroup", logString);
 		}
 		try {
+			Log.d("daizhx", "connect:"+conn.getURL());
 			conn.connect();
 			if (Log.D) {
 				logString = new StringBuilder("id:")
@@ -929,6 +937,9 @@ public class HttpRequest implements HttpGroup.StopController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			HttpError httperror = new HttpError(e);
+//			httperror.setNoRetry(true);
+			throwError(httperror);
 		} finally {
 			try {
 				if (httpResponse.getInputStream() != null) {
@@ -1259,6 +1270,39 @@ public class HttpRequest implements HttpGroup.StopController {
 		return stopFlag;
 	}
 
+	private void jsonArrayContent() throws Exception{
+		try
+		{
+			InputStream inputstream = httpResponse.getInputStream();
+			String s = IOUtil.readAsString(inputstream, HttpGroup.charset, ioProgressListener);
+			httpResponse.setString(s);
+			
+			
+		} catch (Exception exception) {
+			HttpError httperror = new HttpError(exception);
+			throwError(httperror);
+			connectionRetry = true;
+			return;
+		}
+		try
+		{
+			JSONArray jsonArray = new JSONArray(httpResponse.getString());
+			JSONArrayPoxy jsonArrayPoxy = new JSONArrayPoxy(jsonArray);
+			httpResponse.setJsonArray(jsonArrayPoxy);
+		} catch (JSONException jsonexception) {
+			if (Log.D)
+			{
+				StringBuilder stringbuilder7 = new StringBuilder("id:");
+				String s1 = stringbuilder7.append(httpSetting.getId()).append("- Can not format json -->> ").toString();
+				Log.d("HttpGroup", s1, jsonexception);
+			}
+			HttpError httperror2 = new HttpError(jsonexception);
+			throwError(httperror2);
+			connectionRetry = true;
+			
+			return ;
+		}
+	}
 	private void jsonContent() throws Exception {
 		//if (httpResponse.getType() != null && httpResponse.getType().contains("application/json"))
 		//{
@@ -1450,7 +1494,7 @@ public class HttpRequest implements HttpGroup.StopController {
 		}
 		
 		ArrayList arrayList = null;
-		BaseActivity activity = httpGroup.getHttpGroupSetting().getMyActivity();
+		Activity activity = httpGroup.getHttpGroupSetting().getMyActivity();
 		if (activity != null) {
 			boolean flag = false;
 			HashMap hashmap = HttpGroup.alertDialogStateMap;
@@ -1471,14 +1515,14 @@ public class HttpRequest implements HttpGroup.StopController {
 				Log.d("HttpGroup", s);
 			}
 			httpDialogController.init(arrayList, activity);
-			activity.post(new Runnable() {
-
-				@Override
-				public void run() {
-					httpDialogController.show();
-				}
-
-			});
+//			mHandler.post(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					httpDialogController.show();
+//				}
+//
+//			});
 			if (Log.D) {
 				String s1 = new StringBuilder("id:")
 						.append(httpSetting.getId())

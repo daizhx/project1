@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
+import com.hengxuan.ehealthplatform.http.json.JSONArrayPoxy;
 import com.hengxuan.ehealthplatform.http.json.JSONObjectProxy;
 import com.hengxuan.ehealthplatform.http.utils.ExceptionDrawable;
 import com.hengxuan.ehealthplatform.log.Log;
@@ -27,6 +28,7 @@ public class HttpResponse {
 	private byte[] inputData;
 	private InputStream inputStream;
 	private JSONObjectProxy jsonObject;
+	private JSONArrayPoxy jsonArray;
 	private long length;
 	private File saveFile;
 	private SoftReference<Bitmap> softReferenceBitmap;
@@ -135,6 +137,9 @@ public class HttpResponse {
 	public JSONObjectProxy getJSONObject() {
 		return jsonObject;
 	}
+	public JSONArrayPoxy getJSONARRAY(){
+		return jsonArray;
+	}
 
 	public long getLength() {
 		return length;
@@ -211,6 +216,9 @@ public class HttpResponse {
 
 	public void setJsonObject(JSONObjectProxy jsonObjectProxy) {
 		this.jsonObject = jsonObjectProxy;
+	}
+	public void setJsonArray(JSONArrayPoxy ja){
+		this.jsonArray = ja;
 	}
 
 	public void setLength(long len) {

@@ -236,7 +236,7 @@ public class LensBaseActivity extends BaseActivity implements
 		Log.d(TAG, "onConnectFail");
 		unregisterReceiver(mBroadcastReceiver);
 		// TODO Auto-generated method stub
-		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(LensBaseActivity.this).create();
 		alertDialog.setMessage(getString(R.string.open_lens));
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
 				getString(R.string.confirm),
@@ -255,6 +255,7 @@ public class LensBaseActivity extends BaseActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+//		openFloatView(false);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lens_base);
 		mFragmentManager = getFragmentManager();

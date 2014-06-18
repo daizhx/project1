@@ -4,20 +4,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.log.Log;
 
 
 public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
-	HttpGroup.OnEndListener, HttpGroup.OnErrorListener, BaseActivity.DestroyListener {
+	HttpGroup.OnEndListener, HttpGroup.OnErrorListener{
 	
 	class State implements Runnable {
 
@@ -27,10 +28,12 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 		private RelativeLayout.LayoutParams layoutParams;
 		private int missionCount;
 		private ViewGroup modal;
-		private BaseActivity myActivity;
+		private Activity myActivity;
 		private ProgressBar progressBar;
 		private ViewGroup rootFrameLayout;
 		private int waitTime;
+		private Handler mHandler = new Handler();
+		
 
 		private void firstMission()
 		{
@@ -41,11 +44,12 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 				notify();
 			} else
 			{
+				if(!isShowProgress)return;
 				final ViewGroup rootFrameLayout = getRootFrameLayout();
 				final ViewGroup modal = getModal();
 				newProgressBar();
 				
-				myActivity.post(new Runnable() {
+				mHandler.post(new Runnable() {
 					public void run()
 					{
 						if (Log.D)
@@ -59,7 +63,7 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 						rootFrameLayout.addView(modal, layoutparams);
 						//System.out.println("+++++++++++++++++display progressBar--myacivity="+myActivity+"+++++++++++++++++++++++++");
 						rootFrameLayout.invalidate();
-						myActivity.onShowModal();
+//						myActivity.onShowModal();
 					}
 				});
 			}
@@ -123,7 +127,7 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 
 		private void newProgressBar()
 		{
-			myActivity.post(new Runnable() {
+			mHandler.post(new Runnable() {
 				public void run()
 				{
 					modal.removeView(progressBar);
@@ -201,7 +205,7 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 					final ViewGroup rootFrameLayout = getRootFrameLayout();
 					final ViewGroup modal = getModal();
 										
-					myActivity.post(new Runnable() {
+					mHandler.post(new Runnable() {
 						public void run()
 						{
 							if (Log.D)
@@ -214,7 +218,7 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 							rootFrameLayout.removeView(modal);
 							rootFrameLayout.invalidate();
 							//System.out.println("+++++++++++++++++hide progressBar-myacitvity-"+myActivity +"+++++++++++++++++++++++++");
-							myActivity.onHideModal();
+//							myActivity.onHideModal();
 						}
 					});
 					waitTime = WAIT_TIME;
@@ -227,7 +231,7 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 			}
 		}
 
-		public State(BaseActivity myactivity)
+		public State(Activity myactivity)
 		{
 			super();
 			waitTime = WAIT_TIME;
@@ -240,28 +244,30 @@ public class DefaultEffectHttpListener implements HttpGroup.OnStartListener,
 	}
 
 	private static final Map stateMap = Collections.synchronizedMap(new HashMap());
-	private BaseActivity myActivity;
+	private Activity myActivity;
 	private HttpGroup.OnEndListener onEndListener;
 	private HttpGroup.OnErrorListener onErrorListener;
 	private HttpGroup.OnStartListener onStartListener;
+	private boolean isShowProgress;
 
-	public DefaultEffectHttpListener(HttpSetting httpsetting, BaseActivity myactivity) {
+	public DefaultEffectHttpListener(HttpSetting httpsetting, Activity myactivity) {
 		if (httpsetting != null) {
 			onStartListener = httpsetting.getOnStartListener();
 			onEndListener = httpsetting.getOnEndListener();
 			onErrorListener = httpsetting.getOnErrorListener();
 		}
 		myActivity = myactivity;
-		myactivity.addDestroyListener(this);
+		isShowProgress = httpsetting.isShowProgress();
+//		myactivity.addDestroyListener(this);
 	}
 	
-	public DefaultEffectHttpListener(BaseActivity myactivity) {
+	public DefaultEffectHttpListener(Activity myactivity) {
 		onStartListener = null;
 		onEndListener = null;
 		onErrorListener = null;
 
 		myActivity = myactivity;
-		myactivity.addDestroyListener(this);
+//		myactivity.addDestroyListener(this);
 	}
 
 	private void missionBegins()

@@ -1,17 +1,19 @@
 package com.hengxuan.ehealthplatform.http;
 
+import android.app.Activity;
+
+import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.http.utils.PooledThread;
 import com.hengxuan.ehealthplatform.http.utils.ThreadPool;
 import com.hengxuan.ehealthplatform.log.Log;
 
-
-
-
 public class HttpGroupaAsynPool extends HttpGroup {
-
+	
 	public HttpGroupaAsynPool(HttpGroupSetting paramHttpGroupSetting) {
 		super(paramHttpGroupSetting);
 	}
+	
+	
 	@Override
 	public void execute(final HttpRequest httpRequest) {
 		if (Log.D) { 
@@ -37,7 +39,5 @@ public class HttpGroupaAsynPool extends HttpGroup {
 
 		}, i);
 	}
-	@Override
-	public void onDestroy() {
-	}
+
 }

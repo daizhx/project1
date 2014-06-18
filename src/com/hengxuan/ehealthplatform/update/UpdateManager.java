@@ -7,12 +7,17 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.http.HttpError;
 import com.hengxuan.ehealthplatform.http.HttpGroup;
+import com.hengxuan.ehealthplatform.http.HttpGroupSetting;
+import com.hengxuan.ehealthplatform.http.HttpGroupaAsynPool;
 import com.hengxuan.ehealthplatform.http.HttpRequest;
 import com.hengxuan.ehealthplatform.http.HttpResponse;
 import com.hengxuan.ehealthplatform.http.HttpSetting;
 import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
+import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
+import com.hengxuan.ehealthplatform.http.json.JSONObjectProxy;
 import com.hengxuan.ehealthplatform.log.Log;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -79,7 +84,10 @@ public class UpdateManager {
 				// TODO Auto-generated method stub
 				Log.d(TAG, "onEnd:response"+response);
 				try {
-					String versionCode = response.getJSONObject().get("code").toString();
+					JSONObjectProxy json = response.getJSONObject();
+					//it is a bug,not fixed,so added this code
+					if(json == null)return;
+					String versionCode = json.get("code").toString();
 					Log.d(TAG, "serverVersion="+versionCode);
 					downloadUrl = response.getJSONObject().get("versionList").toString();
 //					downloadUrl = response.getJSONObject().get("url").toString();
@@ -100,8 +108,13 @@ public class UpdateManager {
 			}
 		});
 		
-		httpsetting.setNotifyUser(true);
-		((BaseActivity)mContext).getHttpGroupaAsynPool().add(httpsetting);
+		httpsetting.setShowProgress(false);
+		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
+		localHttpGroupSetting.setMyActivity((Activity)mContext);
+		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
+		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
+				localHttpGroupSetting);
+		httpGroupaAsynPool.add(httpsetting);
 	}
 	
 	

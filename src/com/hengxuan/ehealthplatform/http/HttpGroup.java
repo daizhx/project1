@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.config.Configuration;
 import com.hengxuan.ehealthplatform.http.HttpGroup.OnReadyListener;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
@@ -20,7 +20,7 @@ import com.hengxuan.ehealthplatform.log.Log;
 
 
 
-public abstract class HttpGroup implements BaseActivity.DestroyListener {
+public abstract class HttpGroup{
 	// ³éÏó½è¿Ú
 	public interface CompleteListener {
 		public abstract void onComplete(Bundle paramBundle);
@@ -117,7 +117,7 @@ public abstract class HttpGroup implements BaseActivity.DestroyListener {
 	// non-static varialbes stat
 	private int completesCount;
 
-	protected HttpGroupSetting httpGroupSetting;
+	private HttpGroupSetting httpGroupSetting;
 
 	protected ArrayList<HttpRequest> httpList;
 
@@ -138,6 +138,9 @@ public abstract class HttpGroup implements BaseActivity.DestroyListener {
 	protected int type;
 	private boolean useCaches;
 
+	public HttpGroup() {
+		// TODO Auto-generated constructor stub
+	}
 	// constructor
 	public HttpGroup(HttpGroupSetting groupSetting) {
 		if (Log.D) { 
@@ -444,8 +447,8 @@ public abstract class HttpGroup implements BaseActivity.DestroyListener {
 
 	public abstract void execute(HttpRequest paramHttpRequest);
 
-	public void onDestroy() {
-	}
+//	public void onDestroy() {
+//	}
 
 	public HttpGroupSetting getHttpGroupSetting() {
 		return httpGroupSetting;
@@ -521,12 +524,11 @@ public abstract class HttpGroup implements BaseActivity.DestroyListener {
 		if (Log.D) { 
 			Log.d("HttpGroup", "tryEffect");
 		}
-		
-		BaseActivity myactivity = httpGroupSetting.getMyActivity();
+		Activity activity = httpGroupSetting.getMyActivity();
 		int i = httpsetting.getEffect();
-		if ((ConstHttpProp.EFFECT_DEFAULT == i) && (httpsetting.getEffectState() == ConstHttpProp.EFFECT_STATE_NO) && (myactivity != null)) {
+		if ((ConstHttpProp.EFFECT_DEFAULT == i) && (httpsetting.getEffectState() == ConstHttpProp.EFFECT_STATE_NO)) {
 			DefaultEffectHttpListener defaulteffecthttplistener = new DefaultEffectHttpListener(
-					httpsetting, myactivity);
+					httpsetting, activity);
 			httpsetting.setListener(defaulteffecthttplistener);
 		}
 	}

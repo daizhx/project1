@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="13"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -83,12 +83,13 @@
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="com.hengxuan.ehealthplatform.ACTION_SKIN_ANALYSIS" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".lens.iris.IrisDetailInfoActivity" >
         </activity>
+        <activity android:name=".lens.iris.IrisReportActivity"></activity>
+        <activity android:name=".lens.iris.QueryCurrentDay"></activity>
         <activity android:name=".lens.LensShootBaseActivity" >
         </activity>
         <activity android:name=".lens.skin.SkinShootActivity" >
@@ -101,12 +102,21 @@
         </activity>
         <activity android:name=".lens.skin.SkinAnalysisResultActivity" >
         </activity>
+        <activity android:name=".lens.skin.SkinReportActivity">
+        </activity>
+        <activity android:name=".lens.skin.SkinReportDetailActivity">
+        </activity>
         <activity android:name=".lens.hair.HairShootActivity" >
         </activity>
         <activity android:name=".lens.hair.HairAnalysisActivity" >
         </activity>
-        <activity android:name=".lens.hair.HairAnalysisResultActivity" />
-        <activity android:name=".lens.hair.HairOtherAnalysisActivity" >
+        <activity android:name=".lens.hair.HairAnalysisResultActivity">
+        </activity>    
+        <activity android:name=".lens.hair.HairOtherAnalysisActivity">
+        </activity>
+        <activity android:name=".lens.hair.HairReportActivity">
+        </activity>
+        <activity android:name=".lens.hair.HairReportDetailActivity">
         </activity>
         <activity android:name=".lens.naevus.NaevusAnalysisActivity" />
         <activity android:name=".lens.naevus.SaveFileActivity" />

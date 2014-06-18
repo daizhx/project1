@@ -3,17 +3,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     
-	<FrameLayout android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	<FrameLayout android:layout_width="60dp"
+	    android:layout_height="60dp"
 	    android:id="@+id/frame">
 	
-		<ImageView android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
+		<ImageView android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
 	    	android:src="@drawable/massager_icon"
 	    	android:id="@+id/icon"/>
 	 	
-		<ImageView android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
+		<ImageView android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
 	    	android:src="@drawable/not_use_hint"
 	    	android:id="@+id/hint"
 	    	android:visibility="gone"

@@ -863,14 +863,14 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 			});
 			
 			infoDialog.show();
-			infoDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-				
-				@Override
-				public boolean onKey(DialogInterface arg0, int arg1, KeyEvent arg2) {
-					// TODO Auto-generated method stub
-					return true;
-				}
-			});
+//			infoDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//				
+//				@Override
+//				public boolean onKey(DialogInterface arg0, int arg1, KeyEvent arg2) {
+//					// TODO Auto-generated method stub
+//					return true;
+//				}
+//			});
 		}
 	}
 

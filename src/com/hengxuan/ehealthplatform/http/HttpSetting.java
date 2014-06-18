@@ -48,6 +48,8 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	private FileGuider savePath;
 	private int type;
 	private String url;
+	//is to show progress of the http task -- daizhx
+	private boolean showProgress;
 
 	public HttpSetting() {
 		if (Log.D) { 
@@ -397,5 +399,13 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	public void setShowProgress(boolean b){
+		showProgress = b;
+	}
+	
+	public boolean isShowProgress(){
+		return showProgress;
 	}
 }

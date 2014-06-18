@@ -11,9 +11,6 @@ import com.hengxuan.ehealthplatform.http.HttpGroupSetting;
 import com.hengxuan.ehealthplatform.http.HttpGroupaAsynPool;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.log.Log;
-import com.hengxuan.ehealthplatform.massager.MassagerActivity;
-import com.hengxuan.ehealthplatform.update.UpdateManager;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
@@ -71,6 +68,8 @@ public class BaseActivity extends Activity {
 	LayoutInflater inflater;
 	ImageView mFloatView;
 	LinearLayout mFloatLayout;
+	// switch of float view
+	private boolean openFloatView = true;
 
 	public interface DestroyListener {
 		public abstract void onDestroy();
@@ -123,131 +122,150 @@ public class BaseActivity extends Activity {
 		mDisplayWidth = getWindowManager().getDefaultDisplay().getWidth();
 		mDisplayHeight = getWindowManager().getDefaultDisplay().getHeight();
 
-		inflater = this.getLayoutInflater();// LayoutInflater.from(getApplication());
+		if (openFloatView) {
+			inflater = this.getLayoutInflater();// LayoutInflater.from(getApplication());
 
-		mFloatLayout = (LinearLayout) inflater.inflate(R.layout.float_layout,
-				null);
-		mFloatLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-		int w = mFloatLayout.getMeasuredWidth();
-		int h = mFloatLayout.getMeasuredHeight();
-		
-		// 添加浮动导航按钮
-		// 获取的是LocalWindowManager对象
-		mWindowManager = this.getWindowManager();
-		// 获取的是CompatModeWrapper对象
-		// mWindowManager = (WindowManager)
-		// getApplication().getSystemService(Context.WINDOW_SERVICE);
-		wmParams = new WindowManager.LayoutParams();
+			mFloatLayout = (LinearLayout) inflater.inflate(
+					R.layout.float_layout, null);
+			mFloatLayout.measure(View.MeasureSpec.UNSPECIFIED,
+					View.MeasureSpec.UNSPECIFIED);
+			int w = mFloatLayout.getMeasuredWidth();
+			int h = mFloatLayout.getMeasuredHeight();
 
-		wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-		wmParams.format = PixelFormat.RGBA_8888;
-		;
-		wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-		wmParams.gravity = Gravity.LEFT | Gravity.TOP;
+			// 添加浮动导航按钮
+			// 获取的是LocalWindowManager对象
+//			mWindowManager = this.getWindowManager();
+//			mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+			// 获取的是CompatModeWrapper对象,用上面的方式获取的wm的话，在改界面弹出的AlertDialog不显示
+			 mWindowManager = (WindowManager)getApplication().getSystemService(Context.WINDOW_SERVICE);
+			wmParams = new WindowManager.LayoutParams();
 
-		wmParams.x = mDisplayWidth - w/2;
-		wmParams.y = mDisplayHeight - h/2;
-		wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-		wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		
-		mWindowManager.addView(mFloatLayout, wmParams);
-		mFloatView = (ImageView) mFloatLayout.findViewById(R.id.float_id);
-		//绑定触摸移动监听
-        mFloatView.setOnTouchListener(new OnTouchListener() 
-        {
-			float prevX, prevY;
-			boolean flag = false;
-			@Override
-			public boolean onTouch(View v, MotionEvent event) 
-			{
-				int action = event.getAction();
-				switch (action) {
-				case MotionEvent.ACTION_DOWN:
-					prevX = event.getRawX();
-					prevY = event.getRawY();
-					
-					break;
-				case MotionEvent.ACTION_MOVE:
-					wmParams.x = (int)event.getRawX() - mFloatLayout.getWidth()/2;
-					//25为状态栏高度
-					wmParams.y = (int)event.getRawY() - mFloatLayout.getHeight()/2;
-					mWindowManager.updateViewLayout(mFloatLayout, wmParams);
-					
-					break;
-					
-				case MotionEvent.ACTION_UP:
-					float x = event.getRawX();
-					float y = event.getRawY();
-					Log.d("daizhx", "x="+x+",y="+y+",mDisplayWidth="+mDisplayWidth);
-					if(x > mDisplayWidth/2){
-						wmParams.x = mDisplayWidth - mFloatLayout.getWidth()/2;
-					}else{
-						wmParams.x = 0;
-					}
-					mWindowManager.updateViewLayout(mFloatLayout, wmParams);
-					if(FloatMath.sqrt((x-prevX)*(x-prevX) + (y-prevY)*(y-prevY)) < 10f){
-						if(!flag){
-						showFloatWindow();
-						flag = true;
-						}else{
-							ppw.dismiss();
-							flag = false;
+			wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+			wmParams.format = PixelFormat.RGBA_8888;
+			;
+			wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+			wmParams.gravity = Gravity.LEFT | Gravity.TOP;
+
+			wmParams.x = mDisplayWidth - w / 2;
+			wmParams.y = mDisplayHeight - h / 2;
+			wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+			wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+			mWindowManager.addView(mFloatLayout, wmParams);
+			mFloatView = (ImageView) mFloatLayout.findViewById(R.id.float_id);
+			// 绑定触摸移动监听
+			mFloatView.setOnTouchListener(new OnTouchListener() {
+				float prevX, prevY;
+				boolean flag = false;
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int action = event.getAction();
+					switch (action) {
+					case MotionEvent.ACTION_DOWN:
+						prevX = event.getRawX();
+						prevY = event.getRawY();
+						break;
+					case MotionEvent.ACTION_MOVE:
+						wmParams.x = (int) event.getRawX()
+								- mFloatLayout.getWidth() / 2;
+						// 25为状态栏高度
+						wmParams.y = (int) event.getRawY()
+								- mFloatLayout.getHeight() / 2;
+						mWindowManager.updateViewLayout(mFloatLayout, wmParams);
+
+						break;
+
+					case MotionEvent.ACTION_UP:
+						float x = event.getRawX();
+						float y = event.getRawY();
+						Log.d("daizhx", "x=" + x + ",y=" + y
+								+ ",mDisplayWidth=" + mDisplayWidth);
+						if (x > mDisplayWidth / 2) {
+							wmParams.x = mDisplayWidth
+									- mFloatLayout.getWidth() / 2;
+						} else {
+							wmParams.x = 0;
 						}
+						mWindowManager.updateViewLayout(mFloatLayout, wmParams);
+						if (FloatMath.sqrt((x - prevX) * (x - prevX)
+								+ (y - prevY) * (y - prevY)) < 10f) {
+							if (!flag) {
+								showFloatWindow();
+								flag = true;
+							} else {
+								ppw.dismiss();
+								flag = false;
+							}
+						}
+						break;
+					default:
+						break;
 					}
-					break;
-				default:
-					break;
+					// TODO Auto-generated method stub
+
+					return true;
 				}
-				// TODO Auto-generated method stub
-				
-				return true;
-			}
-		});
+			});
+		}
 	}
 	
-    PopupWindow ppw;
-    private void showFloatWindow(){
-    	View view = inflater.inflate(R.layout.popup_navigation, null);
-		
-//		view.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//		view.setLayoutParams(new LayoutParams(300, 300));
-//		view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-		ppw = new PopupWindow(view, (int)(mDisplayWidth*0.8), (int)(mDisplayWidth*0.8));
+	protected void openFloatView(boolean b){
+		openFloatView = b;
+	}
+
+	PopupWindow ppw;
+
+	private void showFloatWindow() {
+		View view = inflater.inflate(R.layout.popup_navigation, null);
+
+		// view.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+		// LayoutParams.WRAP_CONTENT));
+		// view.setLayoutParams(new LayoutParams(300, 300));
+		// view.measure(View.MeasureSpec.UNSPECIFIED,
+		// View.MeasureSpec.UNSPECIFIED);
+		ppw = new PopupWindow(view, (int) (mDisplayWidth * 0.8),
+				(int) (mDisplayWidth * 0.8));
 		ppw.setFocusable(true);
 		ppw.setTouchable(true);
-		ppw.setBackgroundDrawable(getApplication().getResources().getDrawable(android.R.color.transparent));
+		ppw.setBackgroundDrawable(getApplication().getResources().getDrawable(
+				android.R.color.transparent));
 		ppw.setOutsideTouchable(true);
 		ppw.update();
 		ppw.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 		view.findViewById(R.id.top).setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent(BaseActivity.this, MassageActivity.class));
+				startActivity(new Intent(BaseActivity.this,
+						MassageActivity.class));
 				ppw.dismiss();
 			}
 		});
 		view.findViewById(R.id.left).setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent(BaseActivity.this, PhysicalExamActivity.class));
+				startActivity(new Intent(BaseActivity.this,
+						PhysicalExamActivity.class));
 				ppw.dismiss();
 			}
 		});
-		view.findViewById(R.id.bottom).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(BaseActivity.this, MainActivity.class));
-				ppw.dismiss();
-			}
-		});
+		view.findViewById(R.id.bottom).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						startActivity(new Intent(BaseActivity.this,
+								MainActivity.class));
+						ppw.dismiss();
+					}
+				});
 		view.findViewById(R.id.right).setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -256,26 +274,24 @@ public class BaseActivity extends Activity {
 			}
 		});
 	}
-    
-    @Override
-    protected void onStop() {
-    	// TODO Auto-generated method stub
-    	super.onStop();
-    	if(mFloatLayout != null && mFloatLayout.isShown())
-		{
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		if (mFloatLayout != null && mFloatLayout.isShown()) {
 			mWindowManager.removeView(mFloatLayout);
 		}
-    }
-    
-    @Override
-    protected void onDestroy() {
-    	// TODO Auto-generated method stub
-    	super.onDestroy();
-    	if(mFloatLayout != null && mFloatLayout.isShown())
-		{
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (mFloatLayout != null && mFloatLayout.isShown()) {
 			mWindowManager.removeView(mFloatLayout);
 		}
-    }
+	}
 
 	public void setTitle(int resId) {
 		mTitle.setText(resId);
@@ -297,7 +313,7 @@ public class BaseActivity extends Activity {
 	public void setLeftIcon(int resId) {
 		leftIcon.setImageResource(resId);
 	}
-	
+
 	public void setLeftIconClickListener(OnClickListener l) {
 		leftIcon.setOnClickListener(l);
 	}
@@ -437,7 +453,7 @@ public class BaseActivity extends Activity {
 
 		HttpGroupaAsynPool localHttpGroupaAsynPool = new HttpGroupaAsynPool(
 				paramHttpGroupSetting);
-		addDestroyListener(localHttpGroupaAsynPool);
+//		addDestroyListener(localHttpGroupaAsynPool);
 		return localHttpGroupaAsynPool;
 	}
 

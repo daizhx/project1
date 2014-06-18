@@ -12,13 +12,12 @@
     	<TextView android:id="@+id/getcurrentdate"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:textColor="#00ffff"
     	android:layout_marginLeft="10dip"
     	android:textSize="18dip"/>
     	<ImageView android:id="@+id/rightindex" 
     	android:layout_width="14dip" 
     	android:layout_height="22dip" 
-    	android:src="@drawable/android_list_idex2" 
+    	android:src="@drawable/arraw_right" 
     	android:layout_alignParentRight="true" 
     	android:layout_centerVertical="true" />
     </RelativeLayout>

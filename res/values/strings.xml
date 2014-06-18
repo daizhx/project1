@@ -196,6 +196,7 @@
     <string name="cause_of_formation">Cause of formation：</string>
     <string name="recommendations_for_improvement">Recommendations for improvement：</string>
     <string name="skin_result">Analysis results of skin</string>
+    <string name="skin_report">My Skin Report</string>
     <string name="oil_state">Oil condition：</string>
     <string name="oil_content">Oil content：</string>
     <string name="water_state">Water conditions：</string>
@@ -232,6 +233,7 @@
     <string name="hair_gloss_content">Gloss content：</string>
     <string name="hair_elastic">Hair elastic：</string>
     <string name="hair_elastic_content">Elastic state：</string>
+    <string name="hair_report">My Hair report</string>
     <string name="rooting_state">Root Condition：</string>
     <string name="rooting_radius">Root radius：</string>
     <string name="hair_water_analysis">Moist degree</string>
@@ -353,4 +355,6 @@
     <string name="sex">Sex</string>
     <string name="age">Age</string>
     <string name="height">Height</string>
+    <string name="history_iris_report">My Iris Report</string>
+    <string name="alert_message_poor_network">Your current network conditions are poor, \nplease try again later.</string>
 </resources>

@@ -46,4 +46,9 @@ public class ConstFuncId {
 	public static final String BLOODPRESSURELOCALTOSERVER = "bloodpressure.insertBloodpressureInfoList";
 	public static final String BODYFATADDTOSERVER = "fatweigh.insertFatWeighInfo";
 	public static final String BODYFATREPORT = "fatweigh.getFatWeighHistoryList";
+	
+	//获取health tip的服务器接口
+	public static final String TODAY_TIP = "getNewInfo";
+	//获取health tips list的服务器接口
+	public static final String HEALTH_TIPS = "getAllInfo";
 }

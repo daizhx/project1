@@ -10,9 +10,4 @@ public class HttpGroupSync extends HttpGroup {
 	public void execute(HttpRequest httprequest) {
 	}
 
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-
-	}
 }

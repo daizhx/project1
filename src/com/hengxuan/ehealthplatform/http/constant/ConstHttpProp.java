@@ -18,6 +18,7 @@ public class ConstHttpProp {
 	public static final int TYPE_FILE = 500;
 	public static final int TYPE_IMAGE = 5000;
 	public static final int TYPE_JSON = 1000;
+	public static final int TYPE_JSONARRAY = 1001;
 	
 	public static final int EXCEPTION = 0;
 	public static final int TIME_OUT = 1;

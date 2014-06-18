@@ -11,6 +11,7 @@ import com.hengxuan.ehealthplatform.http.HttpGroup;
 import com.hengxuan.ehealthplatform.http.HttpResponse;
 import com.hengxuan.ehealthplatform.http.HttpSetting;
 import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
+import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.log.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -158,6 +159,7 @@ public class UserLoginActivity extends BaseActivity {
 					});
 					
 					httpsetting.setNotifyUser(true);
+					httpsetting.setShowProgress(true);
 					getHttpGroupaAsynPool().add(httpsetting);
 				}
 				catch(JSONException e)
@@ -168,9 +170,13 @@ public class UserLoginActivity extends BaseActivity {
 		}
 	}
 	
-	protected void LoginSuccess(String s5) {
+	protected void LoginSuccess(String userPin) {
 		// TODO Auto-generated method stub
 		putBoolean2Preference(PreferenceKeys.SYS_USER_LOGIN, true);
+		putString2Preference(PreferenceKeys.SYS_USER_NAME, sUserName);
+		putString2Preference(PreferenceKeys.SYS_USER_PASSWORD, sUserPassword);
+		putString2Preference(ConstHttpProp.USER_PIN, userPin);
+		UserLogin.setUserState(true);
 		if(intentAction != null){
 			startActivity(new Intent(intentAction));
 		}else{

@@ -1,7 +1,11 @@
 package com.hengxuan.ehealthplatform.user;
 
+import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class UserLogin {
 
@@ -19,5 +23,14 @@ public class UserLogin {
 				activity.startActivity(intent);
 		}
 		return hasLogin();
+	}
+	
+	public static String getUserName(Context context){
+		if(hasLogin()){
+			SharedPreferences sp = context.getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
+			String str = sp.getString(PreferenceKeys.SYS_USER_NAME, null);
+			return str;
+		}
+		return null;
 	}
 }

@@ -85,9 +85,7 @@ public class PhysicalExamActivity extends BaseActivity {
 
 		});
 
-		// ¸üÐÂ
-		UpdateManager updateManager = UpdateManager.getUpdateManager(this);
-		updateManager.checkAndUpdate();
+		
 
 	}
 
@@ -142,23 +140,23 @@ public class PhysicalExamActivity extends BaseActivity {
 				holder.labelText.setText(R.string.iris_detection);
 				break;
 			case 1:
-				holder.icon.setImageResource(R.drawable.lens_icon);
+				holder.icon.setImageResource(R.drawable.skin_entry);
 				holder.labelText.setText(R.string.skin_detection);
 				break;
 			case 2:
-				holder.icon.setImageResource(R.drawable.lens_icon);
+				holder.icon.setImageResource(R.drawable.hair_entry);
 				holder.labelText.setText(R.string.hair_detection);
 				break;
 			case 3:
-				holder.icon.setImageResource(R.drawable.lens_icon);
+				holder.icon.setImageResource(R.drawable.naevus_entry);
 				holder.labelText.setText(R.string.naevus_detection);
 				break;
 			case 4:
-				holder.icon.setImageResource(R.drawable.lens_icon);
+				holder.icon.setImageResource(R.drawable.bloody_entry);
 				holder.labelText.setText(R.string.blood_pressure_monitor);
 				break;
 			case 5:
-				holder.icon.setImageResource(R.drawable.lens_icon);
+				holder.icon.setImageResource(R.drawable.weight_entry);
 				holder.labelText.setText(R.string.weighting_scale);
 				break;
 

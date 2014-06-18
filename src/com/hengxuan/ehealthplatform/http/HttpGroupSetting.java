@@ -1,11 +1,13 @@
 package com.hengxuan.ehealthplatform.http;
 
+import android.app.Activity;
+
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 
 
 public class HttpGroupSetting {
-	private BaseActivity myActivity;
+	private Activity myActivity;
 	private int priority;
 	private int type;
 
@@ -13,7 +15,7 @@ public class HttpGroupSetting {
 
 	}
 
-	public BaseActivity getMyActivity() {
+	public Activity getMyActivity() {
 		return myActivity;
 	}
 
@@ -25,7 +27,7 @@ public class HttpGroupSetting {
 		return type;
 	}
 
-	public void setMyActivity(BaseActivity activity) {
+	public void setMyActivity(Activity activity) {
 		this.myActivity = activity;
 	}
 
