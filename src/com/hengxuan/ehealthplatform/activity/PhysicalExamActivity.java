@@ -7,6 +7,7 @@ import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter.Holder;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensConnectActivity;
 import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
+import com.hengxuan.ehealthplatform.lens.iris.IrisEntryActivity;
 import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
@@ -59,8 +60,10 @@ public class PhysicalExamActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				switch (position) {
 				case 0:
-					index = LensShootBaseActivity.IRIS_PHOTO_INDEX;
-					break;
+//					index = LensShootBaseActivity.IRIS_PHOTO_INDEX;
+//					break;
+					startActivity(new Intent(PhysicalExamActivity.this, IrisEntryActivity.class));
+					return;
 				case 1:
 					index = LensShootBaseActivity.SKIN_PHOTO_INDEX;
 					break;

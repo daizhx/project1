@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="13"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -35,7 +35,8 @@
         <activity
             android:name="com.hengxuan.ehealthplatform.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask" 
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -90,6 +91,7 @@
         </activity>
         <activity android:name=".lens.iris.IrisReportActivity"></activity>
         <activity android:name=".lens.iris.QueryCurrentDay"></activity>
+        <activity android:name=".lens.iris.IrisEntryActivity"></activity>
         <activity android:name=".lens.LensShootBaseActivity" >
         </activity>
         <activity android:name=".lens.skin.SkinShootActivity" >
@@ -156,6 +158,10 @@
         
         <activity android:name=".weight.BodyfatMainActivity"></activity>
         <activity android:name=".weight.ImprovePersonalInformation"></activity>
+        <activity android:name=".healthclub.EntriesActivity"></activity>
+        <activity android:name=".healthclub.AcupointDetailActivity"></activity>
+        <activity android:name=".healthclub.SymptomDetailActivity"></activity>
+        <activity android:name=".lens.LensPhotoList"></activity>
     </application>
 
 </manifest>

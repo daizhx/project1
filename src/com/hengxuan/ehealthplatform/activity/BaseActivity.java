@@ -27,6 +27,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -55,7 +56,7 @@ import android.widget.TextView;
  * @author Administrator
  * 
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 	public TextView mTitle;
 	public ImageView leftIcon;
 	public ImageView rightIcon;
@@ -83,6 +84,7 @@ public class BaseActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		//customize action bar
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowCustomEnabled(true);
 		View view = getLayoutInflater().inflate(R.layout.action_bar, null);
@@ -91,7 +93,7 @@ public class BaseActivity extends Activity {
 		actionBar.setCustomView(view, lp);
 		mTitle = (TextView) view.findViewById(R.id.title);
 		leftIcon = (ImageView) view.findViewById(R.id.left_icon);
-		leftIcon.setImageResource(R.drawable.back_icon);
+		leftIcon.setImageResource(R.drawable.ic_action_back);
 		leftIcon.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -112,7 +114,13 @@ public class BaseActivity extends Activity {
 				// Çå³ýactivity stack
 			}
 		});
+		setContentView(R.layout.activity_base);
 		handler = new Handler();
+	}
+	
+	public void setContent(int layoutId){
+		FrameLayout content = (FrameLayout)findViewById(R.id.content);
+		getLayoutInflater().inflate(layoutId, content);
 	}
 
 	@Override
@@ -295,6 +303,10 @@ public class BaseActivity extends Activity {
 
 	public void setTitle(int resId) {
 		mTitle.setText(resId);
+	}
+	
+	public void setTitle(String str){
+		mTitle.setText(str);
 	}
 
 	public void setRightIcon(int resId) {

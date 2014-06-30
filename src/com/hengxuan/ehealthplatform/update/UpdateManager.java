@@ -1,6 +1,7 @@
 package com.hengxuan.ehealthplatform.update;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
@@ -65,6 +66,14 @@ public class UpdateManager {
 		//获取服务器上的最新版本及URL
 		HttpSetting	httpsetting = new HttpSetting();
 		httpsetting.setFunctionId(GET_NEW_VERSION);
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("sysName", "1");
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		httpsetting.setJsonParams(jsonObject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -87,10 +96,11 @@ public class UpdateManager {
 					JSONObjectProxy json = response.getJSONObject();
 					//it is a bug,not fixed,so added this code
 					if(json == null)return;
-					String versionCode = json.get("code").toString();
+					String versionCode = json.get("version").toString();
 					Log.d(TAG, "serverVersion="+versionCode);
-					downloadUrl = response.getJSONObject().get("versionList").toString();
+					downloadUrl = response.getJSONObject().get("url").toString();
 //					downloadUrl = response.getJSONObject().get("url").toString();
+					Log.d(TAG, "downloadUrl="+downloadUrl);
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

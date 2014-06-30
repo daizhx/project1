@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hengxuan.ehealthplatform.R;
+import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.product.Product;
+import com.hengxuan.ehealthplatform.user.UserLogin;
+
 import android.app.Application;
+import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.wifi.WifiManager;
@@ -24,10 +29,11 @@ public class EHTApplication extends Application {
 		super.onCreate();
 		instance = this;
 		initProduct();
-		
+		//捕捉未捕捉的异常
 		Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler(this));
 	}
-	
+
+
 	private void initProduct() {
 		// TODO Auto-generated method stub
 		//默认包含的产品

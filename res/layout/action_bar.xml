@@ -10,7 +10,7 @@
         android:layout_marginLeft="2dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:src="@drawable/person"
+        android:src="@drawable/person_icon"
         android:id="@+id/left_icon"/>
 
     <TextView android:layout_width="wrap_content"

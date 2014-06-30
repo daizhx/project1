@@ -1,5 +1,6 @@
 package com.hengxuan.ehealthplatform.lens;
 
+import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -16,16 +17,14 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
-import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.lens.hair.HairAnalysisActivity;
 import com.hengxuan.ehealthplatform.lens.iris.IrisAnalysisActivity;
-import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
 import com.hengxuan.ehealthplatform.lens.naevus.NaevusAnalysisActivity;
 import com.hengxuan.ehealthplatform.lens.skin.SkinAnalysisActivity;
 import com.hengxuan.ehealthplatform.log.Log;
@@ -39,7 +38,8 @@ public class LensBaseActivity extends BaseActivity implements
 	private ShootConfirmFragment shootConfirmFragment;
 	private WifiManager mWifiManager;
 	private WifiInfo currentWifiInfo;
-	private int index;
+	//拍摄照片的类别
+	public int index;
 	public static final int INDEX_IRIS = 1;
 	public static final int INDEX_SKIN = 2;
 	public static final int INDEX_HAIR = 3;
@@ -255,10 +255,9 @@ public class LensBaseActivity extends BaseActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-//		openFloatView(false);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lens_base);
-		mFragmentManager = getFragmentManager();
+		mFragmentManager = getSupportFragmentManager();
 		LensConnectFragment lensConnectFragment = new LensConnectFragment();
 		mFragmentManager.beginTransaction()
 				.replace(R.id.root, (Fragment) lensConnectFragment).commit();
@@ -284,6 +283,7 @@ public class LensBaseActivity extends BaseActivity implements
 		// 初始化后面的fragment
 		shootConfirmFragment = new ShootConfirmFragment();
 		shootConfirmFragment.setHandleClick(this);
+		
 	}
 
 	@Override
@@ -343,7 +343,10 @@ public class LensBaseActivity extends BaseActivity implements
 	@Override
 	public void shoot() {
 		// TODO Auto-generated method stub
-		shootConfirmFragment.setFilePath(photoPath);
+		Bundle args = new Bundle();
+		args.putString("photoPath", photoPath);
+		args.putInt("index", index);
+		shootConfirmFragment.setArguments(args);
 		mFragmentManager.beginTransaction()
 				.replace(R.id.root, (Fragment) shootConfirmFragment).commit();
 	}

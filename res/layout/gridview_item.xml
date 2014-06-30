@@ -5,11 +5,13 @@
     
 	<FrameLayout android:layout_width="60dp"
 	    android:layout_height="60dp"
-	    android:id="@+id/frame">
+	    android:id="@+id/frame"
+	    android:layout_centerHorizontal="true">
 	
 		<ImageView android:layout_width="match_parent"
 	    	android:layout_height="match_parent"
 	    	android:src="@drawable/massager_icon"
+	    	android:layout_gravity="center_horizontal"
 	    	android:id="@+id/icon"/>
 	 	
 		<ImageView android:layout_width="match_parent"
@@ -23,11 +25,12 @@
 	<TextView android:id="@+id/labelText"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_marginTop="4dp"
+	    android:layout_marginTop="2dp"
 	    android:layout_centerHorizontal="true"
 	    android:gravity="center"
 	    android:singleLine="true"
 	    android:text="test Text"
+	    android:textScaleX="0.6"
 	    android:layout_below="@+id/frame"/>
 	
 </RelativeLayout>

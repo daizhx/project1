@@ -7,18 +7,18 @@ import java.io.IOException;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.log.Log;
-
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class LensShootFragment extends Fragment {
@@ -29,10 +29,11 @@ public class LensShootFragment extends Fragment {
 	public static final String PHOTO_PATH = "photoPath";
 	private HandleClick mHandleClick;
 	private int index;
-	private TextView eyeLabel;
-	private ImageView eyesChooseIcon;
-	private TextView tvLeftEye, tvRightEye;
-	private boolean openedEyesChooseBar = false;
+//	private TextView eyeLabel;
+//	private ImageView eyesChooseIcon;
+//	private TextView tvLeftEye, tvRightEye;
+//	private boolean openedEyesChooseBar = false;
+	
 	
 	public interface HandleClick{
 		public void shoot();
@@ -73,51 +74,51 @@ public class LensShootFragment extends Fragment {
 		});
 		
 		if(index == LensBaseActivity.INDEX_IRIS){
-			eyesChooseIcon = (ImageView) view.findViewById(R.id.eyes);
-			final View eyesChooseBar = view.findViewById(R.id.eye_choose_bar);
-			eyeLabel = (TextView)view.findViewById(R.id.eye_label);
-			tvLeftEye = (TextView)view.findViewById(R.id.tv_left_eye);
-			tvRightEye = (TextView)view.findViewById(R.id.tv_right_eye);
-			eyeLabel.setVisibility(View.VISIBLE);
-			eyesChooseIcon.setVisibility(View.VISIBLE);
-			eyesChooseIcon.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					if(openedEyesChooseBar){
-						eyesChooseIcon.setImageResource(R.drawable.eyes);
-						openedEyesChooseBar = false;
-						eyesChooseBar.setVisibility(View.GONE);
-					}else{
-						eyesChooseIcon.setImageResource(R.drawable.eyes_choose);
-						openedEyesChooseBar = true;
-						eyesChooseBar.setVisibility(View.VISIBLE);
-					}
-				}
-			});
-			tvLeftEye.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					tvLeftEye.setBackgroundColor(Color.BLUE);
-					tvRightEye.setBackgroundColor(Color.TRANSPARENT);
-					eyeLabel.setText(R.string.left_eye);
-					((LensBaseActivity)getActivity()).setIrisIndex(1);
-				}
-			});
-			tvRightEye.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					tvLeftEye.setBackgroundColor(Color.TRANSPARENT);
-					tvRightEye.setBackgroundColor(Color.BLUE);
-					eyeLabel.setText(R.string.Right_eye);
-					((LensBaseActivity)getActivity()).setIrisIndex(2);
-				}
-			});
+//			eyesChooseIcon = (ImageView) view.findViewById(R.id.eyes);
+//			final View eyesChooseBar = view.findViewById(R.id.eye_choose_bar);
+//			eyeLabel = (TextView)view.findViewById(R.id.eye_label);
+//			tvLeftEye = (TextView)view.findViewById(R.id.tv_left_eye);
+//			tvRightEye = (TextView)view.findViewById(R.id.tv_right_eye);
+//			eyeLabel.setVisibility(View.VISIBLE);
+//			eyesChooseIcon.setVisibility(View.VISIBLE);
+//			eyesChooseIcon.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					// TODO Auto-generated method stub
+//					if(openedEyesChooseBar){
+//						eyesChooseIcon.setImageResource(R.drawable.eyes);
+//						openedEyesChooseBar = false;
+//						eyesChooseBar.setVisibility(View.GONE);
+//					}else{
+//						eyesChooseIcon.setImageResource(R.drawable.eyes_choose);
+//						openedEyesChooseBar = true;
+//						eyesChooseBar.setVisibility(View.VISIBLE);
+//					}
+//				}
+//			});
+//			tvLeftEye.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					// TODO Auto-generated method stub
+//					tvLeftEye.setBackgroundColor(Color.BLUE);
+//					tvRightEye.setBackgroundColor(Color.TRANSPARENT);
+//					eyeLabel.setText(R.string.left_eye);
+//					((LensBaseActivity)getActivity()).setIrisIndex(1);
+//				}
+//			});
+//			tvRightEye.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					// TODO Auto-generated method stub
+//					tvLeftEye.setBackgroundColor(Color.TRANSPARENT);
+//					tvRightEye.setBackgroundColor(Color.BLUE);
+//					eyeLabel.setText(R.string.Right_eye);
+//					((LensBaseActivity)getActivity()).setIrisIndex(2);
+//				}
+//			});
 			//≥ı º÷µ
 			((LensBaseActivity)getActivity()).setIrisIndex(1);
 		}
@@ -163,4 +164,6 @@ public class LensShootFragment extends Fragment {
 		}
 		return filePath;
 	}
+	
+	
 }

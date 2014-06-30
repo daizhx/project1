@@ -1,5 +1,6 @@
 package com.hengxuan.ehealthplatform.user;
 
+import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
 
 import android.app.Activity;
@@ -9,12 +10,13 @@ import android.content.SharedPreferences;
 
 public class UserLogin {
 
-	private static boolean UserState = false;
+	public static boolean UserState = false;
+	public static String UserName;
 	
 	public static void setUserState(boolean paramInt){
 		UserState = paramInt;
 	}
-	public static boolean hasLogin(){
+	public static boolean hasLogin(){		
 		return UserState;
 	}	  
 	public static boolean checkUserLogin(Activity activity){
@@ -25,12 +27,14 @@ public class UserLogin {
 		return hasLogin();
 	}
 	
-	public static String getUserName(Context context){
-		if(hasLogin()){
+	public static String getUserName(){
+		Context context = EHTApplication.getInstance().getApplicationContext();
+		if(UserName == null){
 			SharedPreferences sp = context.getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
-			String str = sp.getString(PreferenceKeys.SYS_USER_NAME, null);
-			return str;
+			UserName = sp.getString(PreferenceKeys.SYS_USER_NAME, null);
 		}
-		return null;
+		return UserName;
 	}
+	
+	
 }

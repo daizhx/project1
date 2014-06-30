@@ -50,6 +50,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -157,7 +158,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 				if (UserLogin.hasLogin()) {
 					showMenu();
 					((TextView) findViewById(R.id.user_name)).setText(UserLogin
-							.getUserName(MainActivity.this));
+							.getUserName());
 				} else {
 					// 登录成功返回时，显示slide menu
 					startActivityForResult(new Intent(MainActivity.this,
@@ -182,7 +183,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			if (resultCode == Activity.RESULT_OK) {
 				showMenu();
 				((TextView) findViewById(R.id.user_name)).setText(UserLogin
-						.getUserName(MainActivity.this));
+						.getUserName());
 			} else {
 				// TODO
 			}
@@ -233,8 +234,8 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 
 			}
 		});
-		mPlaceHolderBitmap = decodeSampledBitmapFromResource(getResources(),
-				R.drawable.placehold, 540, 200);
+//		mPlaceHolderBitmap = decodeSampledBitmapFromResource(getResources(),
+//				R.drawable.placehold, 540, 200);
 
 		// initial the slideMenu
 		ListView list1 = (ListView) findViewById(R.id.list1);
@@ -344,37 +345,6 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 
 	}
 
-	public static Bitmap decodeSampledBitmapFromResource(Resources res,
-			int resId, int reqWidth, int reqHeight) {
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeResource(res, resId, options);
-
-		options.inSampleSize = calculateInSampleSize(options, reqWidth,
-				reqHeight);
-		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeResource(res, resId, options);
-	}
-
-	// called by decodeSampledBitmapFromResource
-	private static int calculateInSampleSize(Options options, int reqWidth,
-			int reqHeight) {
-		// TODO Auto-generated method stub
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-			final int halfHeight = options.outHeight;
-			final int halfWidth = options.outWidth;
-
-			while ((halfHeight / inSampleSize) > reqHeight
-					&& (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
-		}
-		return inSampleSize;
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -412,7 +382,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			position += 1;
 			asynImageLoader
 					.showImageAsyn(imageView,
-							"http://112.124.0.195:8080/client/adv/" + position
+							"http://182.254.137.149:8080/client/adv/" + position
 									+ ".jpg", R.drawable.placehold);
 			container.addView(imageView, lp);
 			return imageView;
@@ -425,96 +395,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		}
 	}
 
-	// load image res to imageview,should change to res url.
-	public void loadBitmap(int resId, ImageView imageView) {
-		if (cancelPotencialWork(resId, imageView)) {
-			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-			final AsyncDrawable aysnDrawable = new AsyncDrawable(
-					getResources(), mPlaceHolderBitmap, task);
-			imageView.setImageDrawable(aysnDrawable);
-			task.execute(resId);
-		}
-	}
 
-	private boolean cancelPotencialWork(int data, ImageView imageView) {
-		// TODO Auto-generated method stub
-		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkTask(imageView);
-		if (bitmapWorkerTask != null) {
-			final int bitmapData = bitmapWorkerTask.data;
-			if (bitmapData == 0 || bitmapData != data) {
-				bitmapWorkerTask.cancel(true);
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static BitmapWorkerTask getBitmapWorkTask(ImageView imageView) {
-		if (imageView != null) {
-			final Drawable drawable = imageView.getDrawable();
-			if (drawable instanceof AsyncDrawable) {
-				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-				return asyncDrawable.getBitmapWorkerTask();
-			}
-		}
-		return null;
-	}
-
-	static class AsyncDrawable extends BitmapDrawable {
-		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
-
-		public AsyncDrawable(Resources res, Bitmap bitmap,
-				BitmapWorkerTask bitmapWorkerTask) {
-			super(res, bitmap);
-			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(
-					bitmapWorkerTask);
-		}
-
-		public BitmapWorkerTask getBitmapWorkerTask() {
-			return bitmapWorkerTaskReference.get();
-		}
-	}
-
-	// 图片加载异步任务
-	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
-		private final WeakReference<ImageView> imageViewReference;
-		private int data = 0;
-
-		public BitmapWorkerTask(ImageView imageView) {
-			// use a WeakReference to ensure the imageview can be garbage
-			// collected
-			imageViewReference = new WeakReference<ImageView>(imageView);
-		}
-
-		@Override
-		protected Bitmap doInBackground(Integer... params) {
-			// TODO Auto-generated method stub
-			data = params[0];
-			if (data != 0) {
-				return decodeSampledBitmapFromResource(getResources(), data,
-						540, 200);
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bitmap) {
-			// TODO Auto-generated method stub
-			if (isCancelled()) {
-				bitmap = null;
-			}
-			if (imageViewReference != null && bitmap != null) {
-				final ImageView imageView = imageViewReference.get();
-				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkTask(imageView);
-				if (imageView != null && bitmapWorkerTask == this) {
-					imageView.setImageBitmap(bitmap);
-				}
-			}
-		}
-
-	}
 
 	@Override
 	public void onClick(View v) {
@@ -541,7 +422,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							exitLogin();
+//							exitLogin();
 							finish();
 						}
 

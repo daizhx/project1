@@ -52,9 +52,12 @@
     <string name="disconnectedstate">Massage machine is not connected</string>
     <string name="lens_choice">Lens Chioce</string>
     <string name="iris">Iris</string>
+    <string name="iris_photo">Iris Photo</string>
     <string name="iris_detection">Iris Detection</string>
     <string name="skin_detection">Skin Detection</string>
     <string name="hair_detection">Hair Detection</string>
+    <string name="naevus_photo">Naevus Photo</string>
+    <string name="naevus">Naevus</string>
     <string name="naevus_detection">Naevus Detection</string>
     <string name="hair_analysis">Hair Analysis</string>
     <string name="naevus_analysis">Naevus Analysis</string>
@@ -177,6 +180,7 @@
     <string name="disconnect_lens">Reconnecting the internet from the Lens for get analysis data</string>
     <string name="iris_analysis">Iris Analysis</string>
     <string name="skin_photo">Skin Photo</string>
+    <string name="skin">Skin</string>
     <string name="oil_analysis">Oil analysis</string>
     <string name="oil">Oil</string>
     <string name="water_analysis">Moisture analysis</string>
@@ -225,6 +229,7 @@
     <string name="please_draw_radius">Please draw radius</string>
     <string name="please_draw_size">Please draw the size</string>
     <string name="please_draw_num">Please draw the number size</string>
+    <string name="hair">Hair</string>
     <string name="hair_photo">Hair Photo</string>
     <string name="hair_result">Analysis Result</string>
     <string name="hair_water_state">Moist condition：</string>
@@ -357,4 +362,27 @@
     <string name="height">Height</string>
     <string name="history_iris_report">My Iris Report</string>
     <string name="alert_message_poor_network">Your current network conditions are poor, \nplease try again later.</string>
+    <string name="new_photo">Capture new iris photo</string>
+    <string name="old_photo">Review old iris photo</string>
+    <string name="help">Help</string>
+    
+    <string name="common_acupoint">Common Acupoint</string>
+    <string name="common_disease">Common Disease</string>
+    <string name="body_symptom">Body Symptom</string>
+    <string name="belly">Belly</string>
+    <string name="sole">sole</string>
+    <string name="hand">hand</string>
+    <string name="palm">palm</string>
+    <string name="head">head</string>
+    <string name="leg">leg</string>
+    <string name="chest">chest</string>
+    <string name="foot">foot</string>
+    <string name="os_pelvicum">os_pelvicum</string>
+    
+    <string name="acupoint_description">Acupoint description</string>
+    <string name="cure_symptom">Cure Symptom</string>
+    <string name="disease_description">Disease description</string>
+    <string name="symptom">Symptom</string>
+    <string name="owner">Owner</string>
+    <string name="which_eye">Which eye?</string>
 </resources>

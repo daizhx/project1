@@ -15,8 +15,10 @@ import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.log.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Html;
@@ -177,6 +179,7 @@ public class UserLoginActivity extends BaseActivity {
 		putString2Preference(PreferenceKeys.SYS_USER_PASSWORD, sUserPassword);
 		putString2Preference(ConstHttpProp.USER_PIN, userPin);
 		UserLogin.setUserState(true);
+		UserLogin.UserName = sUserName;
 		if(intentAction != null){
 			startActivity(new Intent(intentAction));
 		}else{

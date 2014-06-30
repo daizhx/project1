@@ -56,7 +56,8 @@ public class Configuration {
 		localProperties.put(TEST_LOG, "false");
 		
 		//http
-		localProperties.put(HOST, "112.124.0.195:8080");
+		//localProperties.put(HOST, "112.124.0.195:8080");
+		localProperties.put(HOST, "182.254.137.149:8080");
 		localProperties.put(MAINSERVER, "");
 		localProperties.put(CONNECT_TIMEOUT, "20000");
 		localProperties.put(READ_TIMEOUT, "20000");
