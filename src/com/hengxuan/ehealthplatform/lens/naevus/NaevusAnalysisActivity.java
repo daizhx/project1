@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
+import com.hengxuan.ehealthplatform.lens.LensConstant;
 import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
 
 
@@ -52,7 +53,7 @@ public class NaevusAnalysisActivity extends BaseActivity {
 		setContentView(R.layout.activity_naevus_analysis);
 		
 		Intent intent = getIntent();
-		photoPath = intent.getStringExtra(LensBaseActivity.PHOTO_PATH);
+		photoPath = intent.getStringExtra(LensConstant.PHOTO_PATH);
 		filterView = (NaevusView)findViewById(R.id.naevus_filter);
 		filterView.setPicPath(photoPath);
 		

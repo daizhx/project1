@@ -40,12 +40,7 @@ public class LensBaseActivity extends BaseActivity implements
 	private WifiInfo currentWifiInfo;
 	//≈ƒ…„’’∆¨µƒ¿‡±
 	public int index;
-	public static final int INDEX_IRIS = 1;
-	public static final int INDEX_SKIN = 2;
-	public static final int INDEX_HAIR = 3;
-	public static final int INDEX_NAEVUS = 4;
 	public static String photoPath;
-	public static final String PHOTO_PATH = "photoPath";
 	private int irisIndex;//◊Û—€-1£¨”“—€-2
 	private int currentNetWorkId;
 
@@ -159,7 +154,7 @@ public class LensBaseActivity extends BaseActivity implements
 		// }, 2000);
 		Log.d(TAG, "index=" + index);
 		switch (index) {
-		case INDEX_IRIS:
+		case LensConstant.INDEX_IRIS:
 			try {
 				DatagramSocket s = new DatagramSocket();
 				InetAddress local = InetAddress.getByName("10.10.10.254");
@@ -174,7 +169,7 @@ public class LensBaseActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 			break;
-		case INDEX_HAIR:
+		case LensConstant.INDEX_HAIR:
 			try {
 				DatagramSocket s = new DatagramSocket();
 				InetAddress local = InetAddress.getByName("10.10.10.254");
@@ -189,7 +184,7 @@ public class LensBaseActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 			break;
-		case INDEX_SKIN:
+		case LensConstant.INDEX_SKIN:
 			try {
 				DatagramSocket s = new DatagramSocket();
 				InetAddress local = InetAddress.getByName("10.10.10.254");
@@ -204,7 +199,7 @@ public class LensBaseActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 			break;
-		case INDEX_NAEVUS:
+		case LensConstant.INDEX_NAEVUS:
 			try {
 				DatagramSocket s = new DatagramSocket();
 				InetAddress local = InetAddress.getByName("10.10.10.254");
@@ -315,27 +310,27 @@ public class LensBaseActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		Intent intent = null;
 		switch (index) {
-		case INDEX_IRIS:
+		case LensConstant.INDEX_IRIS:
 			intent = new Intent(LensBaseActivity.this,
 					IrisAnalysisActivity.class);
 			intent.putExtra("irisIndex", irisIndex);
 			break;
-		case INDEX_SKIN:
+		case LensConstant.INDEX_SKIN:
 			intent = new Intent(LensBaseActivity.this,
 					SkinAnalysisActivity.class);
 			break;
-		case INDEX_HAIR:
+		case LensConstant.INDEX_HAIR:
 			intent = new Intent(LensBaseActivity.this,
 					HairAnalysisActivity.class);
 			break;
-		case INDEX_NAEVUS:
+		case LensConstant.INDEX_NAEVUS:
 			intent = new Intent(LensBaseActivity.this,
 					NaevusAnalysisActivity.class);
 			break;
 		default:
 			break;
 		}
-		intent.putExtra(LensBaseActivity.PHOTO_PATH, photoPath);
+		intent.putExtra(LensConstant.PHOTO_PATH, photoPath);
 		startActivity(intent);
 		finish();
 	}

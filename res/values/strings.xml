@@ -365,6 +365,12 @@
     <string name="new_photo">Capture new iris photo</string>
     <string name="old_photo">Review old iris photo</string>
     <string name="help">Help</string>
+    <string name="new_skin_photo">Capture new skin photo</string>
+    <string name="old_skin_photo">Review old skin photo</string>
+    <string name="new_hair_photo">Capture new hair photo</string>
+    <string name="old_hair_photo">Review old hair photo</string>
+    <string name="new_naevus_photo">Captur new naevus photo</string>
+    <string name="old_naevus_photo">Review old naevus photo</string>
     
     <string name="common_acupoint">Common Acupoint</string>
     <string name="common_disease">Common Disease</string>

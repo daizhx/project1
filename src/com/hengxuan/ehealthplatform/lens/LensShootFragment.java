@@ -73,7 +73,7 @@ public class LensShootFragment extends Fragment {
 			}
 		});
 		
-		if(index == LensBaseActivity.INDEX_IRIS){
+		if(index == LensConstant.INDEX_IRIS){
 //			eyesChooseIcon = (ImageView) view.findViewById(R.id.eyes);
 //			final View eyesChooseBar = view.findViewById(R.id.eye_choose_bar);
 //			eyeLabel = (TextView)view.findViewById(R.id.eye_label);

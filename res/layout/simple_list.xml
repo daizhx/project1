@@ -8,7 +8,7 @@
     <ListView
         android:id="@+id/expandlist"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:cacheColorHint="#00000000"
         android:divider="@color/gray"
         android:dividerHeight="1dp"

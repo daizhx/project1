@@ -162,6 +162,9 @@
         <activity android:name=".healthclub.AcupointDetailActivity"></activity>
         <activity android:name=".healthclub.SymptomDetailActivity"></activity>
         <activity android:name=".lens.LensPhotoList"></activity>
+        <activity android:name=".lens.naevus.NaevusEntryActivity"></activity>
+        <activity android:name=".lens.skin.SkinEntryActivity"></activity>
+        <activity android:name=".lens.hair.HairEntryActivity"></activity>
     </application>
 
 </manifest>

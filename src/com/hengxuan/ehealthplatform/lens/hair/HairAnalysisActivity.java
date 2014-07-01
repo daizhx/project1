@@ -28,6 +28,7 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.R.color;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
+import com.hengxuan.ehealthplatform.lens.LensConstant;
 import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
 import com.hengxuan.ehealthplatform.log.Log;
 
@@ -88,7 +89,7 @@ public class HairAnalysisActivity extends BaseActivity implements
 		containerWidth = screenWidth;
 
 		filterView = (HairView) findViewById(R.id.filter);
-		picPath = getIntent().getExtras().getString(LensBaseActivity.PHOTO_PATH);
+		picPath = getIntent().getExtras().getString(LensConstant.PHOTO_PATH);
 //		picPath = LensShootBaseActivity.TEXT_PIC;
 		filterView.setPicPath(picPath);
 		filterView.setBounds(containerWidth, containerHeight);

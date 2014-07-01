@@ -7,8 +7,11 @@ import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter.Holder;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensConnectActivity;
 import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
+import com.hengxuan.ehealthplatform.lens.hair.HairEntryActivity;
 import com.hengxuan.ehealthplatform.lens.iris.IrisEntryActivity;
 import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
+import com.hengxuan.ehealthplatform.lens.naevus.NaevusEntryActivity;
+import com.hengxuan.ehealthplatform.lens.skin.SkinEntryActivity;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
 import com.hengxuan.ehealthplatform.weight.BodyfatMainActivity;
@@ -65,25 +68,27 @@ public class PhysicalExamActivity extends BaseActivity {
 					startActivity(new Intent(PhysicalExamActivity.this, IrisEntryActivity.class));
 					return;
 				case 1:
-					index = LensShootBaseActivity.SKIN_PHOTO_INDEX;
-					break;
+//					index = LensShootBaseActivity.SKIN_PHOTO_INDEX;
+					startActivity(new Intent(PhysicalExamActivity.this, SkinEntryActivity.class));
+					return;
 				case 2:
-					index = LensShootBaseActivity.HAIR_PHOTO_INDEX;
-					break;
+//					index = LensShootBaseActivity.HAIR_PHOTO_INDEX;
+					startActivity(new Intent(PhysicalExamActivity.this, HairEntryActivity.class));
+					return;
 				case 3:
-					index = LensShootBaseActivity.NAEVUS_PHOTO_INDEX;
-
-					break;
+//					index = LensShootBaseActivity.NAEVUS_PHOTO_INDEX;
+					startActivity(new Intent(PhysicalExamActivity.this, NaevusEntryActivity.class));
+					return;
 				case 4:
 					return;
 				case 5:
 					startActivity(new Intent(PhysicalExamActivity.this, BodyfatMainActivity.class));
 					return;
 				}
-				Intent intent = new Intent(PhysicalExamActivity.this,
-						LensBaseActivity.class);
-				intent.putExtra("index", index);
-				startActivity(intent);
+//				Intent intent = new Intent(PhysicalExamActivity.this,
+//						LensBaseActivity.class);
+//				intent.putExtra("index", index);
+//				startActivity(intent);
 			}
 
 		});

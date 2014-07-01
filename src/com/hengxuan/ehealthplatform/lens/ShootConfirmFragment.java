@@ -49,7 +49,7 @@ public class ShootConfirmFragment extends Fragment {
 	//±£¥Ê’’∆¨œÍœ∏–≈œ¢
 	private PopupWindow popupWindow;
 	//≈ƒ…„µƒ «◊Û—€ªπ «”“—€
-	private int eyesIndex = 1;//◊Û—€-1£¨”“—€-2
+	private int eyesIndex = 0;//◊Û—€-0£¨”“—€-1
 	private EditText ownerEt;
 	//photo tag
 	private String photoTag;
@@ -115,7 +115,7 @@ public class ShootConfirmFragment extends Fragment {
 		popupWindow = new PopupWindow(v, (int)(displayWidth * 0.8), LayoutParams.WRAP_CONTENT);
 		TextView tvTitle = (TextView)v.findViewById(R.id.title);
 		switch (photoIndex) {
-		case LensBaseActivity.INDEX_IRIS:
+		case LensConstant.INDEX_IRIS:
 			tvTitle.setText(R.string.iris_photo);
 			photoTag = getString(R.string.left_eye);
 			RadioButton rb1 = (RadioButton)v.findViewById(R.id.rb1);
@@ -126,30 +126,30 @@ public class ShootConfirmFragment extends Fragment {
 					// TODO Auto-generated method stub
 					if(arg1){
 						//—°÷–◊Û—€
-						eyesIndex = 1;
+						eyesIndex = 0;
 						photoTag = getString(R.string.left_eye);
 						
 					}else{
-						eyesIndex = 2;
+						eyesIndex = 1;
 						photoTag = getString(R.string.Right_eye);
 					}
 					Log.d("daizhx", "eyesIndex = "+eyesIndex);
 				}
 			});
 			break;
-		case LensBaseActivity.INDEX_HAIR:
+		case LensConstant.INDEX_HAIR:
 			tvTitle.setText(R.string.hair_photo);
 			((RadioGroup)v.findViewById(R.id.radio_group)).setVisibility(View.GONE);
 			((TextView)v.findViewById(R.id.eye_label)).setVisibility(View.GONE);
 			photoTag = getString(R.string.hair);
 			break;
-		case LensBaseActivity.INDEX_SKIN:
+		case LensConstant.INDEX_SKIN:
 			tvTitle.setText(R.string.skin_photo);
 			((RadioGroup)v.findViewById(R.id.radio_group)).setVisibility(View.GONE);
 			((TextView)v.findViewById(R.id.eye_label)).setVisibility(View.GONE);
 			photoTag = getString(R.string.skin);
 			break;
-		case LensBaseActivity.INDEX_NAEVUS:
+		case LensConstant.INDEX_NAEVUS:
 			tvTitle.setText(R.string.naevus_photo);
 			((RadioGroup)v.findViewById(R.id.radio_group)).setVisibility(View.GONE);
 			((TextView)v.findViewById(R.id.eye_label)).setVisibility(View.GONE);

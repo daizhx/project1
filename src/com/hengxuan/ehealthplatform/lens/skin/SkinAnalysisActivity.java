@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
+import com.hengxuan.ehealthplatform.lens.LensConstant;
 
 public class SkinAnalysisActivity extends BaseActivity implements
 		OnClickListener {
@@ -85,7 +86,7 @@ public class SkinAnalysisActivity extends BaseActivity implements
 		bottonBar = (RelativeLayout) findViewById(R.id.bottom);
 		change2PixelAnalysisBottom();
 		 picPath =
-		 getIntent().getExtras().getString(LensBaseActivity.PHOTO_PATH);
+		 getIntent().getExtras().getString(LensConstant.PHOTO_PATH);
 		// test
 //		picPath = Environment.getExternalStorageDirectory() + File.separator
 //				+ "dxlphoto" + File.separator + "test.png";

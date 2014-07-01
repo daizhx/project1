@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +27,9 @@ import android.widget.TextView;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.lens.MyDataBaseContract.ImagesInfo;
+import com.hengxuan.ehealthplatform.lens.hair.HairAnalysisActivity;
+import com.hengxuan.ehealthplatform.lens.iris.IrisAnalysisActivity;
+import com.hengxuan.ehealthplatform.lens.skin.SkinAnalysisActivity;
 import com.hengxuan.ehealthplatform.utils.MyAsynImageLoader;
 
 public class LensPhotoList extends BaseActivity {
@@ -60,6 +65,39 @@ public class LensPhotoList extends BaseActivity {
 		
 		mListView = (ListView)findViewById(R.id.expandlist);
 		mListView.setAdapter(new MyListAdatper());
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				String path = photoInfos.get(position).get("path");
+				Intent intent = new Intent();
+				switch (photoClassId) {
+				case LensConstant.INDEX_IRIS:
+					String tag = photoInfos.get(position).get("tag");
+					intent.setClass(LensPhotoList.this, IrisAnalysisActivity.class);
+					if(tag.equals(getString(R.string.left_eye))){
+						intent.putExtra("irisIndex", LensConstant.LEFT_EYE_INDEX);
+					}else{
+						intent.putExtra("irisIndex", LensConstant.RIGHT_EYE_INDEX);
+					}
+					break;
+				case LensConstant.INDEX_HAIR:
+					intent.setClass(LensPhotoList.this, HairAnalysisActivity.class);
+					break;
+				case LensConstant.INDEX_SKIN:
+					intent.setClass(LensPhotoList.this, SkinAnalysisActivity.class);
+				case LensConstant.INDEX_NAEVUS:
+					intent.setClass(LensPhotoList.this, SkinAnalysisActivity.class);
+				default:
+					break;
+				}
+				intent.putExtra(LensConstant.PHOTO_PATH, path);
+				startActivity(intent);
+			}
+			
+		});
 		
 	}
 	

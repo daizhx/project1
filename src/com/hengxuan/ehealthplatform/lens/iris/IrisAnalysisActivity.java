@@ -24,6 +24,7 @@ import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.http.utils.DPIUtils;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
+import com.hengxuan.ehealthplatform.lens.LensConstant;
 import com.hengxuan.ehealthplatform.log.Log;
 
 public class IrisAnalysisActivity extends BaseActivity {
@@ -166,11 +167,11 @@ public class IrisAnalysisActivity extends BaseActivity {
 //			Log.e("iris", "iris analysis can not get args,finished!");
 //			finish();
 //		}
-		imagePath = intent.getStringExtra(LensBaseActivity.PHOTO_PATH);
-		iris_index = intent.getIntExtra("irisIndex", 0);
+		imagePath = intent.getStringExtra(LensConstant.PHOTO_PATH);
+		iris_index = intent.getIntExtra("irisIndex", -1);
 		putInt2Preference("currentIndex", iris_index);
 		iris_image_paths[0] = imagePath;
-		if(iris_index == 0){
+		if(iris_index == -1){
 			finish();
 			return;
 		}
