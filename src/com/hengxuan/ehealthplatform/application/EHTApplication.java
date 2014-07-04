@@ -33,7 +33,9 @@ public class EHTApplication extends Application {
 		Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler(this));
 	}
 
-
+	/**
+	 * 初始化产品
+	 */
 	private void initProduct() {
 		// TODO Auto-generated method stub
 		//默认包含的产品
@@ -49,14 +51,9 @@ public class EHTApplication extends Application {
 		productList.add(iris);
 	}
 	
-
-
 	public static EHTApplication getInstance() {
 		// TODO Auto-generated method stub
 		return instance;
 	}
-	
-
-	
 	
 }

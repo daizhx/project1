@@ -446,7 +446,7 @@ public class BaseActivity extends FragmentActivity {
 		return getHttpGroupaAsynPool(ConstHttpProp.TYPE_JSON);
 	}
 
-	public HttpGroup getHttpGroupaAsynPool(int paramInt) {
+	private HttpGroup getHttpGroupaAsynPool(int paramInt) {
 		if (Log.D) {
 			Log.d("MyActivity", "getHttpGroupaAsynPool");
 		}
@@ -457,7 +457,7 @@ public class BaseActivity extends FragmentActivity {
 		return getHttpGroupaAsynPool(localHttpGroupSetting);
 	}
 
-	public HttpGroup getHttpGroupaAsynPool(
+	private HttpGroup getHttpGroupaAsynPool(
 			HttpGroupSetting paramHttpGroupSetting) {
 		if (Log.D) {
 			Log.d("MyActivity", "getHttpGroupaAsynPool");
@@ -468,7 +468,8 @@ public class BaseActivity extends FragmentActivity {
 //		addDestroyListener(localHttpGroupaAsynPool);
 		return localHttpGroupaAsynPool;
 	}
-
+  
+	
 	public String getStringFromPreference(String key) {
 		String ret = null;
 		if (mSharedPreferences == null) {

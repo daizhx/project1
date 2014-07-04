@@ -391,4 +391,6 @@
     <string name="symptom">Symptom</string>
     <string name="owner">Owner</string>
     <string name="which_eye">Which eye?</string>
+    <string name="alert_title_poor_network2">Network not access</string> 
+    <string name="alert_message_poor_network2">Access network fail,please try again.</string>
 </resources>

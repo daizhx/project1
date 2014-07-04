@@ -91,7 +91,8 @@ public class EntriesActivity extends BaseActivity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Log.d("daizhx", "position="+position);
-				
+				int p = position + 1;
+				queryData("" + p);
 			}
 			
 		});
@@ -170,6 +171,7 @@ public class EntriesActivity extends BaseActivity {
 //				Log.d("daizhx", "jsonAarry="+jsonArrayPoxy);
 				int length = jsonArrayPoxy.length();
 				ids = new int[length];
+				list2.clear();
 				for(int i=0;i<length;i++){
 					try {
 						JSONObjectProxy json = jsonArrayPoxy.getJSONObject(i);

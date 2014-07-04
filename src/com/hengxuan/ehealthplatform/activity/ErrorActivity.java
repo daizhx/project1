@@ -210,41 +210,6 @@ public class ErrorActivity extends Activity {
 				}
 			}
 		}).show();
-		/*
-		 * final AlertDialog alertDialog = (new
-		 * AlertDialog.Builder(this)).create(); alertDialog.show(); Window
-		 * window = alertDialog.getWindow();
-		 * window.setContentView(R.layout.myalert); ((TextView)
-		 * window.findViewById(R.id.msgtv)).setText(msg); ((Button)
-		 * window.findViewById(R.id.btn3)).setVisibility(View.GONE);
-		 * ((LinearLayout)
-		 * window.findViewById(R.id.msgtv)).setVisibility(View.VISIBLE); Button
-		 * button1 = (Button) window.findViewById(R.id.btn1);
-		 * button1.setText(getResources().getString(R.string.app_error_submit));
-		 * button1.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) { // TODO Auto-generated
-		 * method stub StringBuilder stringbuilder = new StringBuilder();
-		 * Editable editable = editText.getText();
-		 * stringbuilder.append(editable).append("|| version code: "); int j =
-		 * StatisticsReportUtil.getSoftwareVersionCode();
-		 * stringbuilder.append(j).append(" ||"); errorStr =
-		 * stringbuilder.append(errorStr).toString();
-		 * 
-		 * onSubmitError(); alertDialog.dismiss(); } }); Button button2 =
-		 * (Button) window.findViewById(R.id.btn2);
-		 * button2.setText(getResources().getString(R.string.app_error_close));
-		 * button2.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) { // TODO Auto-generated
-		 * method stub killProcess(); } }); alertDialog.setOnKeyListener(new
-		 * OnKeyListener() {
-		 * 
-		 * @Override public boolean onKey(DialogInterface arg0, int i, KeyEvent
-		 * arg2) { // TODO Auto-generated method stub switch(i){ case
-		 * KeyEvent.KEYCODE_BACK: return true; case KeyEvent.KEYCODE_SEARCH:
-		 * return true; default: return false; } } });
-		 */
 	}
 
 	private void onSubmitError() {
@@ -305,7 +270,7 @@ public class ErrorActivity extends Activity {
 
 		// if (flag)
 		// {
-		setTheme(0x103000b);
+		//setTheme(0x103000b);
 		setContentView(R.layout.app_error_activity);
 		findViewById(R.id.linearLayout_button_error)
 				.setVisibility(View.VISIBLE);

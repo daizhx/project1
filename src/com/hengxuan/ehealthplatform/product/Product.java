@@ -33,19 +33,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Product {
-	private static Context mContext;
+	private Context mContext;
 	private String name;
 	//values in ConstEquipId.java
 	private int TypeId;
 	//make no sense,http need this, value in ConstHttpProp
 	private String mode;
 	private String manufacturer;//eg. "GZ-Hengxuan"
+	//a short description for the product
 	private String comments;
 	private Bitmap logo;
 	private String entry;//eg. .Massager.class
 	private String entryIntent;
 	public boolean isRecentUse;
 	private boolean isVerificated;
+	
 	
 	public Product(Context context) {
 		// TODO Auto-generated constructor stub
@@ -68,8 +70,7 @@ public class Product {
 			return true;
 		}else{
 			
-		}
-		
+		}		
 		return false;
 	}
 	public boolean setVerification(){
@@ -103,7 +104,7 @@ public class Product {
 		return logo;
 	}
 	
-	private static Bitmap readLogoBitmap(int resId){
+	private Bitmap readLogoBitmap(int resId){
 		BitmapFactory.Options opt = new BitmapFactory.Options();
 		opt.inPreferredConfig = Bitmap.Config.RGB_565;
 		opt.inPurgeable = true;
@@ -128,8 +129,7 @@ public class Product {
 		window.setContentView(R.layout.dialog_input);
 		
 		// final EditText codeet = (EditText) window.findViewById(R.id.getcode);
-		final EditText numet = (EditText) window.findViewById(R.id.getnum);
-		
+		final EditText numet = (EditText) window.findViewById(R.id.getnum);		
 		final Button okbtn = (Button) window.findViewById(R.id.mybtn);
 		numet.addTextChangedListener(new TextWatcher() {
 			

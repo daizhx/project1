@@ -33,7 +33,7 @@
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme" >
         <activity
-            android:name="com.hengxuan.ehealthplatform.MainActivity"
+            android:name="com.hengxuan.ehealthplatform.ErrorActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" 
             >

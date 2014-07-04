@@ -2,6 +2,7 @@ package com.hengxuan.ehealthplatform.constant;
 
 public class ConstEquipId {
 	public static int MASSAGEID = 1;
+	public static int MUSICMASSAGEID = 12;
 	public static int ELECTROID = 2;
 	public static int IRISID = 3;
 	public static int THERMOMETERID = 4;

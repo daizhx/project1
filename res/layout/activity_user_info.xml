@@ -35,13 +35,14 @@
                     android:text="@string/user_name" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:drawableLeft="@drawable/user_icon"
                     android:paddingLeft="1dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:enabled="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,12 +57,13 @@
                     android:text="@string/new_password" />
 
                 <EditText
-                    android:id="@+id/new_password"
+                    android:id="@+id/et_pw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:drawableLeft="@drawable/passworld_icon"
                     android:paddingLeft="1dp"
+                    android:inputType="textPassword"
                     android:singleLine="true" />
             </LinearLayout>
 
@@ -77,12 +79,13 @@
                     android:text="@string/password_confirm" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_cpw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:drawableLeft="@drawable/passworld_icon"
                     android:paddingLeft="1dp"
+                    android:inputType="textPassword"
                     android:singleLine="true" />
             </LinearLayout>
 
@@ -106,7 +109,7 @@
                     android:text="@string/addr" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_addr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
@@ -127,13 +130,14 @@
                     android:text="@string/phone" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:drawableLeft="@drawable/ic_phone"
                     android:paddingLeft="1dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:inputType="phone"/>
             </LinearLayout>
 
             <LinearLayout
@@ -148,7 +152,7 @@
                     android:text="@string/name" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_contacts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
@@ -169,11 +173,12 @@
                     android:text="@string/email" />
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/et_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:drawableLeft="@drawable/email_icon"
+                    android:inputType="textEmailAddress"
                     android:paddingLeft="1dp"
                     android:singleLine="true" />
             </LinearLayout>
@@ -185,7 +190,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/register_btn"
+                android:background="@drawable/button_bg"
                 android:text="@string/save" />
         </LinearLayout>
         

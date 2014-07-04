@@ -76,7 +76,8 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 				HealthTipsFragment healthTipsFragment = new HealthTipsFragment();
 				FragmentTransaction ft = ((MainActivity) getActivity())
 						.getMyFragmentManager().beginTransaction();
-				ft.setCustomAnimations(R.anim.up_in, R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_left);
+//				ft.setCustomAnimations(R.anim.up_in, R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_left);
+				ft.setCustomAnimations(R.anim.up_in, R.anim.slide_out_right);
 				ft.replace(R.id.fragment_container, healthTipsFragment);
 				ft.addToBackStack(null);
 				ft.commit();
