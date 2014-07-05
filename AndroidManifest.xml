@@ -33,10 +33,10 @@
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme" >
         <activity
-            android:name="com.hengxuan.ehealthplatform.ErrorActivity"
+            android:name="com.hengxuan.ehealthplatform.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" 
-            >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +46,10 @@
         <activity
             android:name=".massager.MassagerActivity"
             android:label="@string/massager" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.MASSAGER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".bluetooth.BluetoothDeviceInterface" />
         <activity
@@ -84,14 +88,22 @@
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="com.hengxuan.ehealthplatform.ACTION_SKIN_ANALYSIS" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".lens.iris.IrisDetailInfoActivity" >
         </activity>
-        <activity android:name=".lens.iris.IrisReportActivity"></activity>
-        <activity android:name=".lens.iris.QueryCurrentDay"></activity>
-        <activity android:name=".lens.iris.IrisEntryActivity"></activity>
+        <activity android:name=".lens.iris.IrisReportActivity" >
+        </activity>
+        <activity android:name=".lens.iris.QueryCurrentDay" >
+        </activity>
+        <activity android:name=".lens.iris.IrisEntryActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.LENS_IRIS" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".lens.LensShootBaseActivity" >
         </activity>
         <activity android:name=".lens.skin.SkinShootActivity" >
@@ -104,21 +116,21 @@
         </activity>
         <activity android:name=".lens.skin.SkinAnalysisResultActivity" >
         </activity>
-        <activity android:name=".lens.skin.SkinReportActivity">
+        <activity android:name=".lens.skin.SkinReportActivity" >
         </activity>
-        <activity android:name=".lens.skin.SkinReportDetailActivity">
+        <activity android:name=".lens.skin.SkinReportDetailActivity" >
         </activity>
         <activity android:name=".lens.hair.HairShootActivity" >
         </activity>
         <activity android:name=".lens.hair.HairAnalysisActivity" >
         </activity>
-        <activity android:name=".lens.hair.HairAnalysisResultActivity">
-        </activity>    
-        <activity android:name=".lens.hair.HairOtherAnalysisActivity">
+        <activity android:name=".lens.hair.HairAnalysisResultActivity" >
         </activity>
-        <activity android:name=".lens.hair.HairReportActivity">
+        <activity android:name=".lens.hair.HairOtherAnalysisActivity" >
         </activity>
-        <activity android:name=".lens.hair.HairReportDetailActivity">
+        <activity android:name=".lens.hair.HairReportActivity" >
+        </activity>
+        <activity android:name=".lens.hair.HairReportDetailActivity" >
         </activity>
         <activity android:name=".lens.naevus.NaevusAnalysisActivity" />
         <activity android:name=".lens.naevus.SaveFileActivity" />
@@ -135,8 +147,11 @@
         <activity android:name=".activity.ReportActivity" >
         </activity>
         <activity android:name=".massager.musicMassage.MusicMassagerActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.MusicMASSAGER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
-
         <service android:name=".massager.musicMassage.MusicService" >
         </service>
 
@@ -155,16 +170,40 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
-        <activity android:name=".weight.BodyfatMainActivity"></activity>
-        <activity android:name=".weight.ImprovePersonalInformation"></activity>
-        <activity android:name=".healthclub.EntriesActivity"></activity>
-        <activity android:name=".healthclub.AcupointDetailActivity"></activity>
-        <activity android:name=".healthclub.SymptomDetailActivity"></activity>
-        <activity android:name=".lens.LensPhotoList"></activity>
-        <activity android:name=".lens.naevus.NaevusEntryActivity"></activity>
-        <activity android:name=".lens.skin.SkinEntryActivity"></activity>
-        <activity android:name=".lens.hair.HairEntryActivity"></activity>
+        <activity android:name=".weight.BodyfatMainActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.WEIGHT" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".weight.ImprovePersonalInformation" >
+        </activity>
+        <activity android:name=".healthclub.EntriesActivity" >
+        </activity>
+        <activity android:name=".healthclub.AcupointDetailActivity" >
+        </activity>
+        <activity android:name=".healthclub.SymptomDetailActivity" >
+        </activity>
+        <activity android:name=".lens.LensPhotoList" >
+        </activity>
+        <activity android:name=".lens.naevus.NaevusEntryActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.LENS_NAEVUS" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".lens.skin.SkinEntryActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.LENS_SKIN" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".lens.hair.HairEntryActivity" >
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.LENS_HAIR" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

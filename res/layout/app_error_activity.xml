@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayout_error_activity"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center" >
 
     <TextView
@@ -17,17 +18,14 @@
         android:id="@+id/checkBox_restart_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText_text_error"
-        android:layout_below="@+id/editText_text_error"
         android:checked="true"
         android:text="@string/app_error_checkbox"
         />
 
     <EditText
-        android:id="@id/editText_text_error"
+        android:id="@+id/editText_text_error"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_msg_error"
         android:layout_margin="10.0dip"
         android:hint="@string/app_error_tag_hint"
         android:maxLength="500"
@@ -40,9 +38,8 @@
         android:id="@+id/linearLayout_button_error"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/checkBox_restart_error"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        >
 
         <Button
             android:id="@+id/button_submit_error"
@@ -59,4 +56,4 @@
             android:text="@string/app_error_close" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

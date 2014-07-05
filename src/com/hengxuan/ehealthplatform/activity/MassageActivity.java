@@ -1,11 +1,15 @@
 package com.hengxuan.ehealthplatform.activity;
 
+import java.util.ArrayList;
+
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
+import com.hengxuan.ehealthplatform.constant.ConstEquipId;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
 import com.hengxuan.ehealthplatform.massager.musicMassage.MusicMassagerActivity;
+import com.hengxuan.ehealthplatform.product.Product;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
 
 import android.app.ActionBar.LayoutParams;
@@ -25,7 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MassageActivity extends BaseActivity {
-
+	//产品列表
+	private ArrayList<Product> products = new ArrayList<Product>();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -52,17 +57,24 @@ public class MassageActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				if (position == 0) {
-					startActivity(new Intent(MassageActivity.this,
-							MassagerActivity.class));
-				} else if (position == 1) {
-					startActivity(new Intent(MassageActivity.this,
-							MusicMassagerActivity.class));
-				}
+//				if (position == 0) {
+//					startActivity(new Intent(MassageActivity.this,
+//							MassagerActivity.class));
+//				} else if (position == 1) {
+//					startActivity(new Intent(MassageActivity.this,
+//							MusicMassagerActivity.class));
+//				}
+				products.get(position).EntryProduct(MassageActivity.this);
 			}
 
 		});
 
+		//查询注册的按摩产品
+		for(Product p:EHTApplication.productList){
+			if(p.mTypeId == ConstEquipId.MASSAGEID){
+				products.add(p);
+			}
+		}
 	}
 
 	class GridAdapter extends BaseAdapter {
@@ -75,7 +87,7 @@ public class MassageActivity extends BaseActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return 2;
+			return products.size();
 		}
 
 		@Override
@@ -107,16 +119,19 @@ public class MassageActivity extends BaseActivity {
 			} else {
 				holder = (Holder) convertView.getTag();
 			}
-			if (position == 0) {
-				holder.icon.setImageResource(R.drawable.massager_icon);
-				holder.labelText.setText(R.string.massager);
-			}
-			// TODO
-			if (position == 1) {
-				holder.icon.setImageResource(R.drawable.music_massage_entry);
-				// holder.hintIcon.setVisibility(View.VISIBLE);
-				holder.labelText.setText(R.string.music_massage);
-			}
+//			if (position == 0) {
+//				holder.icon.setImageResource(R.drawable.massager_icon);
+//				holder.labelText.setText(R.string.massager);
+//			}
+//			// TODO
+//			if (position == 1) {
+//				holder.icon.setImageResource(R.drawable.music_massage_entry);
+//				// holder.hintIcon.setVisibility(View.VISIBLE);
+//				holder.labelText.setText(R.string.music_massage);
+//			}
+			
+			holder.icon.setImageBitmap(products.get(position).getLogo());
+			holder.labelText.setText(products.get(position).name);
 			return convertView;
 		}
 

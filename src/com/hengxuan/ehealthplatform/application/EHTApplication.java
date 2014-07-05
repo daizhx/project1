@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hengxuan.ehealthplatform.R;
+import com.hengxuan.ehealthplatform.constant.ConstEquipId;
 import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
 import com.hengxuan.ehealthplatform.log.Log;
 import com.hengxuan.ehealthplatform.product.Product;
@@ -28,27 +29,44 @@ public class EHTApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		instance = this;
-		initProduct();
+		initProducts();
 		//捕捉未捕捉的异常
 		Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler(this));
 	}
 
 	/**
-	 * 初始化产品
+	 * 注册产品
 	 */
-	private void initProduct() {
+	private void initProducts() {
 		// TODO Auto-generated method stub
 		//默认包含的产品
-		Product massager = new Product(this, getString(R.string.massager));
+		Product massager = new Product(getString(R.string.massager), ConstEquipId.MASSAGEID, null, R.drawable.massager_icon, null);
 		massager.isRecentUse = true;//test
 		massager.setComments(R.string.massager_comment);
-		massager.setLogo(R.drawable.massager_icon);
+		massager.setEntryIntent("com.ehealthplatform.intent.action.MASSAGER");
 		productList.add(massager);
-		Product iris = new Product(this, getString(R.string.iris));
-		iris.isRecentUse = true;//test
-		iris.setComments(R.string.iris_comment);
-		iris.setLogo(R.drawable.lens_icon);
-		productList.add(iris);
+		
+		Product Lens_iris = new Product(getString(R.string.iris_analysis), ConstEquipId.LENSID, null, R.drawable.lens_icon, null);
+		Lens_iris.isRecentUse = true;//test
+		Lens_iris.setComments(R.string.iris_comment);
+		Lens_iris.setEntryIntent("com.ehealthplatform.intent.action.LENS_IRIS");
+		productList.add(Lens_iris);
+		
+		Product musicMassager = new Product(getString(R.string.music_massage), ConstEquipId.MASSAGEID, null, R.drawable.music_massage_entry, "com.ehealthplatform.intent.action.MusicMASSAGER");
+		productList.add(musicMassager);
+		
+		Product Lens_skin = new Product(getString(R.string.skin_analysis), ConstEquipId.LENSID, null, R.drawable.skin_entry, "com.ehealthplatform.intent.action.LENS_SKIN");
+		productList.add(Lens_skin);
+		
+		Product Lens_naevus = new Product(getString(R.string.naevus_analysis), ConstEquipId.LENSID, null, R.drawable.naevus_entry, "com.ehealthplatform.intent.action.LENS_NAEVUS");
+		productList.add(Lens_naevus);
+		
+		Product lens_hair = new Product(getString(R.string.hair_analysis), ConstEquipId.LENSID, null, R.drawable.hair_entry, "com.ehealthplatform.intent.action.LENS_HAIR");
+		productList.add(lens_hair);
+		
+		//注册体重称
+		Product weight_scale = new Product(getString(R.string.weighting_scale), ConstEquipId.WEIGHTID, null, R.drawable.weight_entry, "com.ehealthplatform.intent.action.WEIGHT");
+		productList.add(weight_scale);
 	}
 	
 	public static EHTApplication getInstance() {

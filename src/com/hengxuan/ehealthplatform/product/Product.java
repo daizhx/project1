@@ -1,11 +1,13 @@
 package com.hengxuan.ehealthplatform.product;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 
 import org.json.JSONException;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
+import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.constant.PreferenceKeys;
 import com.hengxuan.ehealthplatform.http.HttpError;
 import com.hengxuan.ehealthplatform.http.HttpGroup;
@@ -20,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -33,119 +36,148 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Product {
-	private Context mContext;
-	private String name;
-	//values in ConstEquipId.java
-	private int TypeId;
-	//make no sense,http need this, value in ConstHttpProp
+	public int id;
+	public String name;
+	// values in ConstEquipId.java
+	public int mTypeId;
+	// make no sense,http need this, value in ConstHttpProp
 	private String mode;
-	private String manufacturer;//eg. "GZ-Hengxuan"
-	//a short description for the product
-	private String comments;
-	private Bitmap logo;
-	private String entry;//eg. .Massager.class
-	private String entryIntent;
+	private String manufacturer;// eg. "GZ-Hengxuan"
+	// a short description for the product
+	private String mDescription;
+	private int mLogoResId;
+	public Uri logoUri;
+	// intent action
+	private String mEntryIntent;
 	public boolean isRecentUse;
 	private boolean isVerificated;
-	
-	
-	public Product(Context context) {
+
+	// public Product(Context context) {
+	// // TODO Auto-generated constructor stub
+	// mContext = context.getApplicationContext();
+	// }
+
+	public Product(String productName, int typeId,
+			String comments, int logoResId, String entryIntent) {
 		// TODO Auto-generated constructor stub
-		mContext = context.getApplicationContext();
-	}
-	
-	public Product(Context context, String productName) {
-		// TODO Auto-generated constructor stub
-		mContext = context.getApplicationContext();
 		name = productName;
-		SharedPreferences pref = mContext.getSharedPreferences(PreferenceKeys.FILE_NAME, mContext.MODE_PRIVATE);
+		mTypeId = typeId;
+		mDescription = comments;
+		mLogoResId = logoResId;
+		mEntryIntent = entryIntent;
+		SharedPreferences pref = EHTApplication.getInstance().getSharedPreferences(
+				PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
 		isVerificated = pref.getBoolean(name, false);
 	}
-	
-	//检查是否已认证过设备
-	//the Context must a BaseActivity
+
+	// 检查是否已认证过设备
+	// the Context must a BaseActivity
 	public boolean checkIsVerificated(final Context getContext) {
 		// TODO Auto-generated method stub
-		if(isVerificated){
+		if (isVerificated) {
 			return true;
-		}else{
-			
-		}		
+		} else {
+
+		}
 		return false;
 	}
-	public boolean setVerification(){
-		SharedPreferences pref = mContext.getSharedPreferences(PreferenceKeys.FILE_NAME, mContext.MODE_PRIVATE);
+
+	public boolean setVerification() {
+		SharedPreferences pref = EHTApplication.getInstance().getSharedPreferences(
+				PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
 		pref.edit().putBoolean(name, true).commit();
 		isVerificated = true;
 		return isVerificated;
 	}
-	public void setName(String s){
+
+	public void setProductName(String s) {
 		name = s;
 	}
-	public void setComments(String s){
-		comments = s;
+
+	public void setTypeId(int id) {
+		mTypeId = id;
 	}
-	public void setComments(int resId){
-		comments = mContext.getString(resId);
+
+	public void setComments(String s) {
+		mDescription = s;
 	}
-	public void setLogo(Bitmap bmp){
-		logo = bmp;
+
+	public void setComments(int resId) {
+		mDescription = EHTApplication.getInstance().getString(resId);
 	}
-	public void setLogo(int resId){
-		logo = readLogoBitmap(resId);
+
+	public void setLogo(int resId) {
+		mLogoResId = resId;
 	}
-	public String getName(){
+
+	public void setLogo(Uri uri) {
+		// TODO
+	}
+
+	public String getName() {
 		return name;
 	}
-	public String getComments(){
-		return comments;
+
+	public String getComments() {
+		return mDescription;
 	}
-	public Bitmap getLogo(){
-		return logo;
+
+	public Bitmap getLogo() {
+		return readLogoBitmap(mLogoResId);
 	}
-	
-	private Bitmap readLogoBitmap(int resId){
+
+	public void setEntryIntent(String action) {
+		mEntryIntent = action;
+	}
+
+	public static Bitmap readLogoBitmap(int resId) {
 		BitmapFactory.Options opt = new BitmapFactory.Options();
 		opt.inPreferredConfig = Bitmap.Config.RGB_565;
 		opt.inPurgeable = true;
 		opt.inInputShareable = true;
-		InputStream is = mContext.getResources().openRawResource(resId);
+		InputStream is = EHTApplication.getInstance().getResources().openRawResource(resId);
 		Bitmap bitmap = BitmapFactory.decodeStream(is, null, opt);
 		SoftReference<Bitmap> softreference = new SoftReference<Bitmap>(bitmap);
 		return softreference.get();
 	}
-	
-	//transfer the sequence code to the server via http
-	public static boolean isTransferSequenceCode(final Context getContext, final Class getClass, final int getcodeid, final String thecode, final String clientCode){
-		final String getUserId = ((BaseActivity)getContext).getStringFromPreference(ConstHttpProp.USER_PIN);
-		//USER_PIN什么时候保存的？
-//		SharedPreferences sp = getContext.getSharedPreferences(ConstHttpProp.USER_PIN, Context.MODE_PRIVATE);
-//		final String getUserId = sp.getString(ConstHttpProp.USER_PIN, null);
-		
+
+	// transfer the sequence code to the server via http
+	public static boolean isTransferSequenceCode(final Context getContext,
+			final Class getClass, final int getcodeid, final String thecode,
+			final String clientCode) {
+		final String getUserId = ((BaseActivity) getContext)
+				.getStringFromPreference(ConstHttpProp.USER_PIN);
+		// USER_PIN什么时候保存的？
+		// SharedPreferences sp =
+		// getContext.getSharedPreferences(ConstHttpProp.USER_PIN,
+		// Context.MODE_PRIVATE);
+		// final String getUserId = sp.getString(ConstHttpProp.USER_PIN, null);
+
 		final Dialog dialog = new Dialog(getContext, R.style.dialog2);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		Window window = dialog.getWindow();
 		window.setContentView(R.layout.dialog_input);
-		
+
 		// final EditText codeet = (EditText) window.findViewById(R.id.getcode);
-		final EditText numet = (EditText) window.findViewById(R.id.getnum);		
+		final EditText numet = (EditText) window.findViewById(R.id.getnum);
 		final Button okbtn = (Button) window.findViewById(R.id.mybtn);
 		numet.addTextChangedListener(new TextWatcher() {
-			
+
 			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
 					int arg3) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+
 			@Override
 			public void afterTextChanged(Editable arg0) {
 				// TODO Auto-generated method stub
@@ -153,17 +185,13 @@ public class Product {
 			}
 		});
 		okbtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				if(!TextUtils.isEmpty(numet.getText().toString())){
-					verificationCode(getUserId, 
-							getcodeid, 
-							numet.getText().toString(),
-							getContext,
-							getClass,
-							thecode,
+				if (!TextUtils.isEmpty(numet.getText().toString())) {
+					verificationCode(getUserId, getcodeid, numet.getText()
+							.toString(), getContext, getClass, thecode,
 							clientCode);
 				}
 				dialog.dismiss();
@@ -171,7 +199,7 @@ public class Product {
 		});
 		Button canclebtn = (Button) window.findViewById(R.id.mybtnCancle);
 		canclebtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -186,14 +214,15 @@ public class Product {
 				// TODO Auto-generated method stub
 				return false;
 			}
-			
+
 		});
 		return true;
 	}
 
 	// 设备序列号验证
-	public static void verificationCode(String userPin, int code, String serialNum, 
-			final Context getContext, final Class getClass, final String thecode, final String clientCode){
+	public static void verificationCode(String userPin, int code,
+			String serialNum, final Context getContext, final Class getClass,
+			final String thecode, final String clientCode) {
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.SERIALNUM);
 		httpsetting.putJsonParam("userPin", userPin);
@@ -211,30 +240,45 @@ public class Product {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				if(response.getJSONObject() != null){
+				if (response.getJSONObject() != null) {
 					try {
-						final String result_code = response.getJSONObject().getString("code");
+						final String result_code = response.getJSONObject()
+								.getString("code");
 						Handler handler = new Handler();
 						handler.post(new Runnable() {
-							
+
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								if(result_code.equals("1")){
-									((BaseActivity)getContext).putBoolean2Preference(thecode, true);
-									Toast.makeText(getContext, getContext.getResources().getString(R.string.verified), Toast.LENGTH_LONG).show();
-									Intent intent = new Intent(getContext, getClass);
+								if (result_code.equals("1")) {
+									((BaseActivity) getContext)
+											.putBoolean2Preference(thecode,
+													true);
+									Toast.makeText(
+											getContext,
+											getContext.getResources()
+													.getString(
+															R.string.verified),
+											Toast.LENGTH_LONG).show();
+									Intent intent = new Intent(getContext,
+											getClass);
 									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									getContext.startActivity(intent);
-								}else{
-									Toast.makeText(getContext, getContext.getResources().getString(R.string.verify_failed), Toast.LENGTH_SHORT).show();
+								} else {
+									Toast.makeText(
+											getContext,
+											getContext
+													.getResources()
+													.getString(
+															R.string.verify_failed),
+											Toast.LENGTH_SHORT).show();
 								}
 							}
 						});
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}					
+					}
 				}
 			}
 
@@ -252,6 +296,14 @@ public class Product {
 
 		});
 		httpsetting.setNotifyUser(true);
-		((BaseActivity)getContext).getHttpGroupaAsynPool().add(httpsetting);
+		((BaseActivity) getContext).getHttpGroupaAsynPool().add(httpsetting);
+	}
+
+	public void EntryProduct(Context context) {
+		if (mEntryIntent != null) {
+			Intent intent = new Intent();
+			intent.setAction(mEntryIntent);
+			context.startActivity(intent);
+		}
 	}
 }

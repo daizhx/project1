@@ -1,9 +1,13 @@
 package com.hengxuan.ehealthplatform.activity;
 
+import java.util.ArrayList;
+
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter;
 import com.hengxuan.ehealthplatform.activity.MassageActivity.GridAdapter.Holder;
+import com.hengxuan.ehealthplatform.application.EHTApplication;
+import com.hengxuan.ehealthplatform.constant.ConstEquipId;
 import com.hengxuan.ehealthplatform.lens.LensBaseActivity;
 import com.hengxuan.ehealthplatform.lens.LensConnectActivity;
 import com.hengxuan.ehealthplatform.lens.LensShootBaseActivity;
@@ -13,6 +17,7 @@ import com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity;
 import com.hengxuan.ehealthplatform.lens.naevus.NaevusEntryActivity;
 import com.hengxuan.ehealthplatform.lens.skin.SkinEntryActivity;
 import com.hengxuan.ehealthplatform.massager.MassagerActivity;
+import com.hengxuan.ehealthplatform.product.Product;
 import com.hengxuan.ehealthplatform.update.UpdateManager;
 import com.hengxuan.ehealthplatform.weight.BodyfatMainActivity;
 
@@ -32,9 +37,8 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PhysicalExamActivity extends BaseActivity {
-	// lens class index
-	private int index;
-
+	//产品列表
+	private ArrayList<Product> products = new ArrayList<Product>();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,40 +65,45 @@ public class PhysicalExamActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				switch (position) {
-				case 0:
-//					index = LensShootBaseActivity.IRIS_PHOTO_INDEX;
-//					break;
-					startActivity(new Intent(PhysicalExamActivity.this, IrisEntryActivity.class));
-					return;
-				case 1:
-//					index = LensShootBaseActivity.SKIN_PHOTO_INDEX;
-					startActivity(new Intent(PhysicalExamActivity.this, SkinEntryActivity.class));
-					return;
-				case 2:
-//					index = LensShootBaseActivity.HAIR_PHOTO_INDEX;
-					startActivity(new Intent(PhysicalExamActivity.this, HairEntryActivity.class));
-					return;
-				case 3:
-//					index = LensShootBaseActivity.NAEVUS_PHOTO_INDEX;
-					startActivity(new Intent(PhysicalExamActivity.this, NaevusEntryActivity.class));
-					return;
-				case 4:
-					return;
-				case 5:
-					startActivity(new Intent(PhysicalExamActivity.this, BodyfatMainActivity.class));
-					return;
-				}
-//				Intent intent = new Intent(PhysicalExamActivity.this,
-//						LensBaseActivity.class);
-//				intent.putExtra("index", index);
-//				startActivity(intent);
+//				switch (position) {
+//				case 0:
+////					index = LensShootBaseActivity.IRIS_PHOTO_INDEX;
+////					break;
+//					startActivity(new Intent(PhysicalExamActivity.this, IrisEntryActivity.class));
+//					return;
+//				case 1:
+////					index = LensShootBaseActivity.SKIN_PHOTO_INDEX;
+//					startActivity(new Intent(PhysicalExamActivity.this, SkinEntryActivity.class));
+//					return;
+//				case 2:
+////					index = LensShootBaseActivity.HAIR_PHOTO_INDEX;
+//					startActivity(new Intent(PhysicalExamActivity.this, HairEntryActivity.class));
+//					return;
+//				case 3:
+////					index = LensShootBaseActivity.NAEVUS_PHOTO_INDEX;
+//					startActivity(new Intent(PhysicalExamActivity.this, NaevusEntryActivity.class));
+//					return;
+//				case 4:
+//					return;
+//				case 5:
+//					startActivity(new Intent(PhysicalExamActivity.this, BodyfatMainActivity.class));
+//					return;
+//				}
+////				Intent intent = new Intent(PhysicalExamActivity.this,
+////						LensBaseActivity.class);
+////				intent.putExtra("index", index);
+////				startActivity(intent);
+				products.get(position).EntryProduct(PhysicalExamActivity.this);
 			}
 
 		});
 
-		
-
+		//查询注册的产品
+		for(Product p:EHTApplication.productList){
+			if(p.mTypeId == ConstEquipId.LENSID || p.mTypeId == ConstEquipId.WEIGHTID){
+				products.add(p);
+			}
+		}
 	}
 
 	class GridAdapter extends BaseAdapter {
@@ -107,7 +116,7 @@ public class PhysicalExamActivity extends BaseActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return 6;
+			return products.size();
 		}
 
 		@Override
@@ -142,35 +151,37 @@ public class PhysicalExamActivity extends BaseActivity {
 			holder.icon.setImageResource(R.drawable.massager_icon);
 			holder.labelText.setText(R.string.iris_detection);
 			// TODO
-			switch (position) {
-			case 0:
-				holder.icon.setImageResource(R.drawable.lens_icon);
-				holder.labelText.setText(R.string.iris_detection);
-				break;
-			case 1:
-				holder.icon.setImageResource(R.drawable.skin_entry);
-				holder.labelText.setText(R.string.skin_detection);
-				break;
-			case 2:
-				holder.icon.setImageResource(R.drawable.hair_entry);
-				holder.labelText.setText(R.string.hair_detection);
-				break;
-			case 3:
-				holder.icon.setImageResource(R.drawable.naevus_entry);
-				holder.labelText.setText(R.string.naevus_detection);
-				break;
-			case 4:
-				holder.icon.setImageResource(R.drawable.bloody_entry);
-				holder.labelText.setText(R.string.blood_pressure_monitor);
-				break;
-			case 5:
-				holder.icon.setImageResource(R.drawable.weight_entry);
-				holder.labelText.setText(R.string.weighting_scale);
-				break;
-
-			default:
-				break;
-			}
+//			switch (position) {
+//			case 0:
+//				holder.icon.setImageResource(R.drawable.lens_icon);
+//				holder.labelText.setText(R.string.iris_detection);
+//				break;
+//			case 1:
+//				holder.icon.setImageResource(R.drawable.skin_entry);
+//				holder.labelText.setText(R.string.skin_detection);
+//				break;
+//			case 2:
+//				holder.icon.setImageResource(R.drawable.hair_entry);
+//				holder.labelText.setText(R.string.hair_detection);
+//				break;
+//			case 3:
+//				holder.icon.setImageResource(R.drawable.naevus_entry);
+//				holder.labelText.setText(R.string.naevus_detection);
+//				break;
+//			case 4:
+//				holder.icon.setImageResource(R.drawable.bloody_entry);
+//				holder.labelText.setText(R.string.blood_pressure_monitor);
+//				break;
+//			case 5:
+//				holder.icon.setImageResource(R.drawable.weight_entry);
+//				holder.labelText.setText(R.string.weighting_scale);
+//				break;
+//
+//			default:
+//				break;
+//			}
+			holder.icon.setImageBitmap(products.get(position).getLogo());
+			holder.labelText.setText(products.get(position).name);
 			return convertView;
 		}
 
