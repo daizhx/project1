@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.hengxuan.ehealthplatform.config.Configuration;
 import com.hengxuan.ehealthplatform.http.HttpGroup.OnReadyListener;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;

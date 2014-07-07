@@ -131,12 +131,12 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 
 	// »’∆⁄œ‘ æ
 	private void initDateView(View v) {
-		int[] monthsId = { R.string.first_month, R.string.second_month,
-				R.string.third_month, R.string.fourth_month,
-				R.string.fifth_month, R.string.sixth_month,
-				R.string.seventh_month, R.string.eighth_month,
-				R.string.ninth_month, R.string.tenth_month,
-				R.string.eleven_month, R.string.twelve_month };
+		int[] monthsId = { R.string.january, R.string.february,
+				R.string.march, R.string.april,
+				R.string.may, R.string.june,
+				R.string.july, R.string.august,
+				R.string.september, R.string.october,
+				R.string.november, R.string.december };
 		TextView tvMonth = (TextView) v.findViewById(R.id.tv_month);
 		TextView tvDay = (TextView) v.findViewById(R.id.tv_date);
 		Calendar calendar = Calendar.getInstance();

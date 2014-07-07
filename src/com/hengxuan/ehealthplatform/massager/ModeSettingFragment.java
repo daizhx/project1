@@ -6,6 +6,7 @@ import java.util.Map;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.bluetooth.BluetoothServiceProxy;
 import com.hengxuan.ehealthplatform.log.Log;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;

@@ -10,15 +10,16 @@ import java.util.regex.Pattern;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
 import com.hengxuan.ehealthplatform.http.HttpError;
 import com.hengxuan.ehealthplatform.http.HttpGroup;
-import com.hengxuan.ehealthplatform.http.HttpGroup.HttpSettingParams;
 import com.hengxuan.ehealthplatform.http.HttpGroupSetting;
 import com.hengxuan.ehealthplatform.http.HttpGroupaAsynPool;
 import com.hengxuan.ehealthplatform.http.HttpResponse;
 import com.hengxuan.ehealthplatform.http.HttpSetting;
+import com.hengxuan.ehealthplatform.http.HttpGroup.HttpSettingParams;
 import com.hengxuan.ehealthplatform.http.constant.ConstSysConfig;
 import com.hengxuan.ehealthplatform.http.json.JSONObjectProxy;
 import com.hengxuan.ehealthplatform.http.utils.URLParamMap;
 import com.hengxuan.ehealthplatform.log.Log;
+
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;

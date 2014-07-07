@@ -13,6 +13,7 @@ import com.hengxuan.ehealthplatform.http.HttpSetting;
 import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
 import com.hengxuan.ehealthplatform.log.Log;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;

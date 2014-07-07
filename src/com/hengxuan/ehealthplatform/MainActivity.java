@@ -41,6 +41,7 @@ import com.hengxuan.ehealthplatform.user.UserLoginActivity;
 import com.hengxuan.ehealthplatform.utils.AsynImageLoader;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -342,6 +343,16 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			}
 		};
 		list2.setAdapter(baseAdapter);
+		list2.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				recentProduct[position].EntryProduct(MainActivity.this);
+			}
+			
+		});
 
 	}
 

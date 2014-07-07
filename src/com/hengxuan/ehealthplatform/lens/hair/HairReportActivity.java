@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.http.HttpError;

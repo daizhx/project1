@@ -9,6 +9,7 @@ import java.net.URL;
 
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

@@ -1,10 +1,12 @@
 package com.hengxuan.ehealthplatform.lens.iris;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
@@ -20,7 +22,8 @@ public class IrisEntryActivity extends BaseActivity {
 	private Button btnOld;
 	// open iris check help
 	private Button btnHelp;
-
+	private ProgressDialog progressDialog;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -41,6 +44,7 @@ public class IrisEntryActivity extends BaseActivity {
 				int index = LensShootBaseActivity.IRIS_PHOTO_INDEX;
 				intent.putExtra("index", index);
 				startActivity(intent);
+				
 			}
 		});
 

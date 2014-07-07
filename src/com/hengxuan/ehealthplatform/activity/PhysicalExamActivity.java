@@ -148,8 +148,8 @@ public class PhysicalExamActivity extends BaseActivity {
 			} else {
 				holder = (Holder) convertView.getTag();
 			}
-			holder.icon.setImageResource(R.drawable.massager_icon);
-			holder.labelText.setText(R.string.iris_detection);
+//			holder.icon.setImageResource(R.drawable.massager_icon);
+//			holder.labelText.setText(R.string.iris_detection);
 			// TODO
 //			switch (position) {
 //			case 0:

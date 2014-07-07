@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.log.Log;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;

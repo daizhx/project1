@@ -10,7 +10,6 @@
     <string name="download_fail">Download Fail</string>
     <string name="action_settings">Settings</string>
     <string name="home">Home</string>
-    <string name="massage_setting">Massage settings</string>
     <string name="massage">Massage</string>
     <string name="massager">Massager</string>
     <string name="instruments">Instruments</string>
@@ -43,14 +42,9 @@
     <string name="pairing">Pairing</string>
     <string name="paired">Complete pairing</string>
     <string name="cancelpair">Cancel pairing</string>
-    <string name="bluetooth">Massage connection</string>
     <string name="not_open_device">Bluetooth is not turned on massage machine</string>
-    <string name="not_support_device">Error device, only support massage machine now</string>
     <string name="disconnected">Disconnecting massage machine</string>
-    <string name="bluetoothname">Bluetooth name:</string>
-    <string name="bluetoothmac">MAC address:</string>
     <string name="disconnectedstate">Massage machine is not connected</string>
-    <string name="lens_choice">Lens Chioce</string>
     <string name="iris">Iris</string>
     <string name="iris_photo">Iris Photo</string>
     <string name="iris_detection">Iris Detection</string>
@@ -61,15 +55,9 @@
     <string name="naevus_detection">Naevus Detection</string>
     <string name="hair_analysis">Hair Analysis</string>
     <string name="naevus_analysis">Naevus Analysis</string>
-    <string name="examination">Examination</string>
     <string name="health_bar">Health Bar</string>
-    <string name="shop">Shopping</string>
-    <string name="mydianjiu">Acus</string>
-    <string name="get_naevus_picture">Get naevus image</string>
-    <string name="analysis_naevus_picture">Analysis naevus image</string>
     <string name="search_wifi">Search Lens WIFI</string>
     <string name="no_lens">please open the Lens first</string>
-    <string name="photograph_text">Shooting</string>
     <string name="back">Back</string>
     <string name="operation">Operation</string>
     <string name="build_selection">Make a selection</string>
@@ -159,10 +147,6 @@
     <string name="merge_image">Merge images</string>
     <string name="merge_wait">Please waiting ...</string>
     <string name="color">Color</string>
-    <string name="color_light">Light-colored is selected</string>
-    <string name="color_dark_brown">Dark brown is selected</string>
-    <string name="color_dead_brown">Deep brown is selected</string>
-    <string name="color_deeply_black">Dark black is selected</string>
     <string name="iris_color_light">Light-colored period</string>
     <string name="iris_color_dark_brown">Dark brown period</string>
     <string name="iris_color_dead_brown">Deep brown period</string>
@@ -246,40 +230,23 @@
     <string name="elastic">Elastic</string>
     <string name="blood_pressure_monitor">Blood Pressure Monitor</string>
     <string name="weighting_scale">Weighting Scale</string>
-    
-    
-    <string name="app_error_tag_des">You can brief description of the error condition and submitting a bug report, so that we can fix perfect.</string> 
-    <string name="app_error_tag_hint">Please describe the error message (optional)</string> 
-    <string name="app_error_checkbox">Restart after Submitted</string> 
-    <string name="app_error_submit">Submit</string> 
-    <string name="app_error_close">Close</string> 
-    <string name="app_error_msg">Application errors, and will be shut down.</string> 
-    <string name="app_error_title">Warning</string> 
-    <string name="app_error_tag_send">Sending...</string> 
+    <string name="app_error_tag_des">You can brief description of the error condition and submitting a bug report, so that we can fix perfect.</string>
+    <string name="app_error_tag_hint">Please describe the error message (optional)</string>
+    <string name="app_error_checkbox">Restart after Submitted</string>
+    <string name="app_error_submit">Submit</string>
+    <string name="app_error_close">Close</string>
+    <string name="app_error_msg">Application errors, and will be shut down.</string>
+    <string name="app_error_title">Warning</string>
+    <string name="app_error_tag_send">Sending...</string>
     <string name="app_error_tag_restart">Has been sent, automatically restart ... please wait</string>
     <string name="app_error_tag_close">Has been sent, application has been closed ...</string>
 
-    <string name="first_month">Jan</string>
-    <string name="second_month">Feb</string>
-    <string name="third_month">Mar</string>
-    <string name="fourth_month">Apr</string>
-    <string name="fifth_month">May</string>
-    <string name="sixth_month">Jun</string>
-    <string name="seventh_month">Jul</string>
-    <string name="eighth_month">Aug</string>
-    <string name="ninth_month">Sep</string>
-    <string name="tenth_month">Oct</string>
-    <string name="eleven_month">Nov</string>
-    <string name="twelve_month">Dec</string>
-    
     <string name="new_password">New Password</string>
     <string name="skin_analysis">Skin Analysis</string>
-    
     <string name="musicname">Song name</string>
     <string name="musicartist">Writter</string>
     <string name="game">Game</string>
     <string name="hamster">Hamster</string>
-    
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="please_enter_your_correct_age">Please enter the correct age</string>
@@ -287,7 +254,6 @@
     <string name="please_enter_your_correct_weight">Please enter the correct weight</string>
     <string name="submit_success">Successful submission</string>
     <string name="delete">Delete</string>
-    
     <string name="delete_success">Successfully deleted</string>
     <string name="delete_failed">Delete failed</string>
     <string name="change_personal_information">Modify personal information</string>
@@ -331,7 +297,7 @@
     <string name="month_blood_report">Month</string>
     <string name="year_blood_report">Year</string>
     <string name="barchart">Histogram</string>
-     <string name="monday">Mon</string>
+    <string name="monday">Mon</string>
     <string name="tuesday">Tues</string>
     <string name="wednesday">Wed</string>
     <string name="thursday">Thur</string>
@@ -343,19 +309,19 @@
     <string name="third_week">Third</string>
     <string name="fourth_week">Fourth</string>
     <string name="fifth_week">Fifth</string>
-	<string name="january">Jan</string> 
-	<string name="february">Feb</string> 
-	<string name="march">Mar</string> 
-	<string name="april">Apr</string> 
-	<string name="may">May</string> 
-	<string name="june">June</string> 
-	<string name="july">July</string> 
-	<string name="august">Aug</string> 
-	<string name="september">Sept</string> 
-	<string name="october">Oct</string> 
-	<string name="november">Nov</string> 
-	<string name="december">Dec</string> 
-	<string name="no_avavailable_bluetooth">There is no available Bluetooth!</string>
+    <string name="january">Jan</string>
+    <string name="february">Feb</string>
+    <string name="march">Mar</string>
+    <string name="april">Apr</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">Aug</string>
+    <string name="september">Sept</string>
+    <string name="october">Oct</string>
+    <string name="november">Nov</string>
+    <string name="december">Dec</string>
+    <string name="no_avavailable_bluetooth">There is no available Bluetooth!</string>
     <string name="bluetooth_connection">Bluetooth connection</string>
     <string name="sex">Sex</string>
     <string name="age">Age</string>
@@ -371,7 +337,6 @@
     <string name="old_hair_photo">Review old hair photo</string>
     <string name="new_naevus_photo">Captur new naevus photo</string>
     <string name="old_naevus_photo">Review old naevus photo</string>
-    
     <string name="common_acupoint">Common Acupoint</string>
     <string name="common_disease">Common Disease</string>
     <string name="body_symptom">Body Symptom</string>
@@ -384,13 +349,14 @@
     <string name="chest">chest</string>
     <string name="foot">foot</string>
     <string name="os_pelvicum">os_pelvicum</string>
-    
     <string name="acupoint_description">Acupoint description</string>
     <string name="cure_symptom">Cure Symptom</string>
     <string name="disease_description">Disease description</string>
     <string name="symptom">Symptom</string>
     <string name="owner">Owner</string>
     <string name="which_eye">Which eye?</string>
-    <string name="alert_title_poor_network2">Network not access</string> 
+    <string name="alert_title_poor_network2">Network not access</string>
     <string name="alert_message_poor_network2">Access network fail,please try again.</string>
+    <string name="analysis_mode">Analysis Mode</string>
+    <string name="analysis_status">Analysis Status</string>
 </resources>

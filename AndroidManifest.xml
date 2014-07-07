@@ -53,11 +53,6 @@
         </activity>
         <activity android:name=".bluetooth.BluetoothDeviceInterface" />
         <activity
-            android:name="com.hengxuan.ehealthplatform.lens.activity.LensMainActivity"
-            android:label="@string/lens_choice"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <activity
             android:name="com.hengxuan.ehealthplatform.activity.MassageActivity"
             android:launchMode="singleTop" >
             <intent-filter>

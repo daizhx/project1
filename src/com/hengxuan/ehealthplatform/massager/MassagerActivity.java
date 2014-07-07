@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
+
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.bluetooth.BluetoothServiceProxy;
 import com.hengxuan.ehealthplatform.log.Log;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -107,7 +109,6 @@ public class MassagerActivity extends BaseActivity implements FragmentChangeList
 
 						} catch (Exception e) {
 							e.printStackTrace();
-							Toast.makeText(MassagerActivity.this,getString(R.string.not_support_device),Toast.LENGTH_SHORT).show();
 						}
 						return;	
 					}

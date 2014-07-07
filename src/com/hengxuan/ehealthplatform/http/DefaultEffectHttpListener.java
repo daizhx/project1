@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import com.hengxuan.ehealthplatform.log.Log;
 
 

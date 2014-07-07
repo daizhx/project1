@@ -10,6 +10,7 @@ import com.hengxuan.ehealthplatform.R.string;
 import com.hengxuan.ehealthplatform.lens.MyDataBaseContract.ImagesInfo;
 import com.hengxuan.ehealthplatform.myview.MyImageView;
 import com.hengxuan.ehealthplatform.user.UserLogin;
+
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;

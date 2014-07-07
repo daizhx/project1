@@ -3,6 +3,7 @@ package com.hengxuan.ehealthplatform.activity;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+
 import com.hengxuan.ehealthplatform.MainActivity;
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.constant.PreferenceKeys;

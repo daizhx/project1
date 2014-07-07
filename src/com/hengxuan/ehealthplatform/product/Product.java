@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 
 import org.json.JSONException;
+
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.activity.BaseActivity;
 import com.hengxuan.ehealthplatform.application.EHTApplication;
@@ -15,6 +16,7 @@ import com.hengxuan.ehealthplatform.http.HttpResponse;
 import com.hengxuan.ehealthplatform.http.HttpSetting;
 import com.hengxuan.ehealthplatform.http.constant.ConstFuncId;
 import com.hengxuan.ehealthplatform.http.constant.ConstHttpProp;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;

@@ -2,6 +2,7 @@ package com.hengxuan.ehealthplatform.massager;
 
 import com.hengxuan.ehealthplatform.R;
 import com.hengxuan.ehealthplatform.bluetooth.BluetoothServiceProxy;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.drm.DrmStore.RightsStatus;
