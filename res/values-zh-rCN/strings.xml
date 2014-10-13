@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">EHealthPlatform</string>
+    <string name="app_name">EHT</string>
     <string name="soft_update">软件升级</string>
     <string name="soft_update_message">请更新应用!</string>
     <string name="update">更新</string>
@@ -122,6 +122,7 @@
 
     <!-- login -->
     <string name="log_in">登录</string>
+    <string name="log_out">退出登录</string>
     <string name="register">注册</string>
     <string name="register_success">注册成功</string>
     <string name="forget_pw">忘记密码</string>
@@ -205,7 +206,7 @@
     <string name="sensi_analysis">敏感度分析</string>
     <string name="sensibility">敏感度</string>
     <string name="zoom">缩放</string>
-    <string name="reset1">重置</string>
+    <string name="reset">重置</string>
     <string name="draw_line">线段</string>
     <string name="draw_circle">画圆</string>
     <string name="num">数量</string>
@@ -230,8 +231,6 @@
     <string name="elastic">弹性</string>
     <string name="blood_pressure_monitor">血压计</string>
     <string name="weighting_scale">体重秤</string>
-    
-    
     <string name="app_error_tag_des">您可以对出错情况进行简单描述并提交错误报告，以便我们修复完善。</string> 
     <string name="app_error_tag_hint">请对错误信息进行描述(可不填)</string> 
     <string name="app_error_checkbox">提交后重启</string> 
@@ -367,4 +366,38 @@
     <string name="alert_message_poor_network2">网络连接失败，请重试.</string>
     <string name="analysis_mode">分析模式</string>
     <string name="analysis_status">分析状态</string>
+    <!-- 血压计 -->
+    <string name="sphygmomanometer">血压计</string>
+    <string name="please_sit_down_and_be_quiet">请坐下并保持安静</string>
+    <string name="bluetooth_is_not_available">蓝牙不可用</string>
+    <string name="whether_connect_bluetooth">是否连接蓝牙?</string>
+    <string name="blood_pressure_meter"></string>
+    <string name="start">Start</string>
+    <string name="measuring_blood_pressure">Blood pressure measurement</string>
+    <string name="please_connect_bluetooth">Please connect Bluetooth</string>
+    <string name="reports_local_to_server">There are some reports stored locally, is submitted to the server?</string>
+    <string name="blood_pressure_error_eeprom">Blood pressure is abnormal, contact your dealer</string>
+    <string name="blood_pressure_error_revise">Measurement error, please according to the instructions, to take CUFF, keep quiet and remeasure</string>
+    <string name="blood_pressure_error_power">Low battery, please replace the battery</string>
+    <string name="measurement_result">Measurement results</string>
+    <string name="systolic_pressure_result_show">SYS</string>
+    <string name="diastolic_pressure_result_show">DIA</string>
+    <string name="pulse_result_show">PUL</string>
+    <string name="pulse_unit">Beats/Min</string>
+    <string name="the_most_appropriate_value">Optimal blood pressure</string>
+    <string name="higher_than_normal_value">High normal value</string>
+    <string name="mild_hypertension">Mild hypertension</string>
+    <string name="moderate_hypertension">Moderate hypertension</string>
+    <string name="severe_hypertension">Severe hypertension</string>
+    <string name="memory">Memory</string>
+    <string name="temporarily_stored_in_the_local">The network is not connected, is temporarily stored in the local?</string>
+    <string name="selectdate">Date select</string>
+    <string name="startdate">Start Date:</string>
+    <string name="enddate">End Date:</string>
+    <string name="dateselecterror">The start date should be less than or equal to the end date, please try again</string>
+    <string name="who_ish_standard">WHO/ISH standard</string>
+    <string name="diastolic_pressure_line_feed">diastolic\nblood pressure\n(mmHg)</string>
+    <string name="systolic_pressure_line_feed">systolic\nblood pressure\n(mmHg)</string>
+    <string name="date">Date</string>
+    <string name="trend">Trend</string>
 </resources>

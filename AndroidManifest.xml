@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hengxuan.ehealthplatform"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.jiuzhansoft.ehealthtec"
+    android:versionCode="9"
+    android:versionName="2.0.2" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -29,11 +29,11 @@
     <application
         android:name=".application.EHTApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme" >
         <activity
-            android:name="com.hengxuan.ehealthplatform.MainActivity"
+            android:name="com.jiuzhansoft.ehealthtec.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -53,7 +53,7 @@
         </activity>
         <activity android:name=".bluetooth.BluetoothDeviceInterface" />
         <activity
-            android:name="com.hengxuan.ehealthplatform.activity.MassageActivity"
+            android:name="com.jiuzhansoft.ehealthtec.activity.MassageActivity"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="ehealthplatform.intent.action.MASSAGE" />
@@ -61,12 +61,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hengxuan.ehealthplatform.user.UserLoginActivity" >
+        <activity android:name="com.jiuzhansoft.ehealthtec.user.UserLoginActivity" >
         </activity>
-        <activity android:name="com.hengxuan.ehealthplatform.user.UserRegisterActivity" >
+        <activity android:name="com.jiuzhansoft.ehealthtec.user.UserRegisterActivity" >
         </activity>
         <activity
-            android:name="com.hengxuan.ehealthplatform.activity.PhysicalExamActivity"
+            android:name="com.jiuzhansoft.ehealthtec.activity.PhysicalExamActivity"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="ehealthplatform.intent.action.PHYSICAL" />
@@ -74,7 +74,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hengxuan.ehealthplatform.lens.iris.IrisInspectionActivity" >
+        <activity android:name="com.jiuzhansoft.ehealthtec.lens.iris.IrisInspectionActivity" >
         </activity>
         <activity android:name=".lens.iris.IrisAnalysisActivity" >
         </activity>
@@ -133,7 +133,7 @@
             android:name=".lens.naevus.CheckFileActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".lens.naevus.FileDataActivity" />
-        <activity android:name=".activity.ErrorActivity" >
+        <activity android:name=".activity.ErrorActivity" android:process=":error" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".lens.LensBaseActivity" >
         </activity>
@@ -199,6 +199,18 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.HealthArticleActivity"></activity>
+        
+        
+        <activity android:name=".sphygmomanometer.BloodPressureShow">
+            <intent-filter>
+                <action android:name="com.ehealthplatform.intent.action.sphygmomanometer" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".sphygmomanometer.BloodPressureResult"></activity>
+        <activity android:name=".sphygmomanometer.ReportDateSelect"></activity>
+        <activity android:name=".sphygmomanometer.BloodPressureReport"></activity>
     </application>
 
 </manifest>

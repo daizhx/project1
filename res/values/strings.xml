@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">EHealthPlatform</string>
+    <string name="app_name">EHT</string>
     <string name="soft_update">Soft Update</string>
     <string name="soft_update_message">Please update the application!</string>
     <string name="update">Update</string>
@@ -122,6 +122,7 @@
 
     <!-- login -->
     <string name="log_in">Login</string>
+    <string name="log_out">Log out</string>
     <string name="register">Register</string>
     <string name="register_success">Regist success</string>
     <string name="forget_pw">Forget password</string>
@@ -205,7 +206,7 @@
     <string name="sensi_analysis">Sensibility analysis</string>
     <string name="sensibility">Sensibility</string>
     <string name="zoom">Zoom</string>
-    <string name="reset1">Reset</string>
+    <string name="reset">Reset</string>
     <string name="draw_line">Line</string>
     <string name="draw_circle">Area</string>
     <string name="num">Num</string>
@@ -359,4 +360,38 @@
     <string name="alert_message_poor_network2">Access network fail,please try again.</string>
     <string name="analysis_mode">Analysis Mode</string>
     <string name="analysis_status">Analysis Status</string>
+    <!-- 血压计 -->
+    <string name="sphygmomanometer">Sphygmomanometer</string>
+    <string name="please_sit_down_and_be_quiet">Please sit down and be quiet</string>
+    <string name="bluetooth_is_not_available">Bluetooth is not available</string>
+    <string name="whether_connect_bluetooth">Whether connect Bluetooth?</string>
+    <string name="blood_pressure_meter">Sphygmo</string>
+    <string name="start">Start</string>
+    <string name="measuring_blood_pressure">Blood pressure measurement</string>
+    <string name="please_connect_bluetooth">Please connect Bluetooth</string>
+    <string name="reports_local_to_server">There are some reports stored locally, is submitted to the server?</string>
+    <string name="blood_pressure_error_eeprom">Blood pressure is abnormal, contact your dealer</string>
+    <string name="blood_pressure_error_revise">Measurement error, please according to the instructions, to take CUFF, keep quiet and remeasure</string>
+    <string name="blood_pressure_error_power">Low battery, please replace the battery</string>
+    <string name="measurement_result">Measurement results</string>
+    <string name="systolic_pressure_result_show">SYS</string>
+    <string name="diastolic_pressure_result_show">DIA</string>
+    <string name="pulse_result_show">PUL</string>
+    <string name="pulse_unit">Beats/Min</string>
+    <string name="the_most_appropriate_value">Optimal blood pressure</string>
+    <string name="higher_than_normal_value">High normal value</string>
+    <string name="mild_hypertension">Mild hypertension</string>
+    <string name="moderate_hypertension">Moderate hypertension</string>
+    <string name="severe_hypertension">Severe hypertension</string>
+    <string name="memory">Memory</string>
+    <string name="temporarily_stored_in_the_local">The network is not connected, is temporarily stored in the local?</string>
+    <string name="selectdate">Date select</string>
+    <string name="startdate">Start Date:</string>
+    <string name="enddate">End Date:</string>
+    <string name="dateselecterror">The start date should be less than or equal to the end date, please try again</string>
+    <string name="who_ish_standard">WHO/ISH standard</string>
+    <string name="diastolic_pressure_line_feed">diastolic\nblood pressure\n(mmHg)</string>
+    <string name="systolic_pressure_line_feed">systolic\nblood pressure\n(mmHg)</string>
+    <string name="date">Date</string>
+    <string name="trend">Trend</string>
 </resources>

@@ -26,7 +26,7 @@ package org.cocos2dx.lib;
 
 import java.lang.ref.WeakReference;
 
-import com.hengxuan.ehealthplatform.R;
+import com.jiuzhansoft.ehealthtec.R;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

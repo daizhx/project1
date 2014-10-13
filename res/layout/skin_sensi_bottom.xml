@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_skin_zoom" />
+            android:src="@drawable/ic_zoom" />
 
         <TextView
             android:id="@+id/tv_zoom"
@@ -89,7 +89,7 @@
             android:id="@+id/iv_ana"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:src="@drawable/ic_skin_ana" />
+            android:src="@drawable/ic_ana" />
 
         <TextView
             android:id="@+id/tv_ana"
@@ -118,7 +118,7 @@
             android:id="@+id/tv_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reset1"
+            android:text="@string/reset"
             android:textColor="@color/white" />
     </LinearLayout>
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.hengxuan.ehealthplatform.lens.naevus.NaevusView
+    <com.jiuzhansoft.ehealthtec.lens.naevus.NaevusView
         android:id="@+id/naevus_filter"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

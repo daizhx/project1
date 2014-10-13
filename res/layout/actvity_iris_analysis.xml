@@ -10,7 +10,7 @@
         android:layout_above="@+id/bottom"
         android:background="#00000000" >
 
-        <com.hengxuan.ehealthplatform.lens.iris.IrisImageView
+        <com.jiuzhansoft.ehealthtec.lens.iris.IrisImageView
             android:id="@+id/irisMyView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

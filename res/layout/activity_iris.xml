@@ -9,7 +9,7 @@
     android:background="#FAF8F6" 
     android:layout_above="@+id/bottom"
     android:layout_weight="1">
-	<com.hengxuan.ehealthplatform.lens.LensMonitorView
+	<com.jiuzhansoft.ehealthtec.lens.LensMonitorView
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:id="@+android:id/lens_monitor_view"

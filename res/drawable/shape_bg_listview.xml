@@ -11,7 +11,7 @@
   	android:width="5px"
   	android:color="@color/gray"/>
   <solid 
-  	android:color="#e0000000"/>
+  	android:color="#e0ffffff"/>
   	
   <corners 
   	android:bottomLeftRadius="20px"

@@ -6,6 +6,5 @@
     android:gravity="center"
     android:id="@+id/root"
      >
-    
 
 </TextView>

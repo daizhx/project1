@@ -2,44 +2,47 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        
+
     </style>
 
-	
-    
     <style name="layout_title2">
         <item name="android:textSize">20.0dip</item>
         <item name="android:textColor">#ffffffcc</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
-    <style name="skan_pop" parent="android:Animation" mce_bogus="1">
-  		<item name="android:windowEnterAnimation">@anim/skan_pop_enter</item>
-  		<item name="android:windowExitAnimation">@anim/skan_pop_exit</item>
-  	</style>
-  	
-        <style name="dialog2" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item><!--边框-->
-        <item name="android:windowIsTranslucent">true</item><!--半透明-->
-        <item name="android:windowNoTitle">true</item><!--无标题-->
-        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
-        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+
+    <style name="skan_pop" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/skan_pop_enter</item>
+        <item name="android:windowExitAnimation">@anim/skan_pop_exit</item>
     </style>
-    
+
+    <style name="dialog2" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+ <!-- 边框 -->
+        <item name="android:windowIsTranslucent">true</item>
+ <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+ <!-- 无标题 -->
+        <item name="android:windowBackground">@color/transparent</item>
+ <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">false</item>
+ <!-- 模糊 -->
+    </style>
+
     <style name="map_BubblePrimary">
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">monospace</item>
@@ -50,5 +53,14 @@
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">#000</item>
     </style>
-        
+
+    <style name="Widget.GifMoviewView" parent="@android:style/Widget"></style>
+
+    <style name="progressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_color_vertical</item>
+        <item name="android:minHeight">5dip</item>
+        <item name="android:maxHeight">5dip</item>
+　　</style>
+
 </resources>

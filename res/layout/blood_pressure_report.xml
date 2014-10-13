@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/startbg"
+    android:orientation="vertical" >
+
+    <TabHost
+        android:id="@+id/blood_pressure_tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_selector" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <LinearLayout
+                    android:id="@+id/blood_pressure_tab1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="4"
+                                android:gravity="center"
+                                android:text="@string/who_ish_standard"
+                                android:textColor="#ffffff" />
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal" >
+
+                                <View
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="5" />
+
+                                <com.jiuzhansoft.ehealthtec.sphygmomanometer.BloodPressureReportView
+                                    android:id="@+id/blood_pressure_report_view"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="1"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ui3color" />
+
+                                <View
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="5" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="4" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="vertical" >
+
+                            <FrameLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="3" >
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:orientation="horizontal" >
+
+                                    <View
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="20" />
+
+                                    <TextView
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/diastolic_pressure_line_feed"
+                                        android:textColor="#ffffff"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:orientation="vertical" >
+
+                                    <View
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="4" />
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="3"
+                                        android:orientation="horizontal" >
+
+                                        <View
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="3" />
+
+                                        <LinearLayout
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="3"
+                                            android:orientation="vertical" >
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="1"
+                                                    android:text="@string/the_most_appropriate_value"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="1"
+                                                    android:text="@string/normal_value"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="1"
+                                                    android:text="@string/higher_than_normal_value"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="2"
+                                            android:orientation="vertical" >
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="7" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2"
+                                                    android:text="@string/mild_hypertension"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="7" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2"
+                                                    android:text="@string/moderate_hypertension"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="fill_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal" >
+
+                                                <View
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="7" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="fill_parent"
+                                                    android:layout_weight="2"
+                                                    android:text="@string/severe_hypertension"
+                                                    android:textColor="#ffffff"
+                                                    android:textSize="8sp" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="2" >
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="3"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="5" />
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="3"
+                                    android:orientation="horizontal" >
+
+                                    <View
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="1" />
+
+                                    <TextView
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="4"
+                                        android:gravity="left|top"
+                                        android:text="@string/systolic_pressure_line_feed"
+                                        android:textColor="#ffffff"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                        
+                        <LinearLayout
+                        android:id="@+id/blood_pressure_chart"
+                        android:layout_width="fill_parent"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+                    </RelativeLayout>
+
+                    
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blood_pressure_tab3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <Button
+                            android:id="@+id/blood_pressure_barchart_week"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dip"
+                            android:layout_marginLeft="20dip"
+                            android:layout_marginRight="10dip"
+                            android:layout_marginTop="10dip"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_corner"
+                            android:text="@string/week"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/blood_pressure_barchart_month"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dip"
+                            android:layout_marginLeft="10dip"
+                            android:layout_marginRight="10dip"
+                            android:layout_marginTop="10dip"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_corner_selected"
+                            android:text="@string/month_blood_report"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/blood_pressure_barchart_year"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dip"
+                            android:layout_marginLeft="10dip"
+                            android:layout_marginRight="20dip"
+                            android:layout_marginTop="10dip"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_corner"
+                            android:text="@string/year_blood_report"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dip"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="30dip"
+                            android:layout_marginRight="30dip"
+                            android:background="@drawable/round_corner"
+                            android:orientation="horizontal" >
+
+                            <ImageButton
+                                android:id="@+id/blood_pressure_record_date_minus"
+                                android:layout_width="fill_parent"
+                                android:layout_height="40dip"
+                                android:layout_gravity="center"
+                                android:layout_weight="5"
+                                android:background="@color/transparent"
+                                android:src="@drawable/arraw_left" />
+
+                            <TextView
+                                android:id="@+id/blood_pressure_record_date"
+                                android:layout_width="fill_parent"
+                                android:layout_height="40dip"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textColor="#007cc8"
+                                android:textSize="20sp" />
+
+                            <ImageButton
+                                android:id="@+id/blood_pressure_record_date_plus"
+                                android:layout_width="fill_parent"
+                                android:layout_height="40dip"
+                                android:layout_gravity="center"
+                                android:layout_weight="5"
+                                android:background="@color/transparent"
+                                android:src="@drawable/arraw_right" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/blood_pressure_bar_chart"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blood_pressure_tab2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_date"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/date"
+                            android:textColor="#ffffff"
+                            android:textSize="18dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_sys"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="@string/systolic_pressure_result_show"
+                            android:textColor="#ffffff"
+                            android:textSize="18dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_dia"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="@string/diastolic_pressure_result_show"
+                            android:textColor="#ffffff"
+                            android:textSize="18dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_pul"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="@string/pulse_result_show"
+                            android:textColor="#ffffff"
+                            android:textSize="18dip" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_date"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="y-m-d"
+                            android:textColor="#ffffff"
+                            android:textSize="10dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_sys"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="mmHg"
+                            android:textColor="#ffffff"
+                            android:textSize="10dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_dia"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="mmHg"
+                            android:textColor="#ffffff"
+                            android:textSize="10dip" />
+
+                        <TextView
+                            android:id="@+id/blood_pressure_list_pul"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="Beats/Min"
+                            android:textColor="#ffffff"
+                            android:textSize="10dip" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/blool_pressure_history_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/blood_pressure_record_background"
+                        android:cacheColorHint="#00000000"
+                        android:divider="@color/gray" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>

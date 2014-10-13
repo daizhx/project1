@@ -23,8 +23,8 @@ THE SOFTWARE.
  ****************************************************************************/
 package org.cocos2dx.lib;
 
-import com.hengxuan.ehealthplatform.bluetooth.BluetoothServiceProxy;
-import com.hengxuan.ehealthplatform.log.Log;
+import com.jiuzhansoft.ehealthtec.bluetooth.BluetoothServiceProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

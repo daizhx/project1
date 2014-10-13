@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/tv_zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/ic_zoom"
+        android:gravity="center"
+        android:text="@string/zoom"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawableTop="@drawable/ic_line"
+        android:gravity="center"
+        android:text="@string/draw_line"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_ana"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawableTop="@drawable/ic_ana_selector"
+        android:gravity="center"
+        android:text="@string/analysis_text"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawableTop="@drawable/reset"
+        android:gravity="center"
+        android:text="@string/reset"
+        android:textColor="@color/white" />
+
+</LinearLayout>

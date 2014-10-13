@@ -56,7 +56,7 @@
 					android:id="@+id/bodyfat_blue"
   					android:layout_width="wrap_content"
   					android:layout_height="wrap_content"
-  					android:background="@drawable/bluetoothno"
+  					android:background="@drawable/bt_off"
   					android:layout_marginLeft="20dip"
   					android:layout_marginTop="20dip"/>
   				<ImageButton 
@@ -162,7 +162,7 @@
 							android:textSize="20sp"
 							android:layout_marginTop="15dip"
 							android:layout_marginLeft="10dip"/>
-						<com.hengxuan.ehealthplatform.weight.ListViewInScrollView
+						<com.jiuzhansoft.ehealthtec.weight.ListViewInScrollView
 							android:id="@+id/bmi_list"
 							android:layout_width="fill_parent"
 							android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
 							android:layout_marginLeft="10dip"
 							android:text="@string/fat_content"
 							android:textSize="20sp"/>
-						<com.hengxuan.ehealthplatform.weight.ListViewInScrollView 
+						<com.jiuzhansoft.ehealthtec.weight.ListViewInScrollView 
 							android:id="@+id/fat_list"
 							android:layout_width="fill_parent"
 							android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
 							android:layout_marginLeft="10dip"
 							android:text="@string/calurie"
 							android:textSize="20sp"/>
-						<com.hengxuan.ehealthplatform.weight.ListViewInScrollView 
+						<com.jiuzhansoft.ehealthtec.weight.ListViewInScrollView 
 							android:id="@+id/calurie_list"
 							android:layout_width="fill_parent"
 							android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
 							android:layout_marginLeft="10dip"
 							android:text="@string/water_content_weight"
 							android:textSize="20sp"/>
-						<com.hengxuan.ehealthplatform.weight.ListViewInScrollView 
+						<com.jiuzhansoft.ehealthtec.weight.ListViewInScrollView 
 							android:id="@+id/water_list"
 							android:layout_width="fill_parent"
 							android:layout_height="wrap_content"
