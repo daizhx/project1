@@ -124,8 +124,8 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		getLoginState();
 
 		// 更新
-		UpdateManager updateManager = UpdateManager.getUpdateManager(this);
-		updateManager.checkAndUpdate();
+		//UpdateManager updateManager = UpdateManager.getUpdateManager(this);
+		//updateManager.checkAndUpdate();
 	}
 
 	@Override
@@ -141,7 +141,10 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		boolean isLogin = pref.getBoolean(PreferenceKeys.SYS_USER_LOGIN, false);
 		UserLogin.setUserState(isLogin);
 	}
-
+	
+	/**
+	 * 初始化actionBar
+	 */
 	private void initActionBar() {
 		// TODO Auto-generated method stub
 		ActionBar actionBar = getActionBar();
@@ -179,6 +182,11 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		});
 	}
 
+	/**
+	 * 设置actionBar home icon
+	 * @param resId
+	 * @param listener
+	 */
 	public void setLeftIcon(int resId, OnClickListener listener) {
 		ActionBar actionBar = getActionBar();
 		View view = actionBar.getCustomView();
@@ -200,7 +208,10 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			}
 		}
 	}
-
+	
+	/**
+	 * 初始化Views
+	 */
 	private void initView() {
 		// TODO Auto-generated method stub
 		mViewPager = (ViewPager) findViewById(R.id.title_viewPager);
@@ -387,6 +398,11 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		return true;
 	}
 
+	/**
+	 * 顶部viewPager适配器
+	 * @author Administrator
+	 *
+	 */
 	private class TopPagerViewAdapter extends PagerAdapter {
 		AsynImageLoader asynImageLoader = new AsynImageLoader();
 		@Override
@@ -412,10 +428,10 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			// BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 			// task.execute(R.drawable.placehold);
 			// loadBitmap(0, imageView);
-//			AsynImageLoader asynImageLoader = new AsynImageLoader();
+			AsynImageLoader asynImageLoader = new AsynImageLoader();
 			position += 1;
 			asynImageLoader
-					.showImageAsyn(imageView,
+					.showImageAsyn(MainActivity.this,imageView,
 							"http://182.254.137.149:8080/client/adv/" + position
 									+ ".jpg", R.drawable.placehold);
 			container.addView(imageView, lp);
@@ -489,6 +505,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 		SharedPreferences pref = getSharedPreferences(PreferenceKeys.FILE_NAME,
 				MODE_PRIVATE);
 		pref.edit().putBoolean(PreferenceKeys.SYS_USER_LOGIN, false).commit();
+		pref.edit().putString(PreferenceKeys.SYS_USER_NAME, "").commit();
 	}
 
 	public FragmentManager getMyFragmentManager() {

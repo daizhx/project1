@@ -42,7 +42,7 @@ public class CommonUtil {
 	public interface BrowserUrlListener
 	{
 
-		public abstract void onComplete(String s);
+		public abstract void onComplete(Context c, String s);
 	}
 
 	public interface MacAddressListener
@@ -55,12 +55,9 @@ public class CommonUtil {
 	{
 	}
 	
-	public static boolean CheckNetWork() {
-		if (Log.D) { 
-			Log.d("CommonUtil", "CheckNetWork");
-		}
+	public static boolean CheckNetWork(Context context) {
 		
-		ConnectivityManager localConnectivityManager = (ConnectivityManager) EHTApplication.getInstance().getSystemService("connectivity");
+		ConnectivityManager localConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		int i = 0;
 		if (localConnectivityManager == null) {
@@ -84,9 +81,6 @@ public class CommonUtil {
 
 	public static void backToMain(Context context)
 	{
-		if (Log.D) { 
-			Log.d("CommonUtil", "backToMain");
-		}
 		
 		try
 		{
@@ -121,9 +115,6 @@ public class CommonUtil {
 	}
 	
 	public static int checkNetWorkType() {
-		if (Log.D) { 
-			Log.d("CommonUtil", "checkNetWorkType");
-		}
 		
 		byte newworkType;
 		if (Proxy.getDefaultHost() != null)
@@ -164,14 +155,14 @@ public class CommonUtil {
 		return startCheck((new StringBuilder("[\\wÒ»-ý›\\-a-zA-Z0-9_]{")).append(i).append(",").append(j).append("}").toString(), s);
 	}
 	
-	public static String getDeviceId() {
-		return ((TelephonyManager) EHTApplication.getInstance()
-				.getSystemService("phone")).getDeviceId();
+	public static String getDeviceId(Context context) {
+		return ((TelephonyManager) context
+				.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
 	}
 
-	public static SharedPreferences getGySharedPreferences() {
-		return EHTApplication.getInstance().getSharedPreferences(ConstSysConfig.SYS_CUST_CLIENT, 0);
-	}
+//	public static SharedPreferences getGySharedPreferences(Context context) {
+//		return context.getSharedPreferences(ConstSysConfig.SYS_CUST_CLIENT, 0);
+//	}
 	
 	public static int getLength(String s)
 	{
@@ -191,19 +182,12 @@ public class CommonUtil {
 		} while (true);
 	}
 	
-	public  static void getLocalMacAddress(final MacAddressListener listener)
+	public  static void getLocalMacAddress(final MacAddressListener listener, Context context)
 	{
-		if (Log.D) { 
-			Log.d("CommonUtil", "getLocalMacAddress");
-		}
 		
-		final WifiManager wifi = (WifiManager)EHTApplication.getInstance().getSystemService("wifi");
+		final WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 		String s = wifi.getConnectionInfo().getMacAddress();
-		if (Log.D)
-		{
-			String s1 = (new StringBuilder("getMacAddress() macAddress without open -->> ")).append(s).toString();
-			Log.d("Temp", s1);
-		}
+		
 		
 		if (s == null) {
 			final Object waiter = new Object();
@@ -211,34 +195,19 @@ public class CommonUtil {
 				
 				@Override
 				public void run() {
-					if (Log.D)
-						Log.d("Temp", "run() -->> ");
 					boolean flag = wifi.setWifiEnabled(true);
-					if (Log.D)
-						Log.d("Temp", "run() setWifiEnabled -->> true");
 					int i = 0;
 					String s1 = wifi.getConnectionInfo().getMacAddress();
 					while(true) {
 					if (s1 != null || i >= 5)
 					{
 						boolean flag1 = wifi.setWifiEnabled(false);
-						if (Log.D)
-							Log.d("Temp", "run() setWifiEnabled -->> false");
-						
-						if (Log.D)
-						{
-							String s2 = (new StringBuilder("getMacAddress() macAddress with open -->> ")).append(s1).toString();
-							Log.d("Temp", s2);
-						}
 						listener.setMacAddress(s1);
 						return;
 					}
 					
 					i++;
 					Object obj = waiter;
-					
-					if (Log.D)
-						Log.d("Temp", "getMacAddress() wait start 500 -->> ");
 					
 					try {
 						synchronized(waiter) {
@@ -247,9 +216,7 @@ public class CommonUtil {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
-					if (Log.D)
-						Log.d("Temp", "getMacAddress() wait end 500 -->> ");
+
 				}
 				}
 			}).start();
@@ -288,24 +255,18 @@ public class CommonUtil {
 		return false;
 	}
 	
-	public static void queryBrowserUrl(String s, final URLParamMap params, final BrowserUrlListener listener)
-	{
-		if (Log.D) { 
-			Log.d("CommonUtil", "queryBrowserUrl");
-		}
-		
+	public static void queryBrowserUrl(final Context context, String s, final URLParamMap params, final BrowserUrlListener listener)
+	{	
 		HttpGroupSetting httpgroupsetting = new HttpGroupSetting();
 		httpgroupsetting.setType(1000);
-		HttpGroupaAsynPool httpgroupaasynpool = new HttpGroupaAsynPool(httpgroupsetting);
+//		HttpGroupaAsynPool httpgroupaasynpool = new HttpGroupaAsynPool(context, httpgroupsetting);
+		HttpGroupaAsynPool httpgroupaasynpool = HttpGroupaAsynPool.getHttpGroupaAsynPool();
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId("genToken");
 		httpsetting.putJsonParam("action", s);
 		httpsetting.setListener(new HttpGroup.OnCommonListener() {
 			public void onEnd(HttpResponse httpresponse)
 			{
-				if (Log.D) { 
-					Log.d("CommonUtil", "queryBrowserUrl.httpsetting.onEnd");
-				}
 				if(httpresponse!= null && httpresponse.getJSONObject()!= null)
 				{
 				JSONObjectProxy jsonobjectproxy = httpresponse.getJSONObject();
@@ -319,13 +280,13 @@ public class CommonUtil {
 				
 				params.put("tokenKey", s);
 				String s3 = HttpGroup.mergerUrlAndParams(s1, params);
-				if (Log.D)
-				{
-					String s4 = (new StringBuilder("queryBrowserUrl() mergerUrl -->> ")).append(s3).toString();
-					Log.d("Temp", s4);
-				}
+//				if (Log.D)
+//				{
+//					String s4 = (new StringBuilder("queryBrowserUrl() mergerUrl -->> ")).append(s3).toString();
+//					Log.d("Temp", s4);
+//				}
 				
-				listener.onComplete(s3);
+				listener.onComplete(context, s3);
 				}
 			}
 
@@ -336,7 +297,7 @@ public class CommonUtil {
 			}
 
 			@Override
-			public void onReady(HttpSettingParams httpSettingParams) {
+			public void onReady(HttpGroup.HttpSettingParams httpSettingParams) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -350,28 +311,21 @@ public class CommonUtil {
 		return Pattern.compile(s).matcher(s1).matches();
 	}
 	
-	public static void toBrowser(String s, URLParamMap urlparammap)
-	{
-		if (Log.D) { 
-			Log.d("CommonUtil", "toBrowser");
-		}
-		
-		queryBrowserUrl(s, urlparammap, new BrowserUrlListener() {
-			public void onComplete(String s)
+	public static void toBrowser(Context context, String s, URLParamMap urlparammap)
+	{	
+		queryBrowserUrl(context, s, urlparammap, new BrowserUrlListener() {
+			public void onComplete(Context c, String s)
 			{
 				Uri uri = Uri.parse(s);
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				EHTApplication.getInstance().startActivity(intent);
+				c.startActivity(intent);
 			}
 		});
 	}
 	
 	public String getLocalIpAddress()
 	{
-		if (Log.D) { 
-			Log.d("CommonUtil", "getLocalIpAddress");
-		}
 		
 		try 
 		{
@@ -393,11 +347,7 @@ public class CommonUtil {
 		}
 		catch(SocketException exception)
 		{
-			if (Log.V)
-			{
-				String s2 = exception.toString();
-				Log.v("WifiPreference IpAddress", s2);
-			}
+
 		}
 		
 		return null;

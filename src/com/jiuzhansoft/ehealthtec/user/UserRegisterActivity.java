@@ -18,21 +18,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jiuzhansoft.ehealthtec.MainActivity;
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
+import com.jiuzhansoft.ehealthtec.constant.PreferenceKeys;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.http.utils.Des3;
+import com.jiuzhansoft.ehealthtec.http.utils.Md5Encrypt;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 import com.jiuzhansoft.ehealthtec.utils.StatisticsReportUtil;
 
 public class UserRegisterActivity extends BaseActivity {
+	private static final String TAG = "register";
 	private Button mConfirmBtn;
 	private EditText mRegisterFirstPwd;
 	private EditText mRegisterMail;
@@ -103,7 +110,7 @@ public class UserRegisterActivity extends BaseActivity {
 
 	private void register() {
 		if (Log.D) {
-			Log.d("RegisterActivity", "onRegister");
+			Log.d(TAG, "register");
 		}
 		try {
 			if (!inputCheck()) {
@@ -119,79 +126,43 @@ public class UserRegisterActivity extends BaseActivity {
 					jsonobject.put("email", sRegMailAddr);
 				// if(!TextUtils.isEmpty(sRegPhone))
 				// jsonobject.put("phone", sRegPhone);
-				jsonobject.put("uuid", StatisticsReportUtil.readDeviceUUID());
 				HttpSetting httpsetting = new HttpSetting();
-				httpsetting.setReadTimeout(600);
-				httpsetting
-						.setFunctionId(ConstFuncId.FUNCTION_ID_FOR_USER_REGISTER);
+				httpsetting.setRequestMethod("POST");
+				httpsetting.setFunctionId(ConstFuncId.FUNCTION_ID_FOR_USER_REGISTER);
 				httpsetting.setJsonParams(jsonobject);
 
 				httpsetting.setListener(new HttpGroup.OnAllListener() {
 					public void onEnd(HttpResponse httpresponse) {
+						JSONObjectProxy json = httpresponse.getJSONObject();
 						if (Log.D) {
-							Log.d("RegisterActivity",
-									"onRegister.HttpGroup.OnAllListener.onEnd");
+							Log.d(TAG, "register onEnd:httpresponse"+json);
 						}
-						if (httpresponse.getJSONObject() != null) {
-							final int getcode = httpresponse.getJSONObject()
-									.getIntOrNull("code");
-							// JSONObjectProxy jsonobjectProxy =
-							// httpresponse.getJSONObject().getJSONObject("registerInfo");
-							if (getcode == 1) {
-								try {
-									String pinName = httpresponse
-											.getJSONObject()
-											.getJSONObject("registerInfo")
-											.getStringOrNull("pin");
-									putString2Preference(
-											ConstHttpProp.USER_PIN, pinName);
-									post(new Runnable() {
-										public void run() {
-											UserLogin.setUserState(true);
-											Intent intent = new Intent(
-													UserRegisterActivity.this,
-													MainActivity.class);
-											Bundle bundle = new Bundle();
-											bundle.putInt("index", 1);
-											intent.putExtras(bundle);
-											startActivity(intent);
-											finish();
-										}
-									});
-									if (Log.D)
-										Log.d("Register",
-												"successs to register");
-								} catch (Exception exception) {
-									if (Log.D) {
-										StringBuilder stringbuilder = new StringBuilder(
-												"error message:");
-										String s = stringbuilder.append(
-												exception.getMessage())
-												.toString();
-										Log.d("Register", s);
-									}
-								}
-							} else {
-								String s = getText(
-										R.string.register_error_username_repeat)
-										.toString();
-								showDialog(s);
+						try {
+							int code = json.getInt("code");
+							String msg = json.getString("msg");
+							JSONObject object = json.getJSONObjectOrNull("object");
+							if(code ==1 && object != null){
+								String userId = object.getString("userId");
+								registerSuccess(userId);
+							}else{
+//								Log.d(TAG,"Login fail msg="+msg);
+								Toast.makeText(UserRegisterActivity.this, getResources().getString(R.string.register_fail)+msg, Toast.LENGTH_SHORT).show();
+								
 							}
-						} else {
-							String s = getText(R.string.register_err_busy)
-									.toString();
-							showDialog(s);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
 
 					public void onError(HttpError httperror) {
 						if (Log.D) {
 							Log.d("RegisterActivity",
-									"onRegister.HttpGroup.OnAllListener.onError");
+									"onRegister.HttpGroup.OnAllListener.onError---"+httperror);
 						}
 
-						UserRegisterActivity.this.showDialog(getText(
-								R.string.register_err_busy).toString());
+//						UserRegisterActivity.this.showDialog(getText(
+//								R.string.register_err_busy).toString());
 					}
 
 					public void onProgress(int i, int j) {
@@ -206,7 +177,8 @@ public class UserRegisterActivity extends BaseActivity {
 					}
 				});
 				httpsetting.setNotifyUser(true);
-				getHttpGroupaAsynPool().add(httpsetting);
+				httpsetting.setShowProgress(true);
+				HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 
 			}
 		} catch (JSONException exception) {
@@ -335,16 +307,6 @@ public class UserRegisterActivity extends BaseActivity {
 		if (!TextUtils.isEmpty(s.trim())) {
 			if (!CommonUtil.checkUsername(s)) {
 				flag = true;
-				// mRegisterName.setError(getText(R.string.user_name_hint));
-				/*
-				 * //方法二 String estring =
-				 * getResources().getString(R.string.user_name_hint);
-				 * ForegroundColorSpan fgcspan = new
-				 * ForegroundColorSpan(Color.argb(100, 0, 255, 0));
-				 * SpannableStringBuilder ssbuiler = new
-				 * SpannableStringBuilder(estring); ssbuiler.setSpan(fgcspan, 0,
-				 * estring.length(), 0); mRegisterName.setError(ssbuiler);
-				 */
 				mRegisterName.setError(Html.fromHtml("<font color=#00ff00>"
 						+ getResources().getString(R.string.user_name_hint)
 						+ "</font>"));
@@ -387,7 +349,38 @@ public class UserRegisterActivity extends BaseActivity {
 		sRegPwd2 = EncryptPassword2(password2);
 	}
 
-	private String EncryptPassword2(String s) {
-		return s;
+	/**
+	 * 加密密码
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String EncryptPassword2(String s) {
+		// TODO
+		String s1 = Md5Encrypt.MD5(s);
+		String s2 = null;
+		try {
+			s2 = Des3.encode(s1, Des3.DES3_KEY, Des3.DES3_IV);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return s2;
+	}
+	
+	private void registerSuccess(String userId){
+		putString2Preference(ConstHttpProp.USER_PIN, userId);
+		putBoolean2Preference(PreferenceKeys.SYS_USER_LOGIN, true);
+		putString2Preference(PreferenceKeys.SYS_USER_NAME, sRegName);
+
+		UserLogin.setUserState(true);
+		UserLogin.UserName = sRegName;
+		
+		Intent intent = new Intent(UserRegisterActivity.this,MainActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("index", 1);
+		intent.putExtras(bundle);
+		startActivity(intent);
+		finish();
 	}
 }

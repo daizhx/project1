@@ -8,6 +8,11 @@ import java.util.Vector;
 import android.os.Process;
 
 
+/**
+ * 线程池，包含一些线程对象的普通对象
+ * @author Administrator
+ *
+ */
 public class ThreadPool {
 
 	protected boolean hasIdleThread;
@@ -31,6 +36,10 @@ public class ThreadPool {
 		return (IPriority) queue.poll();
 	}
 
+	/**
+	 * 
+	 * @return PooledThread or null
+	 */
 	public PooledThread getIdleThread() {
 		Iterator<PooledThread> iterator = null;
 		PooledThread retThread = null;
@@ -45,7 +54,7 @@ public class ThreadPool {
 					return retThread;
 				}
 			}
-			// no available thread;
+			//没有闲置的线程时，并且线程池未满时，new一个
 			if (getPoolSize() < maxPoolSize) {
 				PooledThread pooledthread = new PooledThread(this);
 				pooledthread.start();
@@ -54,6 +63,8 @@ public class ThreadPool {
 				//System.out.println("get idle thread in getIdleThread2");
 				return retThread;
 			}
+			
+			//等待其他线程闲置
 			if (!waitForIdleThread()) {
 				retThread = null;
 				//System.out.println("can not get idle thread in getIdleThread1");
@@ -67,6 +78,10 @@ public class ThreadPool {
 		return threads.size();
 	}
 
+	/**
+	 * new initPoolSize个PooledThread线程到threads队列中，new一个控制线程，不断将任务queue中的任务分发到pooledthread中
+	 * 去执行，没有任务时等待。
+	 */
 	public void init() {
 		initialized = true;
 		int i = 0;
@@ -77,6 +92,7 @@ public class ThreadPool {
 					public void run() {
 						Process.setThreadPriority(19);
 						do {
+							//TODO 如果出现返回null的情况，没有处理
 							PooledThread pooledthread = getIdleThread();
 							Collection<?> collection = (Collection<?>) pollTasks();
 							if (collection != null) {
@@ -105,6 +121,9 @@ public class ThreadPool {
 		}
 	}
 
+	/**
+	 * pooledThread通知线程池自己已闲置
+	 */
 	protected void notifyForIdleThread() {
 		synchronized (this) {
 			hasIdleThread = true;
@@ -113,6 +132,11 @@ public class ThreadPool {
 		}
 	}
 
+	/**
+	 * 向任务queue中添加runnable任务
+	 * @param runnable
+	 * @param priority
+	 */
 	public void offerTask(Runnable runnable, int priority) {
 		PriorityCollection collection = new PriorityCollection(priority);
 		collection.add(runnable);
@@ -159,6 +183,10 @@ public class ThreadPool {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	protected boolean waitForIdleThread() {
 		boolean ret = false;
 		hasIdleThread = false;
@@ -188,7 +216,6 @@ public class ThreadPool {
 			}
 		}
 		return ret;
-
 	}
 
 

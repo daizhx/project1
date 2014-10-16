@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -25,6 +26,7 @@ public class AsynImageLoader {
 	private List<Task> taskQueue;
 	private boolean isRunning = false;
 	private boolean isCacheDisk = true;
+	private Context mContext;
 	
 	public AsynImageLoader(){
 		// 初始化变量
@@ -54,7 +56,8 @@ public class AsynImageLoader {
 	 * @param url 图片的URL地址
 	 * @param resId 图片加载过程中显示的图片资源
 	 */
-	public void showImageAsyn(ImageView imageView, String url, int resId){
+	public void showImageAsyn(Context c,ImageView imageView, String url, int resId){
+		mContext = c;
 		imageView.setTag(url);
 		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView, resId));
 		
@@ -84,7 +87,8 @@ public class AsynImageLoader {
 		}else{
 			//判断是否已下载在disk中
 			if(isCacheDisk){
-			File cacheFile = FileUtil.getCacheFile(path);
+				
+			File cacheFile = FileUtil.getDiskCacheFile(mContext, null, FileUtil.getFileName(path));
 			if(cacheFile.length() > 0){
 				try {
 					Bitmap bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
@@ -156,13 +160,10 @@ public class AsynImageLoader {
 				while(taskQueue.size() > 0){
 					// 获取第一个任务，并将之从任务队列中删除
 					Task task = taskQueue.remove(0);
+					
 					// 将下载的图片添加到缓存
-					if(!isCacheDisk){
-						task.bitmap = PicUtil.getbitmap(task.path);
-					}else{
-					//下载并保存到disk
-						task.bitmap = PicUtil.getbitmapAndwrite(task.path);
-					}
+					task.bitmap = PicUtil.getbitmapAndwrite(mContext, task.path);
+
 					caches.put(task.path, new SoftReference<Bitmap>(task.bitmap));
 					
 					if(handler != null){

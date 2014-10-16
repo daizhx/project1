@@ -36,7 +36,7 @@ public class ExceptionDrawable extends Drawable {
 			paint4.setTextAlign(align);
 			paint.setAntiAlias(true);
 			text = s;
-			Bitmap bitmap1 = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.icon)).getBitmap();
+			Bitmap bitmap1 = ((BitmapDrawable)context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap();
 			bitmap = bitmap1;
 			int i = bitmap.getWidth();
 			width = i;

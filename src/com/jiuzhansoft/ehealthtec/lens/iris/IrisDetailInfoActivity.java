@@ -11,6 +11,7 @@ import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
 import com.jiuzhansoft.ehealthtec.application.EHTApplication;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
@@ -176,7 +177,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			}
 		});
 		httpsetting.setNotifyUser(true);
-		getHttpGroupaAsynPool().add(httpsetting);				
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);				
 	}
 
 	private void initView() {
@@ -287,6 +288,6 @@ public class IrisDetailInfoActivity extends BaseActivity {
 				
 			}});
 		httpsetting.setNotifyUser(true);
-		getHttpGroupaAsynPool().add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 }

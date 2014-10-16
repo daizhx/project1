@@ -452,32 +452,6 @@ public class BaseActivity extends FragmentActivity {
 		destroyListenerList.add(listener);
 	}
 
-	public HttpGroup getHttpGroupaAsynPool() {
-		return getHttpGroupaAsynPool(ConstHttpProp.TYPE_JSON);
-	}
-
-	private HttpGroup getHttpGroupaAsynPool(int paramInt) {
-		if (Log.D) {
-			Log.d("MyActivity", "getHttpGroupaAsynPool");
-		}
-
-		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
-		localHttpGroupSetting.setMyActivity(this);
-		localHttpGroupSetting.setType(paramInt);
-		return getHttpGroupaAsynPool(localHttpGroupSetting);
-	}
-
-	private HttpGroup getHttpGroupaAsynPool(
-			HttpGroupSetting paramHttpGroupSetting) {
-		if (Log.D) {
-			Log.d("MyActivity", "getHttpGroupaAsynPool");
-		}
-
-		HttpGroupaAsynPool localHttpGroupaAsynPool = new HttpGroupaAsynPool(
-				paramHttpGroupSetting);
-//		addDestroyListener(localHttpGroupaAsynPool);
-		return localHttpGroupaAsynPool;
-	}
   
 	
 	public String getStringFromPreference(String key) {

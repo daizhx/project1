@@ -2,6 +2,7 @@ package com.jiuzhansoft.ehealthtec.http.utils;
 
 import com.jiuzhansoft.ehealthtec.application.EHTApplication;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -32,7 +33,7 @@ public class DBHelperUtil {
 		  }
 	  }
 
-	  public synchronized static SQLiteDatabase getDatabase()
+	  public synchronized SQLiteDatabase getDatabase()
 	  {
 	  	Object obj = null;
 
@@ -40,12 +41,12 @@ public class DBHelperUtil {
 		{
 			  if (mOpenHelper == null)
 			  {
-				  PackageManager packagemanager = EHTApplication.getInstance().getPackageManager();
-				  String s = EHTApplication.getInstance().getPackageName();
+				  PackageManager packagemanager = mContext.getPackageManager();
+				  String s = mContext.getPackageName();
 				  try
 				  {
 				   	versionCode = packagemanager.getPackageInfo(s, 0).versionCode;
-				   	EHTApplication myapplication = EHTApplication.getInstance();
+				   	Application myapplication = (Application) mContext.getApplicationContext();
 					mOpenHelper = new OpenHelper(myapplication, DB_NAME, null, versionCode);
 					SQLiteDatabase sqlitedatabase = mOpenHelper.getReadableDatabase();
 					obj = (SQLiteDatabase)sqlitedatabase;

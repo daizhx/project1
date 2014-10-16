@@ -15,6 +15,7 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstSysConfig;
 import com.jiuzhansoft.ehealthtec.log.Log;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -27,14 +28,18 @@ public class FileService {
 	private static Directory imageDir;
 	private static Directory jsonDir;
 	private static int jsonDirState;
+	private CacheFileTableDBHelper mCacheFileTableDBHelper;
+	private Context mContext;
 
-	public FileService() {
+	public FileService(Context context) {
+		mCacheFileTableDBHelper = new CacheFileTableDBHelper(context);
+		mContext = context;
 	}
 	/**
 	 * 清除缓冲
 	 */
-	public static void clearCacheFiles() {
-		ArrayList<CacheFileItem> fileList = CacheFileTableDBHelper
+	public void clearCacheFiles() {
+		ArrayList<CacheFileItem> fileList = mCacheFileTableDBHelper
 				.getListByClean();
 		int i = 0;
 		do {
@@ -47,12 +52,10 @@ public class FileService {
 			if ((dir.getSpace() == ConstFileProp.STORAGE_INTERNAL)
 					|| ((dir.getSpace() == ConstFileProp.STORAGE_EXTERNAL) && (externalMemoryAvailable()))) {
 				boolean delFlag = item.getFile().delete();
-				if (Log.D) {
-					Log.d("Temp", item.getName());
-				}
+
 
 				if (delFlag)
-					CacheFileTableDBHelper.delete(item);
+					mCacheFileTableDBHelper.delete(item);
 			}
 			i++;
 		} while (true);
@@ -146,7 +149,7 @@ public class FileService {
 		return (long) statFs.getAvailableBlocks() * blockSize;
 	}
 
-	public static Directory getDirectory(int type) {
+	public Directory getDirectory(int type) {
 		Directory dir = null;
 		switch (type) {
 		case ConstFileProp.INTERNAL_TYPE_CACHE:
@@ -159,24 +162,17 @@ public class FileService {
 		return dir;
 	}
 
-	private static Directory getDirectoryByBigSize(String path) {
-		if (Log.D)
-			Log.d("Temp", "getDirectoryByBigSize() -->> ");
+	private Directory getDirectoryByBigSize(String path) {
 
 		File file;
 		Directory dir = null;
 		//首先判断手机内存
 		if (getTotalInternalMemorySize() > ConstFileProp.BIG_SIZE_THRESHOLD) {
-			if (Log.D)
-				Log.d("Temp", "getDirectoryByBigSize() -->> INTERNAL");
 
 			file = getInternalDirectory(path);
 			dir = new Directory(file);
 		//判断sdcard
 		} else if (getTotalExternalMemorySize() > ConstFileProp.BIG_SIZE_THRESHOLD) {
-			if (Log.D)
-				Log.d("Temp", "getDirectoryByBigSize() -->> EXTERNAL");
-
 			file = getExternalDirectory(path);
 			dir = new Directory(file);
 		}
@@ -184,8 +180,6 @@ public class FileService {
 	}
 
 	public static File getExternalDirectory(String path) {
-		if (Log.D)
-			Log.d("Temp", "getExternalDirectory() -->> ");
 		StringBuilder sb = new StringBuilder("/guanyi");
 
 		String dirName = sb.append((path != null)?path:"").toString();
@@ -210,23 +204,20 @@ public class FileService {
 		return dir;
 	}
 
-	public static File getInternalDirectory(String path) {
+	public File getInternalDirectory(String path) {
 		return getInternalDirectory(path,
 				ConstFileProp.INTERNAL_TYPE_CACHE);
 	}
 
-	public static File getInternalDirectory(String path, int type) {
-		if (Log.D)
-			Log.d("Temp", "getInternalDirectory() -->> ");
-
+	public File getInternalDirectory(String path, int type) {
 		File parentFile = null;
 
 		switch (type) {
 		case ConstFileProp.INTERNAL_TYPE_FILE:
-			parentFile = EHTApplication.getInstance().getFilesDir();
+			parentFile = mContext.getFilesDir();
 			break;
 		case ConstFileProp.INTERNAL_TYPE_CACHE:
-			parentFile = EHTApplication.getInstance().getCacheDir();
+			parentFile = mContext.getCacheDir();
 			break;
 		}
 
@@ -234,38 +225,20 @@ public class FileService {
 		if (!file.exists())
 			file.mkdirs();
 		
-		if(Log.D) {
-			StringBuilder sb = new StringBuilder("getInternalDirectory() dir.getAbsolutePath() -->> ");
-			sb.append(file.getAbsolutePath());
-			Log.d("Temp", sb.toString());
-		}
 		return file;
 	}
 	/**
 	 * 获取保存json数据缓冲的目录
 	 * @return
 	 */
-	private static Directory getJsonDirectory() {
-		if (Log.D) {
-			StringBuilder stringbuilder = new StringBuilder(
-					"getJsonDirectory() jsonDirState -->> ");
-			String s1 = stringbuilder.append(jsonDirState).toString();
-			Log.d("Temp", s1);
-		}
-		if (Log.D) {
-			StringBuilder stringbuilder1 = new StringBuilder(
-					"getJsonDirectory() jsonDir -->> ");
-			String s2 = stringbuilder1.append(jsonDir).toString();
-			Log.d("Temp", s2);
-		}
+	private Directory getJsonDirectory() {
 		Directory retDir;
 		if (jsonDirState == ConstFileProp.STORAGE_UNKNOWN)
 			retDir = null;
 		else if (jsonDir != null) {
 			retDir = jsonDir;
 		} else {
-			SharedPreferences sharedPreferences = EHTApplication
-					.getInstance().getSharedPreferences(
+			SharedPreferences sharedPreferences = mContext.getSharedPreferences(
 							ConstSysConfig.SYS_CUST_CLIENT,
 							Activity.MODE_PRIVATE);
 			// 获取json file cache path
@@ -275,19 +248,11 @@ public class FileService {
 			jsonDirState = sharedPreferences
 					.getInt("jsonFileCachePathState", 0);
 			if (jsonPath == null) {
-				if (Log.D)
-					Log.d("Temp", "getJsonDirectory() no preferences -->> ");
-
 				Directory dir = getDirectoryByBigSize("/json");
 				if (dir == null) {
-					if (Log.D)
-						Log.d("Temp", "getJsonDirectory() no big size -->> ");
 					jsonDirState = ConstFileProp.STORAGE_UNKNOWN;
 					retDir = null;
 				} else {
-					if (Log.D)
-						Log.d("Temp", "getJsonDirectory() has big size -->> ");
-
 					jsonDir = dir;
 					jsonDirState = dir.getSpace();
 					SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -298,23 +263,11 @@ public class FileService {
 					retDir = jsonDir;
 				}
 			} else {
-				if (Log.D)
-					Log.d("Temp", "getJsonDirectory() is preferences -->> ");
-
 				if (jsonDirState == ConstFileProp.STORAGE_EXTERNAL
 						&& !externalMemoryAvailable()) {
-					if (Log.D)
-						Log.d("Temp", "getJsonDirectory() no external -->> ");
 					jsonDirState = ConstFileProp.STORAGE_UNKNOWN;
 					retDir = null;
 				} else {
-					if (Log.D) {
-						String s5 = (new StringBuilder(
-								"getJsonDirectory() jsonFileCachePath -->> "))
-								.append(jsonPath).toString();
-						Log.d("Temp", s5);
-					}
-
 					int i;
 					if (jsonDirState == ConstFileProp.STORAGE_EXTERNAL)
 						i = ConstFileProp.STORAGE_EXTERNAL;
@@ -322,7 +275,7 @@ public class FileService {
 						i = ConstFileProp.STORAGE_INTERNAL;
 
 					File file = new File(jsonPath);
-					jsonDir = new FileService.Directory(file, i);
+					jsonDir = new Directory(file, i);
 
 					File file1 = jsonDir.getDir();
 					if (!file1.exists())
@@ -342,9 +295,6 @@ public class FileService {
 		if (externalMemoryAvailable()) {
 			StatFs statFs = new StatFs(Environment.getExternalStorageDirectory().getPath());
 			retSize = statFs.getBlockCount() * statFs.getBlockSize();
-			if (Log.D) {
-				Log.d("Temp", "getTotalExternalMemorySize() -->> " + retSize);
-			}
 		} else {
 			retSize = 65535;
 		}
@@ -359,10 +309,6 @@ public class FileService {
 	public static long getTotalInternalMemorySize() {
 		StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
 		long totalSize = statFs.getBlockCount() * statFs.getBlockSize();
-		if (Log.D) {
-			String str2 = "getTotalInternalMemorySize() -->> " + totalSize;
-			Log.d("Temp", str2);
-		}
 		return totalSize;
 	}
 
@@ -373,15 +319,15 @@ public class FileService {
 	 * 得到一个输出流，用于保存数据
 	 * @param fileguider
 	 * @return
-	 * @throws FileNotFoundException
+	 * @throws java.io.FileNotFoundException
 	 */
-	public static FileOutputStream openFileOutput(FileGuider fileguider)
+	public FileOutputStream openFileOutput(FileGuider fileguider)
 			throws FileNotFoundException {
 		FileOutputStream fileoutputstream = null;
 		long l = fileguider.getAvailableSize();
 
-		if (l == 0) { //如果没有可用的空间
-			EHTApplication myapplication = EHTApplication.getInstance();
+		if (l == 0) {
+			Application myapplication = (Application) mContext.getApplicationContext();
 			String s = fileguider.getFileName();
 			int k = fileguider.getMode();
 			fileoutputstream = myapplication.openFileOutput(s, k);
@@ -487,21 +433,20 @@ public class FileService {
 	 * @throws Exception
 	 */
 	public String read(String filename) throws Exception {
-		FileInputStream fis = EHTApplication.getInstance()
+		FileInputStream fis = mContext
 				.openFileInput(filename);
 		byte[] buf = readInputStream(fis);
 		return new String(buf);
 	}
 
 	public byte[] readAsByteArray(String filename) throws Exception {
-		FileInputStream fis = EHTApplication.getInstance()
+		FileInputStream fis = mContext
 				.openFileInput(filename);
 		return readInputStream(fis);
 	}
 
 	public void save(String filename, String content) throws Exception {
-		FileOutputStream fos = EHTApplication
-				.getInstance().openFileOutput(filename, Activity.MODE_PRIVATE);
+		FileOutputStream fos = mContext.openFileOutput(filename, Activity.MODE_PRIVATE);
 		byte[] buf = content.getBytes();
 		fos.write(buf);
 		fos.close();
@@ -509,8 +454,7 @@ public class FileService {
 
 	public void saveAppend(String filename, String content)
 			throws Exception {
-		FileOutputStream fos = EHTApplication
-				.getInstance().openFileOutput(filename, Activity.MODE_APPEND);
+		FileOutputStream fos = mContext.openFileOutput(filename, Activity.MODE_APPEND);
 		byte[] buf = content.getBytes();
 		fos.write(buf);
 		fos.close();
@@ -518,8 +462,7 @@ public class FileService {
 
 	public void saveReadable(String filename, String content)
 			throws Exception {
-		FileOutputStream fos = EHTApplication
-				.getInstance().openFileOutput(filename,
+		FileOutputStream fos = mContext.openFileOutput(filename,
 						Context.MODE_WORLD_READABLE);
 		byte[] buf = content.getBytes();
 		fos.write(buf);
@@ -528,8 +471,7 @@ public class FileService {
 
 	public void saveReadableWriteable(String filename, String content)
 			throws Exception {
-		FileOutputStream fos = EHTApplication
-				.getInstance().openFileOutput(
+		FileOutputStream fos = mContext.openFileOutput(
 						filename,
 						Context.MODE_WORLD_READABLE
 								| Context.MODE_WORLD_WRITEABLE);
@@ -545,8 +487,7 @@ public class FileService {
 
 	public void saveWriteable(String filename, String content)
 			throws Exception {
-		FileOutputStream fos = EHTApplication
-				.getInstance().openFileOutput(filename,
+		FileOutputStream fos = mContext.openFileOutput(filename,
 						Context.MODE_WORLD_WRITEABLE);
 		byte[] buf = content.getBytes();
 		fos.write(buf);

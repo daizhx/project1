@@ -15,6 +15,7 @@ import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
@@ -840,7 +841,7 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 				
 			}});
 		httpsetting.setNotifyUser(true);
-		getHttpGroupaAsynPool().add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 	
 	public void checkInfo(){

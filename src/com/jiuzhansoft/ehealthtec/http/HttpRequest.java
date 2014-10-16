@@ -1,11 +1,13 @@
-package com.jiuzhansoft.ehealthtec.http;
+﻿package com.jiuzhansoft.ehealthtec.http;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,6 +40,7 @@ import com.jiuzhansoft.ehealthtec.http.utils.CacheFileItem;
 import com.jiuzhansoft.ehealthtec.http.utils.CacheFileTableDBHelper;
 import com.jiuzhansoft.ehealthtec.http.utils.CommonUtil;
 import com.jiuzhansoft.ehealthtec.http.utils.DialogController;
+import com.jiuzhansoft.ehealthtec.http.utils.EhtWebUtil;
 import com.jiuzhansoft.ehealthtec.http.utils.FileGuider;
 import com.jiuzhansoft.ehealthtec.http.utils.FileService;
 import com.jiuzhansoft.ehealthtec.http.utils.IOUtil;
@@ -47,6 +50,7 @@ import com.jiuzhansoft.ehealthtec.http.utils.NetUtils;
 import com.jiuzhansoft.ehealthtec.log.Log;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -73,10 +77,6 @@ public class HttpRequest implements HttpGroup.StopController {
 		}
 
 		protected void actionCommon(boolean flag) {
-			if (Log.D) { 
-				Log.d("HttpRequest", "HttpDialogController.actionCommon");
-			}
-			
 			alertDialog.dismiss();
 			if (Log.D) {
 				StringBuilder localStringBuilder1 = new StringBuilder("id:");
@@ -85,7 +85,7 @@ public class HttpRequest implements HttpGroup.StopController {
 						"- notifyUser() retry -->> httpRequestList.size() = ");
 				int j = this.httpRequestList.size();
 				String str = "" + j;
-				Log.d("HttpGroup", str);
+				Log.d(TAG, str);
 			}
 			HashMap hashMap = HttpGroup.alertDialogStateMap;
 			int l = this.httpRequestList.size();
@@ -111,16 +111,13 @@ public class HttpRequest implements HttpGroup.StopController {
 		}
 
 		public void init(ArrayList<HttpRequest> arrayList, Activity activity) {
-			if (Log.D) { 
-				Log.d("HttpRequest", "HttpDialogController.init");
-			}
-			
 			this.myActivity = activity;
 			this.httpRequestList = arrayList;
 			init(myActivity);
 		}
 	}
 
+	private static final String TAG = "HttpGroup";
 	private HttpGroup.Handler cacheHandler;
 	protected HttpURLConnection conn;
 	private HttpGroup.Handler connectionHandler;
@@ -143,12 +140,13 @@ public class HttpRequest implements HttpGroup.StopController {
 	private boolean stopFlag;
 	private HttpGroup.Handler testHandler;
 	private String thirdHost;
+	public Context mContext;
+	private FileService mFileService;
+	protected CacheFileTableDBHelper mCacheFileTableDBHelper;
 
-	public HttpRequest(HttpSetting httpSet, HttpGroup group) {
-		if (Log.D) { 
-			Log.d("HttpRequest", "HttpRequest(setting, group)");
-		}
-		
+	public HttpRequest(Context context, HttpSetting httpSet, HttpGroup group) {
+		mContext = context;
+		mFileService = new FileService(mContext);
 		handlers = new ArrayList();
 		httpSetting = httpSet;
 		httpGroup = group;
@@ -157,27 +155,20 @@ public class HttpRequest implements HttpGroup.StopController {
 		// data
 		paramHandler = new HttpGroup.Handler() {
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "paramHandler.run");
-				}
-				
 				if (httpSetting.getFunctionId() != null) {
-					String s = httpSetting.getFunctionId();
-					httpSetting.putMapParams(ConstFuncId.FUNCTION_ID, s);
+					//s中如果包含反斜杠/会出问题
+//					String s = httpSetting.getFunctionId();
+//					httpSetting.putMapParams(ConstFuncId.FUNCTION_ID, s);
 					String s1 = httpSetting.getJsonParams().toString();
+                    Log.d("daizhx", "HttpRequest params="+s1);
 					try {
 						s1 = new String(s1.getBytes(),"utf-8");
+                        Log.d("daizhx", "2HttpRequest params="+s1);
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (Log.I) {
-						StringBuilder stringbuilder = new StringBuilder("id:");
-						String s2 = stringbuilder.append(httpSetting.getId())
-								.append("- body -->> ").append(s1).toString();
-						Log.i("HttpGroup", s2);
-					}
-					httpSetting.putMapParams("body", s1);
+					httpSetting.putMapParams("param", s1);
 				}
 				// enter next handler;
 				nextHandler();
@@ -191,19 +182,16 @@ public class HttpRequest implements HttpGroup.StopController {
 			private String hostAndPort;
 
 			public String getHostAndPortByUrl(String s) {
-				if (Log.D) { 
-					Log.d("HttpRequest", "proxyHandler.getHostAndPortByUrl");
-				}
 				
 				String s1;
-				if (hostAndPort != null)
+				if (hostAndPort != null){
 					s1 = hostAndPort;
-				else if (s != null) {
+				}else if (s != null) {
 					int i = s.indexOf("://") + 3;
 					int j = s.indexOf("/", i);
-					if (i == -1)
+					if (i == -1){
 						s1 = null;
-					else if (j == -1) {
+					}else if (j == -1) {
 						s1 = null;
 					} else {
 						hostAndPort = s.substring(i, j);
@@ -216,15 +204,8 @@ public class HttpRequest implements HttpGroup.StopController {
 			}
 
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "proxyHandler.run");
-				}
 				
-				String proxyHost = NetUtils.getProxyHost();
-				
-				if (Log.D) { 
-					Log.d("HttpRequest", "proxyHost : " + proxyHost);
-				}
+				String proxyHost = NetUtils.getProxyHost(mContext);
 				
 				if (proxyHost != null) {
 					String url = httpSetting.getUrl();
@@ -235,20 +216,25 @@ public class HttpRequest implements HttpGroup.StopController {
 						}
 					}
 				}
+				
 				if (httpSetting.getFunctionId() != null) {
 					String lastUrl = null;
 					if (proxyHost != null) {
 						lastUrl = (new StringBuilder("http://"))
 								.append(proxyHost)
-								.append(Configuration.getProperty("mainserver"))
+//								.append(Configuration.getProperty("mainserver"))
 								.append("/client/rest/").toString();
 					} else {
 						StringBuilder stringbuilder = new StringBuilder(
 								"http://");
 						lastUrl = stringbuilder
 								.append(HttpGroup.host)
-								.append(Configuration.getProperty("mainserver"))
-								.append("/client/rest/").toString();
+//								.append(Configuration.getProperty("mainserver"))
+								.append(ConstSysConfig.SERVER_NAME).toString();
+					}
+					String functionModal = httpSetting.getFunctionModal();
+					if(!TextUtils.isEmpty(functionModal)){
+						lastUrl = lastUrl + functionModal + "/";
 					}
 					httpSetting.setUrl(lastUrl);
 				}
@@ -256,13 +242,10 @@ public class HttpRequest implements HttpGroup.StopController {
 			}
 		};
 		/**
-		 * the third handler function:�������ӵ�ʱ�����
+		 * the third handler function
 		 */
 		firstHandler = new HttpGroup.Handler() {
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "firstHandler.run");
-				}
 				
 				if (httpSetting.getConnectTimeout() == 0) {
 					httpSetting.setConnectTimeout(HttpGroup.connectTimeout);
@@ -273,7 +256,7 @@ public class HttpRequest implements HttpGroup.StopController {
 				if (httpSetting.getType() == ConstHttpProp.TYPE_IMAGE
 						|| httpSetting.getType() == ConstHttpProp.PRIORITY_FILE) {
 					//for file , only with get;
-					httpSetting.setPost(false);
+//					httpSetting.setPost(false);
 				}
 				
 				if (httpSetting.getType() == ConstHttpProp.TYPE_IMAGE)
@@ -294,15 +277,7 @@ public class HttpRequest implements HttpGroup.StopController {
 				httpGroup.addMaxStep(1);
 				urlParam();
 				if (checkModule(0)) {
-					if (Log.D) {
-						StringBuilder stringbuilder = new StringBuilder(
-								"id:");
-						int k = httpSetting.getId();
-						String s = stringbuilder.append(k)
-								.append("- functionId close -->> ")
-								.toString();
-						Log.d("HttpGroup", s);
-					}
+                    //TODO
 				} else if (TextUtils.isEmpty(httpSetting.getUrl())
 						&& TextUtils.isEmpty(httpSetting.getFunctionId())
 						|| httpSetting.getUrl().endsWith(".gif")
@@ -315,24 +290,8 @@ public class HttpRequest implements HttpGroup.StopController {
 				} else {
 					nextHandler();
 					if (isLastError()) {
-						if (Log.I) {
-							StringBuilder stringbuilder1 = new StringBuilder(
-									"id:");
-							int l = httpSetting.getId();
-							String s1 = stringbuilder1.append(l)
-									.append("- onError -->> ").toString();
-							Log.i("HttpGroup", s1);
-						}
 						httpSetting.onError(getLastError());
 					} else {
-						if (Log.I) {
-							StringBuilder stringbuilder2 = new StringBuilder(
-									"id:");
-							int i1 = httpSetting.getId();
-							String s2 = stringbuilder2.append(i1)
-									.append("- onEnd -->> ").toString();
-							Log.i("HttpGroup", s2);
-						}
 						httpGroup.addCompletesCount();
 						httpGroup.addStep(1);
 						httpSetting.onEnd(httpResponse);
@@ -344,45 +303,28 @@ public class HttpRequest implements HttpGroup.StopController {
 		 * the fourth handler--test handler function
 		 */
 		testHandler = new HttpGroup.Handler() {
-			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "testHandler.run");
-				}
-				
+			public void run() {			
 				String s;
 				Boolean boolean1 = Boolean.valueOf(false);
-				if (!Configuration.getBooleanProperty("testMode", boolean1).booleanValue()) {
+				//if (!Configuration.getBooleanProperty("testMode", boolean1).booleanValue()) {
 					nextHandler();
 					return;
-				}
+				//}
 			}
 		};
 		cacheHandler = new HttpGroup.Handler() {
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "cacheHandler.run");
-				}
-
 				if (httpSetting.getCacheMode() != ConstHttpProp.CACHE_MODE_ONLY_NET
 						&& httpSetting.isLocalFileCache()) {
 					File file = findCachesFileByMd5();
 					if (file != null) {
 						if (httpSetting.getLocalFileCacheTime() != 0L
-								&& CacheFileTableDBHelper.isExpired(file)) {
-							httpResponse = new HttpResponse();
+								&& mCacheFileTableDBHelper.isExpired(file)) {
+							httpResponse = new HttpResponse(mContext);
 							switch (httpSetting.getType()) {
 							// json type cache
 							case ConstHttpProp.TYPE_JSON:
 								FileInputStream fileinputstream = null;
-								if (Log.D) {
-									StringBuilder stringbuilder1 = new StringBuilder(
-											"id:");
-									int j = httpSetting.getId();
-									String s1 = stringbuilder1.append(j)
-											.append("- read json file -->> ")
-											.toString();
-									Log.d("HttpGroup", s1);
-								}
 								try {
 									fileinputstream = new FileInputStream(file);
 									String s3 = IOUtil.readAsString(
@@ -418,7 +360,7 @@ public class HttpRequest implements HttpGroup.StopController {
 									String s5 = stringbuilder2.append(k)
 											.append("- read image file -->> ")
 											.toString();
-									Log.d("HttpGroup", s5);
+									Log.d(TAG, s5);
 								}
 								try {
 									long l = file.length();
@@ -446,7 +388,7 @@ public class HttpRequest implements HttpGroup.StopController {
 										.append(i)
 										.append("- local file cache time out -->> ")
 										.toString();
-								Log.d("HttpGroup", s);
+								Log.d(TAG, s);
 							}
 						}
 					}
@@ -456,9 +398,6 @@ public class HttpRequest implements HttpGroup.StopController {
 		};
 		connectionHandler = new HttpGroup.Handler() {
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "connectionHandler.run");
-				}
 
 				int i = 0;
 				boolean isContinue = false;
@@ -468,6 +407,7 @@ public class HttpRequest implements HttpGroup.StopController {
 						String s = httpSetting.getFinalUrl();						
 						if (s == null)
 							s = httpSetting.getUrl();
+						Log.d("daizhx", "url="+s);
 						URL url = new URL(s);
 						try {
 							conn = (HttpURLConnection) url.openConnection();
@@ -476,7 +416,7 @@ public class HttpRequest implements HttpGroup.StopController {
 							e2.printStackTrace();
 						}
 
-						if (NetUtils.getProxyHost() != null) {
+						if (NetUtils.getProxyHost(mContext) != null) {
 							if (thirdHost != null) {
 								conn.setRequestProperty("X-Online-Host", thirdHost);
 							} else {
@@ -491,6 +431,25 @@ public class HttpRequest implements HttpGroup.StopController {
 						conn.setRequestProperty("Charset", HttpGroup.charset);
 						conn.setRequestProperty("Connection", "Keep-Alive");
 						conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
+						//
+						if(ConstSysConfig.SERVER_NAME.equals("/ehtrest/api/") && !httpSetting.getFunctionId().equals("getToken")){
+							conn.setRequestProperty("appKey", "EHTAPPKEY3");
+							long time = System.currentTimeMillis();
+                            //TODO param
+//                            String param = httpSetting.getMapParams().get("param");
+                            String param = httpSetting.getJsonParams().toString();
+                            Log.d("daizhx", "signature add param="+param);
+                            if(httpSetting.isGet()){
+                                String apiSignature = EhtWebUtil.sgin(ConstSysConfig.APP_KEY, Long.toString(time), ConstSysConfig.SECRET, HttpGroup.token, "");
+                                conn.setRequestProperty("signature", apiSignature);
+                            }else {
+                                String apiSignature = EhtWebUtil.sgin(ConstSysConfig.APP_KEY, Long.toString(time), ConstSysConfig.SECRET, HttpGroup.token, param);
+                                conn.setRequestProperty("signature", apiSignature);
+                            }
+							conn.setRequestProperty("timestamp", Long.toString(time));
+							conn.setRequestProperty("token", HttpGroup.token);
+							conn.setRequestProperty("appKey", ConstSysConfig.APP_KEY);
+						}
 						// set cookies
 						if (HttpGroup.cookies != null) {
 							if (Log.D) {
@@ -501,12 +460,12 @@ public class HttpRequest implements HttpGroup.StopController {
 								String s6 = HttpGroup.cookies;
 								String s7 = stringbuilder3.append(s6)
 										.toString();
-								Log.d("HttpGroup", s7);
+								Log.d(TAG, s7);
 							}
 
 							conn.setRequestProperty("Cookie", HttpGroup.cookies);
-							Editor editor = CommonUtil.getGySharedPreferences().edit();
-							editor.putString(ConstSysConfig.SYS_SERVICE_COOKIES, HttpGroup.cookies).commit();
+							//Editor editor = CommonUtil.getGySharedPreferences().edit();
+							//editor.putString(ConstSysConfig.SYS_SERVICE_COOKIES, HttpGroup.cookies).commit();
 
 						}
 						if (Log.D) {
@@ -515,7 +474,7 @@ public class HttpRequest implements HttpGroup.StopController {
 							String s10 = stringbuilder4.append(l1)
 									.append("- handleGetOrPost() -->> ")
 									.toString();
-							Log.d("HttpGroup", s10);
+							Log.d(TAG, s10);
 						}
 						handleGetOrPost();
 						if (connectionRetry) {
@@ -533,7 +492,7 @@ public class HttpRequest implements HttpGroup.StopController {
 										.append(j2).append("- sleep -->> ");
 								int k2 = HttpGroup.attemptsTime;
 								String s11 = stringbuilder6.append(k2).toString();
-								Log.d("HttpGroup", s11);
+								Log.d(TAG, s11);
 							}
 							Thread.sleep(HttpGroup.attemptsTime);
 
@@ -558,17 +517,7 @@ public class HttpRequest implements HttpGroup.StopController {
 		};
 		contentHandler = new HttpGroup.Handler() {
 			public void run() {
-				if (Log.D) { 
-					Log.d("HttpRequest", "contentHandler.run");
-				}
 				
-				if (Log.D) {
-					StringBuilder stringbuilder = new StringBuilder("id:");
-					int i = httpSetting.getId();
-					String s = stringbuilder.append(i)
-							.append("- contentHandler -->>").toString();
-					Log.d("HttpGroup", s);
-				}
 				try {
 					if (httpSetting.getType() == ConstHttpProp.TYPE_JSON) {
 						jsonContent();
@@ -583,13 +532,6 @@ public class HttpRequest implements HttpGroup.StopController {
 						fileContent();
 					}
 					httpResponse.clean();
-					if (Log.D) {
-						StringBuilder stringbuilder1 = new StringBuilder("id:");
-						int j = httpSetting.getId();
-						String s1 = stringbuilder1.append(j)
-								.append("- contentHandler -->> ok").toString();
-						Log.d("HttpGroup", s1);
-					}
 					return;
 				} catch (Exception e) {
 					throwError(new HttpError(e));
@@ -606,8 +548,9 @@ public class HttpRequest implements HttpGroup.StopController {
 		};
 		continueListener = new HttpGroup.CompleteListener() {
 			public void onComplete(Bundle paramBundle) {
+				Log.d("daizhx", "lock obj2=" + HttpRequest.this);
 				synchronized (HttpRequest.this) {
-					notify();
+					HttpRequest.this.notify();
 				}
 			}
 		};
@@ -633,16 +576,10 @@ public class HttpRequest implements HttpGroup.StopController {
 		
 
 		public void onClick(DialogInterface dialoginterface, int i) {
-			if (Log.D) { 
-				Log.d("HttpRequest", "HttpRequest.AttestationWIFIDialogController.onClick");
-			}
-			
 			switch (i) {
 			case DialogInterface.BUTTON_POSITIVE: {
 				switch (state) {
 				case 0:
-					if (Log.D)
-						Log.d("HttpGroup", "http dialog BUTTON_POSITIVE -->> 1");
 					state = 1;
 //					mHandler.post(new Runnable() {
 //
@@ -665,8 +602,6 @@ public class HttpRequest implements HttpGroup.StopController {
 //					});
 					break;
 				case 1:
-					if (Log.D)
-						Log.d("HttpGroup", "http dialog BUTTON_POSITIVE -->> 2");
 					actionRetry();
 					break;
 				default:
@@ -674,8 +609,6 @@ public class HttpRequest implements HttpGroup.StopController {
 				}
 			}
 			case DialogInterface.BUTTON_NEGATIVE:
-				if (Log.D)
-					Log.d("HttpGroup", "http dialog BUTTON_NEGATIVE -->> 1");
 				actionCancel();
 				break;
 			default:
@@ -699,10 +632,10 @@ public class HttpRequest implements HttpGroup.StopController {
 		}
 	}
 
+	/**
+	 * 弹出wifi认证窗口
+	 */
 	private void alertAttestationWIFIDialog() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "alertAttestationWIFIDialog");
-		}
 		final Activity myActivity = httpGroup.getHttpGroupSetting().getMyActivity();
 		AttestationWIFIDialogController wifiDialogController = new AttestationWIFIDialogController();
 		wifiDialogController.setTitle(myActivity.getResources().getString(R.string.mess_wifi_cert));
@@ -712,69 +645,67 @@ public class HttpRequest implements HttpGroup.StopController {
 		notifyUser(wifiDialogController);
 	}
 
+	/**
+	 * 网络连接异常时，如果httpSetting设置了notifyUser为false,
+	 * 不传递异常错误到借口调用层，直接弹出alert Dialog提示用户网络连接出错
+	 */
 	private void alertErrorDialog() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "alertErrorDialog");
-		}
-		
-		if (Log.D) {
-			StringBuilder localStringBuilder2 = new StringBuilder("id:");
-			int j = this.httpSetting.getId();
-			String str2 = j + "- alertErrorDialog() -->> true";
-			Log.d("HttpGroup", str2);
-		}
-
 		if (!this.httpSetting.isNotifyUser()) {
 			if (Log.D) {
 				StringBuilder stringbuilder1 = new StringBuilder("id:");
 				int j = httpSetting.getId();
 				String s1 = stringbuilder1.append(j)
 						.append("- alertErrorDialog() -->> true").toString();
-				Log.d("HttpGroup", s1);
+				Log.d(TAG, s1);
 			}
 
 			ErrorDialogController errorDlgController = new ErrorDialogController();
-			CharSequence charsequence = EHTApplication.getInstance().getText(
+			CharSequence charsequence = mContext.getText(
 					R.string.alert_title_poor_network2);
 			errorDlgController.setTitle(charsequence);
-			CharSequence charsequence1 = EHTApplication.getInstance().getText(
+			CharSequence charsequence1 = mContext.getText(
 					R.string.alert_message_poor_network2);
 			errorDlgController.setMessage(charsequence1);
-			CharSequence charsequence2 = EHTApplication.getInstance().getText(
+			CharSequence charsequence2 = mContext.getText(
 					R.string.retry);
 			errorDlgController.setPositiveButton(charsequence2);
 			int k;
 			CharSequence charsequence3 = null;
-			if (httpSetting.isNotifyUserWithExit())
+			if (httpSetting.isNotifyUserWithExit()){
 				k = R.string.exit;
-			else
+			}else{
 				k = R.string.cancel;
-			charsequence3 = EHTApplication.getInstance().getText(k);
+			}
+			charsequence3 = mContext.getText(k);
 			errorDlgController.setNegativeButton(charsequence3);
 			notifyUser(errorDlgController);
+		}else{
+			//TODO
 		}
 	}
 
 	private void beforeConnection() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "beforeConnection");
-		}
-		
-		if (checkModule(3)) {
-			if (Log.D) {
-				StringBuilder localStringBuilder1 = new StringBuilder("id:");
-				int i = this.httpSetting.getId();
-				String str1 = i + "- encrypt -->> ";
-				Log.d("HttpGroup", str1);
+		Log.d("daizhx", "beforeconnection token="+HttpGroup.token);
+		if(HttpGroup.token == null && !httpSetting.getFunctionId().equals("getToken")){
+			HttpGroup.getToken(this.continueListener);
+			synchronized (HttpRequest.this) {
+				try {
+					HttpRequest.this.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+		}
+		if (checkModule(3)) {
 			if (HttpGroup.mMd5Key == null) {
 				HttpGroup.queryMd5Key(this.continueListener);
-				if (Log.D) {
-					StringBuilder localStringBuilder2 = new StringBuilder("id:");
-					int j = this.httpSetting.getId();
-					String str2 = j + "- encrypt wait start -->> ";
-					Log.d("HttpGroup", str2);
-				}
+//				if (Log.D) {
+//					StringBuilder localStringBuilder2 = new StringBuilder("id:");
+//					int j = this.httpSetting.getId();
+//					String str2 = j + "- encrypt wait start -->> ";
+//					Log.d("HttpGroup", str2);
+//				}
 				try {
 					synchronized(this){
 						wait();
@@ -783,12 +714,12 @@ public class HttpRequest implements HttpGroup.StopController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (Log.D) {
-					StringBuilder localStringBuilder3 = new StringBuilder("id:");
-					int k = this.httpSetting.getId();
-					String str3 = k + "- encrypt wait end -->> ";
-					Log.d("HttpGroup", str3);
-				}
+//				if (Log.D) {
+//					StringBuilder localStringBuilder3 = new StringBuilder("id:");
+//					int k = this.httpSetting.getId();
+//					String str3 = k + "- encrypt wait end -->> ";
+//					Log.d("HttpGroup", str3);
+//				}
 			}
 			String s3 = String.valueOf(httpSetting.getUrl());
 			StringBuilder stringbuilder3 = (new StringBuilder(s3))
@@ -796,34 +727,32 @@ public class HttpRequest implements HttpGroup.StopController {
 			String s4 = String.valueOf(httpSetting.getJsonParams().toString());
 			StringBuilder stringbuilder4 = new StringBuilder(s4);
 			String s6 = Md5Encrypt.md5(stringbuilder4.append(HttpGroup.mMd5Key)
-					.toString());
+                    .toString());
 			String s7 = stringbuilder3.append(s6).toString();
 			httpSetting.setFinalUrl(s7);
 		}
 	}
 
+	/**
+	 * http请求异常，过滤处理，最后再返回给调用层代码
+	 * 弹出异常处理窗口
+	 * 
+	 */
 	public void checkErrorInteraction() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "checkErrorInteraction");
-		}
-		
 		HttpError httpError = getLastError();
-		if ((httpError != null) && (httpError.getErrorCode() == 0)) {
+		if ((httpError != null) && (httpError.getErrorCode() == ConstHttpProp.EXCEPTION)) {
 			String str = httpError.getException().getMessage();
 			if ("attestation WIFI".equals(str)) {
 				alertAttestationWIFIDialog();
 				return;
 			}
 		}
-		if (isLastError())
+		if (isLastError()){
 			alertErrorDialog();
+		}
 	}
 
 	protected boolean checkModule(int id) {
-		if (Log.D) { 
-			Log.d("HttpRequest", "checkModule");
-		}
-		
 		boolean flag = false;
 		if ((httpSetting.getFunctionId() != null) && (HttpGroup.mModules != null)) {
 			JSONObjectProxy jsonObjectProxy = HttpGroup.mModules;
@@ -841,32 +770,22 @@ public class HttpRequest implements HttpGroup.StopController {
 		getErrorList().clear();
 	}
 
+	/**
+	 * 打开一个网络连接
+	 */
 	protected void connectionHandler2() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "connectionHandler2");
-		}
-		
 		String logString = null;
 		InputStream is = null;
 		Object obj = null;
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- connectionHandler2() -->> ").toString();
-			Log.d("HttpGroup", logString);
-		}
+		
 		try {
 			Log.d("daizhx", "connect:"+conn.getURL());
-			conn.connect();
-			if (Log.D) {
-				logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- ResponseCode() -->> ").toString();
-				Log.d("HttpGroup", logString);
-			}			
+			conn.connect();			
 			Map map = conn.getHeaderFields();
 			httpResponse.setHeaderFields(map);
-			if (Log.D) {
+			{
 				JSONObject jsonObject = new JSONObject();
+				Log.d("daizhx", "================"+conn.getHeaderFields());
 				Set set = conn.getHeaderFields().entrySet();
 				Iterator iterator = set.iterator();
 				String key = null;
@@ -885,7 +804,7 @@ public class HttpRequest implements HttpGroup.StopController {
 						.append(httpSetting.getId())
 						.append("- headerFields -->> ")
 						.append(jsonObject.toString()).toString();
-				Log.d("HttpGroup", logString);
+				Log.d(TAG, logString);
 			}
 			httpResponse.setCode(conn.getResponseCode());
 			httpResponse.setLength(conn.getContentLength());
@@ -894,10 +813,8 @@ public class HttpRequest implements HttpGroup.StopController {
 			httpResponse.setType(conn.getContentType());
 			if (httpResponse.getCode() == HttpURLConnection.HTTP_OK) {
 				if (Log.D) {
-					logString = new StringBuilder("id:")
-							.append(httpSetting.getId())
-							.append("- ResponseCode() -->> ok").toString();
-					Log.d("HttpGroup", logString);
+					logString = new StringBuilder("id:").append(httpSetting.getId()).append("- ResponseCode() -->> ok").toString();
+					Log.d(TAG, logString);
 				}
 				String cookies = conn.getHeaderField("Set-Cookie");
 				if (cookies != null) {
@@ -906,7 +823,7 @@ public class HttpRequest implements HttpGroup.StopController {
 								.append(httpSetting.getId())
 								.append("- cookies get -->> ").append(cookies)
 								.toString();
-						Log.d("HttpGroup", logString);
+						Log.d(TAG, logString);
 					}
 					HttpGroup.cookies = cookies.substring(0,
 							cookies.indexOf(";"));
@@ -925,14 +842,15 @@ public class HttpRequest implements HttpGroup.StopController {
 							.append(httpSetting.getId())
 							.append("- ResponseCode() -->> ok nextHandler()")
 							.toString();
-					Log.d("HttpGroup", logString);
+					Log.d(TAG, logString);
 				}
 				nextHandler();
 			} else {
 				HttpError httpError = new HttpError();
-				httpError.setErrorCode(2);
+				httpError.setErrorCode(ConstHttpProp.RESPONSE_CODE);
 				httpError.setResponseCode(httpResponse.getCode());
 				throwError(httpError);
+				Log.d(TAG, "11111111111111111111111");
 				connectionRetry = true;
 			}
 		} catch (Exception e) {
@@ -957,10 +875,6 @@ public class HttpRequest implements HttpGroup.StopController {
 	}
 
 	private void doNetAndCache() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "doNetAndCache");
-		}
-		
 		if (Log.D) {
 			StringBuilder localStringBuilder = new StringBuilder("id:");
 			int i = this.httpSetting.getId();
@@ -975,8 +889,9 @@ public class HttpRequest implements HttpGroup.StopController {
 			throwError(localHttpError);
 		} else {
 			nextHandler();
-			if (isLastError())
+			if (isLastError()){
 				save();
+			}
 		}
 	}
 
@@ -984,37 +899,20 @@ public class HttpRequest implements HttpGroup.StopController {
 	 * read data from internet to local file
 	 */
 	private void fileContent() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "fileContent");
-		}
-		
 		try {
 			FileGuider fileguider = httpSetting.getSavePath();
 			long l = httpResponse.getLength();
 			fileguider.setAvailableSize(l);
-			FileOutputStream fileoutputstream = FileService.openFileOutput(fileguider);
+			FileOutputStream fileoutputstream = mFileService.openFileOutput(fileguider);
 			InputStream inputStream = httpResponse.getInputStream();
-			IOUtil.readAsFile(inputStream, fileoutputstream,
-					ioProgressListener, this);
+			IOUtil.readAsFile(inputStream, fileoutputstream,ioProgressListener, this);
 			File file = Environment.getExternalStorageDirectory();//JiuZhanApplication.getInstance().getFilesDir();
 			File file1 = new File(file, fileguider.getFileName());
-			if (Log.D) {
-				StringBuilder stringBuilder = new StringBuilder("id:");
-				int i = httpSetting.getId();
-				String str2 = i + "- download() apkFilePath -->> " + file1;
-				Log.d("HttpGroup", str2);
-			}
 			if (isStop())
 				file1.delete();
 			httpResponse.setSaveFile(file1);
 			return;
 		} catch (Exception exception) {
-			if (Log.D) {
-				StringBuilder stringBuilder1 = new StringBuilder("id:");
-				int j = httpSetting.getId();
-				String str3 = j + "- file content connection read error -->> ";
-				Log.d("HttpGroup", str3, exception);
-			}
 			HttpError httpError = new HttpError(exception);
 			throwError(httpError);
 			connectionRetry = true;
@@ -1027,58 +925,21 @@ public class HttpRequest implements HttpGroup.StopController {
 	 * @return
 	 */
 	private File findCachesFileByMd5() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "findCachesFileByMd5");
-		}
-		
 		FileService.Directory directory = null;
-		if (Log.D) {
-			StringBuilder localStringBuilder1 = new StringBuilder("id:");
-			int i = this.httpSetting.getId();
-			String str1 = i + "- findCachesFileByMd5() -->> ";
-			Log.d("HttpGroup", str1);
-		}
 		switch (httpSetting.getType()) {
 		case ConstHttpProp.TYPE_JSON:
-			directory = FileService.getDirectory(ConstFileProp.INTERNAL_TYPE_CACHE);
+			directory = mFileService.getDirectory(ConstFileProp.INTERNAL_TYPE_CACHE);
 			break;
 		case ConstHttpProp.TYPE_IMAGE:
-			directory = FileService.getDirectory(ConstFileProp.INTERNAL_TYPE_FILE);
+			directory = mFileService.getDirectory(ConstFileProp.INTERNAL_TYPE_FILE);
 			break;
 		}
-		if (Log.D) {
-			String logString = new StringBuilder("id:")
-					.append(httpSetting.getId())
-					.append("- findCachesFileByMd5() directory -->> ")
-					.append(directory).toString();
-			Log.d("HttpGroup", logString);
-		}
+
 		File file;
 		if (directory == null) {
 			file = null;
 		} else {
 			File file1 = directory.getDir();
-			if (Log.D) {
-				String logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- findCachesFileByMd5() dir.exists() -->> ")
-						.append(file1.exists()).toString();
-				Log.d("HttpGroup", logString);
-			}
-			if (Log.D) {
-				String logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- findCachesFileByMd5() dir.isDirectory() -->> ")
-						.append(file1.isDirectory()).toString();
-				Log.d("HttpGroup", logString);
-			}
-			if (Log.D) {
-				String logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- findCachesFileByMd5() dir -->> ")
-						.append(file1).toString();
-				Log.d("HttpGroup", logString);
-			}
 			File afile[] = file1.listFiles(new FilenameFilter() {
 
 				@Override
@@ -1093,21 +954,7 @@ public class HttpRequest implements HttpGroup.StopController {
 				}
 
 			});
-			if (Log.D) {
-				String logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- findCachesFileByMd5() fileList -->> ")
-						.append(afile).toString();
-				Log.d("HttpGroup", logString);
-			}
 			if (afile != null && afile.length > 0) {
-				if (Log.D) {
-					String logString = new StringBuilder("id:")
-							.append(httpSetting.getId())
-							.append("- can find caches file by md5 -->> ")
-							.toString();
-					Log.d("HttpGroup", logString);
-				}
 				file = afile[0];
 			} else {
 				file = null;
@@ -1116,51 +963,24 @@ public class HttpRequest implements HttpGroup.StopController {
 		return file;
 	}
 
+	/**
+	 * ��ʼ��httpResponse��������http����ʽΪget
+	 * @throws Exception
+	 */
 	private void get() throws Exception {
-		if (Log.D) { 
-			Log.d("HttpRequest", "get");
-		}
-		
-		if (Log.D) {
-			String logString = new StringBuilder("id:")
-					.append(httpSetting.getId()).append("- get() -->> ")
-					.toString();
-			Log.d("HttpGroup", logString);
-		}
-
-		httpResponse = new HttpResponse(conn);
+		httpResponse = new HttpResponse(mContext, conn);
 		conn.setRequestMethod("GET");
-		if (Log.D) {
-			String logString = new StringBuilder("id:")
-					.append(httpSetting.getId()).append("- get() -->> ok")
-					.toString();
-			Log.d("HttpGroup", logString);
-		}
 	}
 
 	private BitmapFactory.Options getBitmapOpt() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "getBitmapOpt");
-		}
-		
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		if (httpResponse.getLength() > 0x10000L) {
-			if (Log.D) {
-				String logString = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- opt.inSampleSize -->> ").append(2)
-						.toString();
-				Log.d("HttpGroup", logString);
-			}
 			options.inSampleSize = 2;
 		}
 		return options;
 	}
 
 	private ArrayList<HttpError> getErrorList() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "getErrorList");
-		}
 		
 		if (errorList == null) {
 			errorList = new ArrayList();
@@ -1173,10 +993,6 @@ public class HttpRequest implements HttpGroup.StopController {
 	}
 
 	private HttpError getLastError() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "getLastError");
-		}
-		
 		ArrayList arraylist = getErrorList();
 		int len = arraylist.size();
 		HttpError httpError = null;
@@ -1188,21 +1004,16 @@ public class HttpRequest implements HttpGroup.StopController {
 	}
 
 	private void handleGetOrPost() throws Exception {
-		if (Log.D) { 
-			Log.d("HttpRequest", "handleGetOrPost");
-		}
-		if (httpSetting.isGet())
+		if (httpSetting.isGet()){
 			get();
-		else
+		}
+		if(httpSetting.requestMethod.equals("POST")){
 			post();
+		}
 		connectionHandler2();
 	}
 
 	private void imageContent() throws Exception {
-		if (Log.D) { 
-			Log.d("HttpRequest", "imageContent");
-		}
-		
 		if (httpResponse.getType() == null
 				|| !httpResponse.getType().contains("image/")) {
 			HttpError httpError = new HttpError();
@@ -1221,13 +1032,6 @@ public class HttpRequest implements HttpGroup.StopController {
 				httpResponse.setBitmap(bitmap);
 				httpResponse.setDrawable(new BitmapDrawable(bitmap));
 			} catch (Throwable throwable) {
-				if (Log.D) {
-					String logString = new StringBuilder("id:")
-							.append(httpSetting.getId())
-							.append("- image content connection read error -->> ")
-							.toString();
-					Log.d("HttpGroup", logString);
-				}
 				HttpError httpError = new HttpError(throwable);
 				httpError.setNoRetry(true);
 				throwError(httpError);
@@ -1235,11 +1039,11 @@ public class HttpRequest implements HttpGroup.StopController {
 		}
 	}
 
+	/**
+	 * 判读错误异常是否是在尝试重连后抛出的
+	 * @return
+	 */
 	public boolean isLastError() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "isLastError");
-		}
-		
 		int errListLen = 0;
 		int attemptNum = 0;
 		boolean flag = false;
@@ -1261,7 +1065,7 @@ public class HttpRequest implements HttpGroup.StopController {
 		if (Log.D) {
 			String s = new StringBuilder("id:").append(httpSetting.getId()).append("- isLastError() -->> ")
 					.append(flag).toString();
-			Log.d("HttpGroup", s);
+			Log.d(TAG, s);
 		}
 		return flag;
 	}
@@ -1290,12 +1094,6 @@ public class HttpRequest implements HttpGroup.StopController {
 			JSONArrayPoxy jsonArrayPoxy = new JSONArrayPoxy(jsonArray);
 			httpResponse.setJsonArray(jsonArrayPoxy);
 		} catch (JSONException jsonexception) {
-			if (Log.D)
-			{
-				StringBuilder stringbuilder7 = new StringBuilder("id:");
-				String s1 = stringbuilder7.append(httpSetting.getId()).append("- Can not format json -->> ").toString();
-				Log.d("HttpGroup", s1, jsonexception);
-			}
 			HttpError httperror2 = new HttpError(jsonexception);
 			throwError(httperror2);
 			connectionRetry = true;
@@ -1311,20 +1109,7 @@ public class HttpRequest implements HttpGroup.StopController {
 				InputStream inputstream = httpResponse.getInputStream();
 				String s = IOUtil.readAsString(inputstream, HttpGroup.charset, ioProgressListener);
 				httpResponse.setString(s);
-				if (Log.I)
-				{
-					StringBuilder stringbuilder = new StringBuilder("id:");
-					stringbuilder.append(httpSetting.getId()).append("- response string -->> ");
-					
-					Log.i("HttpGroup", stringbuilder.append(httpResponse.getString()).toString());
-				}
 			} catch (Exception exception) {
-				if (Log.D)
-				{
-					StringBuilder stringbuilder6 = new StringBuilder("id:");
-					String s = stringbuilder6.append(httpSetting.getId()).append("- json content connection read error -->> ").toString();
-					Log.d("HttpGroup", s, exception);
-				}
 				HttpError httperror = new HttpError(exception);
 				throwError(httperror);
 				connectionRetry = true;
@@ -1338,12 +1123,6 @@ public class HttpRequest implements HttpGroup.StopController {
 				JSONObjectProxy jsonobjectproxy = new JSONObjectProxy(jsonobject);
 				httpResponse.setJsonObject(jsonobjectproxy);
 			} catch (JSONException jsonexception) {
-				if (Log.D)
-				{
-					StringBuilder stringbuilder7 = new StringBuilder("id:");
-					String s1 = stringbuilder7.append(httpSetting.getId()).append("- Can not format json -->> ").toString();
-					Log.d("HttpGroup", s1, jsonexception);
-				}
 				HttpError httperror2 = new HttpError(jsonexception);
 				throwError(httperror2);
 				connectionRetry = true;
@@ -1469,30 +1248,24 @@ public class HttpRequest implements HttpGroup.StopController {
 //	}
 
 	protected void nextHandler() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "nextHandler");
-		}
-		
 		int i = currentHandlerIndex;
-		if (Log.D) {
-			String logString = new StringBuilder("id:")
-					.append(httpSetting.getId())
-					.append("- nextHandler() i -->> ")
-					.append(currentHandlerIndex).toString();
-			Log.d("HttpGroup", logString);
-		}
 		currentHandlerIndex = currentHandlerIndex + 1;
 		if (i < handlers.size()) {
-
+			if (Log.D) {
+				String logString = new StringBuilder("id:").append(httpSetting.getId()).append("- nextHandler() -->> ok").toString();
+				Log.d(TAG, logString);
+			}
 			((Handler) handlers.get(i)).run();
 		}
 	}
 
+	/**
+	 * 弹出网络连接错误窗口,等待用户处理
+	 * 
+	 * @param httpDialogController
+	 */
 	private void notifyUser(final HttpDialogController httpDialogController) {
-		if (Log.D) { 
-			Log.d("HttpRequest", "notifyUser");
-		}
-		
+		Log.d(TAG, "notifyUser");
 		ArrayList arrayList = null;
 		Activity activity = httpGroup.getHttpGroupSetting().getMyActivity();
 		if (activity != null) {
@@ -1507,28 +1280,8 @@ public class HttpRequest implements HttpGroup.StopController {
 					arrayList.add(this);
 				}
 			}
-			
-			if (Log.D) {
-				String s = new StringBuilder("id:").append(httpSetting.getId())
-						.append("- notifyUser() -->> result = ").append(flag)
-						.toString();
-				Log.d("HttpGroup", s);
-			}
+
 			httpDialogController.init(arrayList, activity);
-//			mHandler.post(new Runnable() {
-//
-//				@Override
-//				public void run() {
-//					httpDialogController.show();
-//				}
-//
-//			});
-			if (Log.D) {
-				String s1 = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- dialog wait start -->> ").toString();
-				Log.d("HttpGroup", s1);
-			}
 			try {
 				synchronized(this){
 				wait();
@@ -1536,134 +1289,81 @@ public class HttpRequest implements HttpGroup.StopController {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (Log.D) {
-				String s2 = new StringBuilder("id:")
-						.append(httpSetting.getId())
-						.append("- dialog wait end -->> ").toString();
-				Log.d("HttpGroup", s2);
-			}
+		}else{
+			//TODO
 		}
 	}
-
+	/**
+	 * POST方式请求http
+	 * @throws Exception
+	 */
 	private void post() throws Exception {
-		if (Log.D) { 
-			Log.d("HttpRequest", "post");
-		}
-		get();
-		/*
 		String logString = null;
 		byte[] bytes;
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- post() -->> ").toString();
-			Log.d("HttpGroup", logString);
-		}
-		httpResponse = new HttpResponse(conn);
+		httpResponse = new HttpResponse(mContext,conn);
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
 		if (httpSetting.getMapParams() == null) {
+            //TODO
 			bytes = "body=".getBytes();
 		} else {
 			StringBuilder requestString = new StringBuilder();
 			Map map = httpSetting.getMapParams();
 			Iterator iterator = map.keySet().iterator();
+			//����������
 			for (; iterator.hasNext();) {
 				String key = (String) iterator.next();
 				if (!(ConstFuncId.FUNCTION_ID).equals(key)) {
 					String value = (String) map.get(key);
-					if (Log.I) {
-						logString = new StringBuilder("id:")
-								.append(httpSetting.getId())
-								.append("- param key and value -->> ")
-								.append(key).append("��").append(value)
-								.toString();
-						Log.i("HttpGroup", logString);
-					}
+					//requestString.append(key).append("=").append(value);
 					requestString.append(key).append("=").append(value);
 					if (iterator.hasNext())
 						requestString.append("&");
 				}
 			}
+            Log.d("daizhx", "requestString="+requestString.toString());
 			bytes = requestString.toString().getBytes();
 		}
 		conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- post() -->> 1").toString();
-			Log.d("HttpGroup", logString);
-		}
-		OutputStream os = conn.getOutputStream();
+		OutputStream os = (OutputStream) conn.getOutputStream();
 		DataOutputStream dos = new DataOutputStream(os);
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- post() -->> 2").toString();
-			Log.d("HttpGroup", logString);
-		}
 		dos.write(bytes);
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- post() -->> ready").toString();
-			Log.d("HttpGroup", logString);
-		}
 		dos.flush();
-		if (Log.D) {
-			logString = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- post() -->> ok").toString();
-			Log.d("HttpGroup", logString);
-		}
-		*/
 	}
 
+	/**
+	 * 
+	 */
 	private void save() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "save");
+		if (Log.D) {
+			String logString = new StringBuilder("id:").append(httpSetting.getId()).append("- save() -->> ").toString();
+			Log.d(TAG, logString);
 		}
-		
-		String logString = null;
 		FileService.Directory directory = null;
 		boolean flag = false;
 		if (this.httpSetting.isLocalFileCache()) {
 			switch (this.httpSetting.getType()) {
 			case ConstHttpProp.TYPE_JSON:
-				if (Log.D) {
-					logString = new StringBuilder("id:")
-							.append(httpSetting.getId())
-							.append("- save json file start -->> ").toString();
-					Log.d("HttpGroup", logString);
-				}
-				directory = FileService.getDirectory(ConstFileProp.INTERNAL_TYPE_CACHE);
+				directory = mFileService.getDirectory(ConstFileProp.INTERNAL_TYPE_CACHE);
 				if (directory != null) {
 					String md5 = String.valueOf(httpSetting.getMd5());
 					String jsonFilename = (new StringBuilder(md5)).append(
 							".json").toString();
 					if (httpResponse != null) {
-						flag = FileService.saveToSDCard(FileService.getDirectory(2), md5,httpResponse.getString());
+						flag = FileService.saveToSDCard(mFileService.getDirectory(2), md5,httpResponse.getString());
 						if (flag) {
 							long l = httpSetting.getLocalFileCacheTime();
 							CacheFileItem cachefile = new CacheFileItem(jsonFilename,
 									httpSetting.getLocalFileCacheTime());
 							cachefile.setDirectory(directory);
-							CacheFileTableDBHelper.insertOrUpdate(cachefile);
-						}
-						if (Log.D) {
-							logString = new StringBuilder("id:")
-									.append(httpSetting.getId())
-									.append("- save json file -->> ")
-									.append(flag).toString();
-							Log.d("HttpGroup", logString);
+							mCacheFileTableDBHelper.insertOrUpdate(cachefile);
 						}
 					}
 				}
 				break;
 			case ConstHttpProp.TYPE_IMAGE:
-				if (Log.D) {
-					logString = new StringBuilder("id:")
-							.append(httpSetting.getId())
-							.append("- save image file start -->> ").toString();
-					Log.d("HttpGroup", logString);
-				}
-				directory = FileService.getDirectory(ConstFileProp.INTERNAL_TYPE_FILE);
+				directory = mFileService.getDirectory(ConstFileProp.INTERNAL_TYPE_FILE);
 				if (directory != null) {
 					String md5 = String.valueOf(httpSetting.getMd5());
 					String imageFilename = (new StringBuilder(md5)).append(
@@ -1675,14 +1375,7 @@ public class HttpRequest implements HttpGroup.StopController {
 							CacheFileItem cachefile1 = new CacheFileItem(imageFilename,
 									httpSetting.getLocalFileCacheTime());
 							cachefile1.setDirectory(directory);
-							CacheFileTableDBHelper.insertOrUpdate(cachefile1);
-						}
-						if (Log.D) {
-							logString = new StringBuilder("id:")
-									.append(httpSetting.getId())
-									.append("- save image file -->> ")
-									.append(flag).toString();
-							Log.d("HttpGroup", logString);
+							mCacheFileTableDBHelper.insertOrUpdate(cachefile1);
 						}
 					}
 				}
@@ -1694,10 +1387,6 @@ public class HttpRequest implements HttpGroup.StopController {
 	}
 
 	protected void setModule(int funcId) {
-		if (Log.D) { 
-			Log.d("HttpRequest", "setModule");
-		}
-		
 		if ((this.httpSetting.getFunctionId() == null)
 				|| (HttpGroup.mModules == null))
 			return;
@@ -1714,38 +1403,27 @@ public class HttpRequest implements HttpGroup.StopController {
 		stopFlag = true;
 	}
 
+	
 	public void throwError(HttpError error) {
-		if (Log.D) { 
-			Log.d("HttpRequest", "throwError");
-		}
-		
 		getErrorList().add(error);
 		int errListSize = getErrorList().size();
 		error.setTimes(errListSize);
-		if (Log.I) {
-			String errMsg = new StringBuilder("id:").append(httpSetting.getId())
-				.append("- HttpError -->> ").append(error).toString();
-			Log.i("HttpGroup", errMsg);
-		}
 		checkErrorInteraction();
 	}
 
-	public void typeHandler() {
-		nextHandler();
-	}
 
+	/**
+	 * 合成URL
+	 */
 	private void urlParam() {
-		if (Log.D) { 
-			Log.d("HttpRequest", "urlParam");
-		}
-		
 		StringBuilder sb = null;
 		if (!httpSetting.isGet()) {
 			if (httpSetting.getMapParams() != null)
 				if (httpGroup.isReportUserInfoFlag()) {
 					sb = (new StringBuilder(
 							String.valueOf(httpSetting.getUrl())));
-					String s1 = (String) httpSetting.getMapParams().get("functionId");
+//					String s1 = (String) httpSetting.getMapParams().get("functionId");
+					String s1 = httpSetting.getFunctionId();
 					sb.append(s1);
 					//String s2 = StatisticsReportUtil.getReportString(httpSetting.isNeedGlobalInitialization());
 					//httpSetting.setUrl(sb.append(s2).toString());
@@ -1759,8 +1437,9 @@ public class HttpRequest implements HttpGroup.StopController {
 				}
 		} else {
 			String url = httpSetting.getUrl();
-			Map map = httpSetting.getMapParams();
-			String functionId=(String) map.get("functionId");
+//			Map map = httpSetting.getMapParams();
+//			String functionId=(String) map.get("functionId");
+			String functionId = httpSetting.getFunctionId();
 			url=url+functionId;
 			JSONObject json=httpSetting.getJsonParams();
 			String completeUrl = addParams(url, json);

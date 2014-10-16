@@ -6,10 +6,15 @@ import java.util.Collection;
 import java.util.List;
 
 import com.jiuzhansoft.ehealthtec.config.Configuration;
+import com.jiuzhansoft.ehealthtec.http.constant.ConstSysConfig;
 
 import android.os.Process;
 
-
+/**
+ * 用来执行tasks队列的线程，通过while循环来控制执行tasks队列中的runnable对象
+ * @author Administrator
+ *
+ */
 public class PooledThread extends Thread {
 
 	private static ThreadPool sPool;
@@ -21,8 +26,10 @@ public class PooledThread extends Thread {
 	protected List<Runnable> tasks;
 
 	static {
-		int i = Integer.parseInt(Configuration.getProperty("maxPoolSize"));
-		int j = Integer.parseInt(Configuration.getProperty("initPoolSize"));
+//		int i = Integer.parseInt(Configuration.getProperty("maxPoolSize"));
+//		int j = Integer.parseInt(Configuration.getProperty("initPoolSize"));
+		int i = ConstSysConfig.MAX_POOL_SIZE;
+		int j = ConstSysConfig.INIT_POOL_SIZE;
 		sPool = new ThreadPool(i, j);
 		sPool.init();
 	}
@@ -81,6 +88,10 @@ public class PooledThread extends Thread {
 		} while (true);
 	}
 
+	/**
+	 * 弹出一个runnable task从tasks队列中
+	 * @return
+	 */
 	protected Runnable popTask() {
 		Runnable runnable;
 		if (tasks.size() > 0)
@@ -111,11 +122,11 @@ public class PooledThread extends Thread {
 							stopped = false;
 							if (tasks.size() > 0) {// tasksize >0
 								tasks.clear();
-								String s = String.valueOf(Thread
-										.currentThread().getId());
-								String s1 = (new StringBuilder(s)).append(
-										": Tasks are stopped").toString();
-								//System.out.println(s1);
+//								String s = String.valueOf(Thread
+//										.currentThread().getId());
+//								String s1 = (new StringBuilder(s)).append(
+//										": Tasks are stopped").toString();
+//								System.out.println(s1);
 
 							}
 							running = false;
@@ -123,12 +134,12 @@ public class PooledThread extends Thread {
 						if (paused) {
 							paused = false;
 							if (tasks.size() > 0) {
-								PrintStream printstream1 = System.out;
-								String s2 = String.valueOf(Thread
-										.currentThread().getId());
-								String s3 = (new StringBuilder(s2)).append(
-										": Tasks are paused").toString();
-								//System.out.println(s3);
+//								PrintStream printstream1 = System.out;
+//								String s2 = String.valueOf(Thread
+//										.currentThread().getId());
+//								String s3 = (new StringBuilder(s2)).append(
+//										": Tasks are paused").toString();
+//								System.out.println(s3);
 							}
 							running = false;
 						}

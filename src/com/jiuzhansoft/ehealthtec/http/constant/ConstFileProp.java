@@ -19,6 +19,6 @@ public class ConstFileProp {
 	public static final int JSON_DIR = 2;
 	public static final String SHARED_PREFERENCES_JSON_DIR = "jsonFileCachePath";
 	public static final String SHARED_PREFERENCES_JSON_DIR_STATE = "jsonFileCachePathState";
-	public static final String aplcationDir = "/guanyi";
+	public static final String aplcationDir = "/eht";
 
 }

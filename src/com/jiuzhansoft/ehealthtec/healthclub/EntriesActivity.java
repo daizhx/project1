@@ -208,8 +208,6 @@ public class EntriesActivity extends BaseActivity {
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity(EntriesActivity.this);
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSONARRAY);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 }

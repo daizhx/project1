@@ -2,24 +2,16 @@ package com.jiuzhansoft.ehealthtec.http;
 
 import java.util.Iterator;
 import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jiuzhansoft.ehealthtec.config.Configuration;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.CustomOnAllListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.HttpTaskListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnEndListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnErrorListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnProgressListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnReadyListener;
-import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnStartListener;
+import android.os.Handler;
+
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.constant.ConstSysConfig;
 import com.jiuzhansoft.ehealthtec.http.utils.FileGuider;
 import com.jiuzhansoft.ehealthtec.http.utils.Md5Encrypt;
 import com.jiuzhansoft.ehealthtec.http.utils.URLParamMap;
-import com.jiuzhansoft.ehealthtec.log.Log;
-
 
 public class HttpSetting implements HttpGroup.HttpSettingParams {
 	private int cacheMode;
@@ -27,6 +19,7 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	private int effect;
 	private int effectState;
 	private String finalUrl;
+	private String functionModal;
 	private String functionId;
 	private int id;
 	private JSONObject jsonParams;
@@ -42,22 +35,19 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	private HttpGroup.OnProgressListener onProgressListener;
 	private HttpGroup.OnReadyListener onReadyListener;
 	private HttpGroup.OnStartListener onStartListener;
-	private boolean get;
+	// private boolean get;
+	public String requestMethod;
 	private int priority;
 	private int readTimeout;
 	private FileGuider savePath;
 	private int type;
 	private String url;
-	//is to show progress of the http task -- daizhx
+	// is to show progress of the http task -- daizhx
 	private boolean showProgress;
 
 	public HttpSetting() {
-		if (Log.D) { 
-			Log.d("HttpSetting", "HttpSetting");
-		}
-		
-		String s = Configuration.getProperty(Configuration.REQUEST_METHOD, Configuration.GET);
-		get = (Configuration.GET).equals(s);
+		// Ä¬ï¿½ï¿½Îªgetï¿½ï¿½Ê½
+		requestMethod = ConstSysConfig.REQUEST_METHOD;
 		notifyUser = false;
 		notifyUserWithExit = false;
 		localMemoryCache = false;
@@ -112,16 +102,13 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	}
 
 	public String getMd5() {
-		if (Log.D) { 
-			Log.d("HttpSetting", "getMd5");
-		}
-		
+
 		String retMd5 = null;
 		String url = null;
 		if (md5 == null) {
 			url = getUrl();
 			if (url != null) {
-				// È¡µÃµØÖ·À¸ºóÃæµÄÄÚÈÝ
+				// È¡ï¿½Ãµï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				int i = 0;
 				int j = 0;
 				while (j < 3) {
@@ -140,13 +127,13 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 						md5 = Md5Encrypt.md5(s2);
 						retMd5 = md5;
 					}
-					if (Log.D) {
-						StringBuilder stringbuilder1 = (new StringBuilder(
-								"urlPath -->> ")).append(s2).append(
-								" md5 -->> ");
-						String s6 = stringbuilder1.append(md5).toString();
-						Log.d("HttpGroup", s6);
-					}
+					// if (Log.D) {
+					// StringBuilder stringbuilder1 = (new StringBuilder(
+					// "urlPath -->> ")).append(s2).append(
+					// " md5 -->> ");
+					// String s6 = stringbuilder1.append(md5).toString();
+					// Log.d("HttpGroup", s6);
+					// }
 				} else {
 					retMd5 = null;
 				}
@@ -217,13 +204,28 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	}
 
 	public boolean isGet() {
-		return get;
+		return requestMethod.equals("GET");
 	}
 
-	public void onEnd(HttpResponse paramHttpResponse) {
-		if (onEndListener == null)
+	public void setRequestMethod(String s) {
+		requestMethod = s;
+	}
+
+	public void onEnd(final HttpResponse paramHttpResponse) {
+		if (onEndListener == null){
 			return;
-		onEndListener.onEnd(paramHttpResponse);
+		}
+		//æŠŠå›žè°ƒå‡½æ•°æ”¾åˆ°ä¸»çº¿ç¨‹ä¸­æ‰§è¡Œ
+		Handler handler = new Handler(paramHttpResponse.mContext.getMainLooper());
+		handler.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				onEndListener.onEnd(paramHttpResponse);	
+			}
+		});
+		
 	}
 
 	public void onError(HttpError paramHttpError) {
@@ -251,8 +253,7 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 		try {
 			jsonParams.put(name, object);
 		} catch (JSONException exception) {
-			if (Log.D)
-				Log.d("HttpGroup", "JSONException -->> ", exception);
+
 		}
 	}
 
@@ -303,38 +304,34 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 
 	}
 
-	public void setListener(HttpTaskListener listener) {
-		if (Log.D) { 
-			Log.d("HttpSetting", "setListener");
-		}
-		
-		if (listener instanceof CustomOnAllListener) {
+	public void setListener(HttpGroup.HttpTaskListener listener) {
+
+		if (listener instanceof HttpGroup.CustomOnAllListener) {
 			setEffect(ConstHttpProp.EFFECT_NO);
 		}
-		
-		if (listener instanceof DefaultEffectHttpListener)
-		{
+
+		if (listener instanceof DefaultEffectHttpListener) {
 			setEffectState(ConstHttpProp.EFFECT_STATE_YES);
 		}
-		
-		if (listener instanceof OnErrorListener) {
-			onErrorListener = (OnErrorListener) listener;
+
+		if (listener instanceof HttpGroup.OnErrorListener) {
+			onErrorListener = (HttpGroup.OnErrorListener) listener;
 		}
-		
-		if (listener instanceof OnStartListener) {
-			onStartListener = (OnStartListener) listener;
+
+		if (listener instanceof HttpGroup.OnStartListener) {
+			onStartListener = (HttpGroup.OnStartListener) listener;
 		}
-		
-		if (listener instanceof OnProgressListener) {
-			onProgressListener = (OnProgressListener) listener;
+
+		if (listener instanceof HttpGroup.OnProgressListener) {
+			onProgressListener = (HttpGroup.OnProgressListener) listener;
 		}
-		
-		if (listener instanceof OnEndListener) {
-			onEndListener = (OnEndListener) listener;
+
+		if (listener instanceof HttpGroup.OnEndListener) {
+			onEndListener = (HttpGroup.OnEndListener) listener;
 		}
-		
-		if (listener instanceof OnReadyListener) {
-			onReadyListener = (OnReadyListener) listener;
+
+		if (listener instanceof HttpGroup.OnReadyListener) {
+			onReadyListener = (HttpGroup.OnReadyListener) listener;
 		}
 	}
 
@@ -351,10 +348,7 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	}
 
 	public void setMapParams(Map map) {
-		if (Log.D) { 
-			Log.d("HttpSetting", "setMapParams");
-		}
-		
+
 		if (map != null) {
 			Iterator iterator = map.keySet().iterator();
 			while (iterator.hasNext()) {
@@ -377,10 +371,9 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 		this.notifyUserWithExit = notifyUserWithExit;
 	}
 
-	public void setPost(boolean get) {
-		this.get = get;
-	}
-
+	// public void setPost(boolean get) {
+	// this.get = get;
+	// }
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
@@ -400,12 +393,20 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public void setShowProgress(boolean b){
+
+	public void setShowProgress(boolean b) {
 		showProgress = b;
 	}
-	
-	public boolean isShowProgress(){
+
+	public boolean isShowProgress() {
 		return showProgress;
+	}
+
+	public void setFunctionModal(String modal) {
+		this.functionModal = modal;
+	}
+
+	public String getFunctionModal() {
+		return this.functionModal;
 	}
 }

@@ -33,7 +33,7 @@ public class URLParamMap implements Map<String, String> {
 		throw new RuntimeException("Can't use putAll method");
 	}
 
-	public Set<Map.Entry<String, String>> entrySet() {
+	public Set<Entry<String, String>> entrySet() {
 		return this.map.entrySet();
 	}
 

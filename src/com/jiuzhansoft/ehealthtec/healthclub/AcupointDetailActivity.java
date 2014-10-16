@@ -107,9 +107,7 @@ public class AcupointDetailActivity extends BaseActivity {
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity(AcupointDetailActivity.this);
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSONARRAY);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpSetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpSetting);
 		
 	}
 }

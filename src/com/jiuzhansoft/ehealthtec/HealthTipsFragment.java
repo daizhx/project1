@@ -136,8 +136,8 @@ public class HealthTipsFragment extends Fragment {
 			map = datalist.get(position);
 			Log.d(TAG, "Position=" + position + ",map=" + map);
 			
-			asynImageLoader.showImageAsyn(holder.icon, (String) map.get("url"),
-					0);
+//			asynImageLoader.showImageAsyn(getActivity(),holder.icon, (String) map.get("url"),
+//					0);
 			holder.title.setText((String) map.get("title"));
 			//ÄÚÈÝÕªÒª
 			String shortContent =  (String) map.get("content");
@@ -226,9 +226,7 @@ public class HealthTipsFragment extends Fragment {
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity(getActivity());
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSONARRAY);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpSetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(getActivity()).add(httpSetting);
 
 	}
 }

@@ -137,6 +137,7 @@
     <string name="user_password_hint">Please enter a password, the length between 6-16 characters, letters, numbers,\"_\",\"-\".</string>
     <string name="password_not_same">Passwords do not match, please re-enter</string>
     <string name="register_err_busy">server is busy, please try again later ...</string>
+    <string name="register_fail">register fail:</string>
     <string name="register_error_username_repeat">Name is already registered, please re-enter</string>
     <string name="verifiedPrompt">Device serial number:</string>
     <string name="enternum">Please enter serial number</string>

@@ -9,8 +9,6 @@ import java.io.StringWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.print.attribute.standard.Finishings;
-
-import com.jiuzhansoft.ehealthtec.activity.ErrorActivity;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.StatisticsReportUtil;
 
@@ -79,12 +77,7 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		if (Log.D) { 
 			Log.d("MyUncaughtExceptionHandler", "myUncaughtException");
 		}
-		Intent intent = new Intent(context, ErrorActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		if (Log.D) { 
-//			Log.d("MyUncaughtExceptionHandler", "throwable error :"+throwable);
-//			throwable.printStackTrace();
-//		}
+		
 		StringWriter stringwriter = new StringWriter();
 		PrintWriter printwriter = new PrintWriter(stringwriter);
 		if (Log.D) {
@@ -94,8 +87,7 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		
 		String s = String.valueOf(errorDataBuffer.toString());
 		StringBuilder stringbuilder = (new StringBuilder(s)).append("||");
-		intent.putExtra("user", StatisticsReportUtil.getReportString(true));
-		intent.putExtra("error", stringbuilder.append(stringwriter.toString()).toString());
+		
 		if (Log.D) {
 			Log.d("MyUncaughtExceptionHandler", "start activity");
 		}

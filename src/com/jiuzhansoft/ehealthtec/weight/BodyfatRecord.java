@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
@@ -741,7 +742,7 @@ public class BodyfatRecord extends com.jiuzhansoft.ehealthtec.activity.BaseActiv
 				
 			}});
 		httpsetting.setNotifyUser(true);
-		getHttpGroupaAsynPool().add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 		
 	}
 	private void showRecords(){

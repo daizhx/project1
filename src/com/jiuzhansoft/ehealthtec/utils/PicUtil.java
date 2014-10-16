@@ -138,7 +138,7 @@ public class PicUtil {
 	 * @return
 	 * @throws MalformedURLException
 	 */
-	public static Bitmap getbitmapAndwrite(String imageUri) {
+	public static Bitmap getbitmapAndwrite(Context context,String imageUri) {
 		Bitmap bitmap = null;
 		try {
 			// œ‘ æÕ¯¬Á…œµƒÕº∆¨
@@ -150,7 +150,7 @@ public class PicUtil {
 			
 			if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
 				InputStream is = conn.getInputStream();
-				File cacheFile = FileUtil.getCacheFile(imageUri);
+				File cacheFile = FileUtil.getDiskCacheFile(context, null, FileUtil.getFileName(imageUri));
 				BufferedOutputStream bos = null;
 				bos = new BufferedOutputStream(new FileOutputStream(cacheFile));
 				Log.i(TAG, "write file to " + cacheFile.getCanonicalPath());

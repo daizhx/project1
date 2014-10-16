@@ -8,10 +8,14 @@ import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
 import com.jiuzhansoft.ehealthtec.constant.PreferenceKeys;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.http.utils.Des3;
+import com.jiuzhansoft.ehealthtec.http.utils.Md5Encrypt;
 import com.jiuzhansoft.ehealthtec.log.Log;
 
 import android.app.Activity;
@@ -21,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
 import android.text.TextUtils;
@@ -46,6 +51,7 @@ public class UserLoginActivity extends BaseActivity {
 	private String sUserPassword;
 	
 	private String intentAction;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -95,75 +101,58 @@ public class UserLoginActivity extends BaseActivity {
 			{
 				try
 				{
-					JSONObject jsonobject = new JSONObject();					
+					JSONObject jsonobject = new JSONObject();
+					//√‹¬Îº”√‹
 					jsonobject.put("password", sUserPassword);
 					jsonobject.put("username", sUserName);
 					HttpSetting	httpsetting = new HttpSetting();
+					httpsetting.setRequestMethod("POST");
 					httpsetting.setFunctionId(ConstFuncId.FUNCTION_ID_FOR_USER_LOGIN);
 					httpsetting.setJsonParams(jsonobject);
 					httpsetting.setListener(new HttpGroup.OnAllListener() {
-						public void onEnd(HttpResponse httpresponse)
-						{
+						public void onEnd(HttpResponse httpresponse){
+							JSONObjectProxy json = httpresponse.getJSONObject();
 							if (Log.D) {
-								Log.d("LoginActivity", "onLogin.httpsetting.listenter.onEnd");
+								Log.d(TAG, "Login.onEnd:"+json);
 							}
-							if(httpresponse.getJSONObject() != null)
-							{
-	
-							try
-							{
-								String s5 = httpresponse.getJSONObject().getJSONObject("registerInfo").get("pin").toString();
-								if (Log.D)
-									Log.d(TAG, "Login pin.."+s5);
-								LoginSuccess(s5);
-							}
-							catch (Exception exception)
-							{
-								post(new Runnable(){
-									@Override
-									public void run() {
-										Toast.makeText(UserLoginActivity.this, getResources().getString(R.string.login_data_error),Toast.LENGTH_SHORT).show();					
-									}			
-								});	
-								if (Log.D)
-								{
-									StringBuilder stringbuilder = new StringBuilder("error message:");
-									Log.d(TAG, stringbuilder.append(exception.getMessage()).toString());
+							try {
+								int code = json.getInt("code");
+								String msg = json.getString("msg");
+								JSONObject object = json.getJSONObjectOrNull("object");
+								if(code ==1 && object != null){
+									String userId = object.getString("userId");
+									LoginSuccess(userId);
+								}else{
+//									Log.d(TAG,"Login fail msg="+msg);
+									Toast.makeText(UserLoginActivity.this, getResources().getString(R.string.login_failed_message)+msg, Toast.LENGTH_SHORT).show();
+									
 								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
-								}
-							else
-								{
-								  if (Log.D)
-										Log.d(TAG, "get empty string.....");
-									LoginError("");
 
-								}
 						}
 	
-						public void onError(HttpError httperror)
-						{
+						public void onError(HttpError httperror){
 							if (Log.D) {
-								Log.d(TAG, "onLogin.httpsetting.listenter.onError");
+								Log.d(TAG, "Login.onError:"+httperror);
 							}
-//							clearRemember(UserLoginActivity.this);
+						}
+						public void onProgress(int i, int j){
+							Log.d(TAG, "Login.onProgress:i="+i+",j="+j);
 						}
 	
-						public void onProgress(int i, int j)
-						{
-						}
-	
-						public void onStart()
-						{
+						public void onStart(){
 							if (Log.D)
-								Log.d(TAG, "Start to login......");
+								Log.d(TAG, "Login.onStart");
 						}
 
 					});
 					
 					httpsetting.setNotifyUser(true);
 					httpsetting.setShowProgress(true);
-					getHttpGroupaAsynPool().add(httpsetting);
+					HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 				}
 				catch(JSONException e)
 				{
@@ -192,59 +181,6 @@ public class UserLoginActivity extends BaseActivity {
 	private void cancelLogin(){
 		setResult(Activity.RESULT_CANCELED, null);
 		finish();
-	}
-	
-	private void LoginError(final String tip)
-	{
-		if (Log.D) { 
-			Log.d(TAG, "LoginError");
-		}
-
-		post(new Runnable() {
-			public void run()
-			{
-				if (Log.D) {
-					Log.d(TAG, "LoginError.post.run");
-				}
-				
-				try
-				{
-//					mRememberMe.setChecked(true);
-					post(new Runnable() {
-						public void run()
-						{
-							// alertDialog = dialogBuilder.show();
-							final AlertDialog dialog = (new AlertDialog.Builder(UserLoginActivity.this)).create();
-							dialog.show();
-							
-							if("".equals(tip))
-								dialog.setMessage(getString(R.string.login_failed_message));
-							else
-								dialog.setMessage(tip);
-							dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
-								
-								@Override
-								public void onClick(DialogInterface arg0, int arg1) {
-									// TODO Auto-generated method stub
-									dialog.dismiss();
-								}
-							});
-							
-						}
-					});					
-				}
-				catch (Exception exception)
-				{
-					exception.printStackTrace();
-					if (Log.D)
-					{
-						StringBuilder stringbuilder = new StringBuilder("Error Message:");
-						String s3 = stringbuilder.append(exception.getMessage()).toString();
-						Log.d(TAG, "Login Error:"+s3);
-					}
-				}
-			}
-		});
 	}
 
 
@@ -300,10 +236,25 @@ public class UserLoginActivity extends BaseActivity {
 	{
 		return mUserPassword.getText().toString();
 	}
+	
+	
+	/**
+	 * º”√‹√‹¬Î
+	 * @param s
+	 * @return
+	 */
 	public static String EncryptPassword2(String s)
 	{
 		//TODO
-		return s;
+		String s1 = Md5Encrypt.MD5(s);
+		String s2 = null;
+		try {
+			s2 = Des3.encode(s1, Des3.DES3_KEY, Des3.DES3_IV);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return s2;
 	}
 	
 	@Override

@@ -122,9 +122,7 @@ public class UpdateManager {
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity((Activity)mContext);
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool((Activity)mContext).add(httpsetting);
 	}
 	
 	

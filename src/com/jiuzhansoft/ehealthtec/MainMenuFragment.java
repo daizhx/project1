@@ -20,6 +20,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.user.UserLogin;
 import com.jiuzhansoft.ehealthtec.user.UserLoginActivity;
@@ -153,6 +154,7 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 	private void getTipText() {
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(ConstFuncId.TODAY_TIP);
+		httpSetting.setRequestMethod("GET");
 		httpSetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -169,30 +171,26 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 
 			@Override
 			public void onEnd(HttpResponse response) {
-				Log.d(TAG, "onEnd:response---");
-
-				// TODO Auto-generated method stub
+				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "onEnd:response---"+json);
 				try {
-					JSONArrayPoxy jsonArray = response.getJSONARRAY();
-					if (jsonArray != null) {
-						for (int i = 0; i < jsonArray.length(); i++) {
-							JSONObject jsonObject = (JSONObject) jsonArray
-									.get(i);
-							String content = jsonObject.getString("content");
-							String title = jsonObject.getString("title");
-							String url = jsonObject.getString("url");
-							Log.d(TAG, "content=" + content + ",title=" + title
-									+ ",url=" + url);
-//							tip = content;
-							tip = title;
-							mHandler.sendEmptyMessage(1);
-						}
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONObject object = json.getJSONObjectOrNull("object");
+					if(code == 1 && object != null){
+						String title = object.getString("title");
+						String content = object.getString("content");
+						String url = object.getString("url");
+						tip = title;
+//						mHandler.sendEmptyMessage(1);
+						tvTip.setText(tip);
 					}
-
-				} catch (JSONException e) {
+				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
+				
+				
 
 			}
 
@@ -206,9 +204,7 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 		httpSetting.setShowProgress(false);
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity(getActivity());
-		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSONARRAY);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpSetting);
+		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(getActivity()).add(httpSetting);
 	}
 }

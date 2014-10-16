@@ -1,4 +1,4 @@
-package com.jiuzhansoft.ehealthtec.http;
+ï»¿package com.jiuzhansoft.ehealthtec.http;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,15 +6,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.jiuzhansoft.ehealthtec.config.Configuration;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup.OnReadyListener;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.constant.ConstSysConfig;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.http.utils.Base64;
 import com.jiuzhansoft.ehealthtec.log.Log;
@@ -22,12 +25,15 @@ import com.jiuzhansoft.ehealthtec.log.Log;
 
 
 public abstract class HttpGroup{
-	// ³éÏó½è¿Ú
+	public static final String TAG = "HttpGroup";
+
+    private Context mContext;
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public interface CompleteListener {
 		public abstract void onComplete(Bundle paramBundle);
 	}
 
-	public interface CustomOnAllListener extends HttpGroup.OnAllListener {
+	public interface CustomOnAllListener extends OnAllListener {
 	}
 
 	interface Handler {
@@ -38,7 +44,7 @@ public abstract class HttpGroup{
 		public abstract void putJsonParam(String paramString, Object paramObject);
 
 		public abstract void putMapParams(String paramString1,
-				String paramString2);
+                                          String paramString2);
 	}
 
 	public interface HttpTaskListener {
@@ -100,20 +106,26 @@ public abstract class HttpGroup{
 
 	// Static variables--start
 	static final HashMap<?, ?> alertDialogStateMap = new HashMap<Object, Object>();
-	static final int attempts = Integer.parseInt(Configuration.getProperty("attempts"));
-	static final int attemptsTime = Integer.parseInt(Configuration.getProperty("attemptsTime"));
+//	static final int attempts = Integer.parseInt(Configuration.getProperty("attempts"));
+//	static final int attemptsTime = Integer.parseInt(Configuration.getProperty("attemptsTime"));
+	static final int attempts = ConstSysConfig.ATTEMPTS;
+	static final int attemptsTime = ConstSysConfig.ATTEMPTS_TIME;
+	static final int connectTimeout = ConstSysConfig.CONNECT_TIMEOUT;
+	static final String host = ConstSysConfig.HOST_IP;
+	protected static final int readTimeout = ConstSysConfig.READ_TIMEOUT;
 	static String charset = "UTF-8";
 
-	static final int connectTimeout = Integer.parseInt(Configuration.getProperty("connectTimeout"));
+//	static final int connectTimeout = Integer.parseInt(Configuration.getProperty("connectTimeout"));
 
 	protected static String cookies = null;
 
-	static final String host = Configuration.getProperty("host");
+//	static final String host = Configuration.getProperty("host");
 	private static int httpIdCounter = 0;
 	static String mMd5Key;
 	static JSONObjectProxy mModules;
+	static String token = null;
 
-	protected static final int readTimeout = Integer.parseInt(Configuration.getProperty("readTimeout"));
+//	protected static final int readTimeout = Integer.parseInt(Configuration.getProperty("readTimeout"));
 
 	// non-static varialbes stat
 	private int completesCount;
@@ -144,10 +156,6 @@ public abstract class HttpGroup{
 	}
 	// constructor
 	public HttpGroup(HttpGroupSetting groupSetting) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "HttpGroup(setting)");
-		}
-		
 		useCaches = false;
 		httpList = new ArrayList<HttpRequest>();
 		reportUserInfoFlag = true;
@@ -166,9 +174,6 @@ public abstract class HttpGroup{
 	}
 
 	public static String mergerUrlAndParams(String s, Map<?, ?> map) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "mergerUrlAndParams");
-		}
 		
 		String retUrlAndParams = null;
 		if (map != null) {
@@ -205,24 +210,64 @@ public abstract class HttpGroup{
 		return retUrlAndParams;
 	}
 
+	public static void getToken(final CompleteListener completeListener){
+		HttpSetting httpSetting = new HttpSetting();
+		httpSetting.setFunctionModal("token");
+		httpSetting.setFunctionId("getToken");
+		httpSetting.setRequestMethod("GET");
+		httpSetting.setListener(new OnAllListener() {
+			
+			@Override
+			public void onProgress(int i, int j) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onError(HttpError httpError) {
+				// TODO Auto-generated method stub
+				Log.d(TAG, "get token onError!");
+			}
+			
+			@Override
+			public void onEnd(HttpResponse response) {
+				// TODO Auto-generated method stub
+				Log.d(TAG, "get token onEnd!");
+				JSONObjectProxy json = response.getJSONObject();
+				if(json != null){
+					Log.d(TAG, "get token: "+ json.toString());
+					try {
+						token = json.getString("object");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (completeListener != null){
+						completeListener.onComplete(null);
+					}
+				}
+			}
+			
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				Log.d(TAG, "get token onStart!");
+			}
+		});
+		HttpGroupaAsynPool.getHttpGroupaAsynPool().add(httpSetting);
+	}
+	
 	public static void queryMd5Key(CompleteListener completelistener) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "queryMd5Key(listener)");
-		}
 		
 		HttpGroupSetting httpgroupsetting = new HttpGroupSetting();
 		httpgroupsetting.setPriority(ConstHttpProp.PRIORITY_JSON);
 		httpgroupsetting.setType(ConstHttpProp.TYPE_JSON);
-		queryMd5Key(((HttpGroup) (new HttpGroupaAsynPool(httpgroupsetting))),
+		queryMd5Key(((HttpGroup) HttpGroupaAsynPool.getHttpGroupaAsynPool()),
 				completelistener);
 	}
 
 	public static void queryMd5Key(HttpGroup httpgroup,
 			final CompleteListener listener) {
-		
-		if (Log.D) { 
-			Log.d("HttpGroup", "queryMd5Key(httpgroup, listener)");
-		}
 		
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId("key");
@@ -232,16 +277,13 @@ public abstract class HttpGroup{
 
 			@Override
 			public void onStart() {
-				if (Log.D) { 
-					Log.d("HttpGroup", "queryMd5Key.OnAllListener.onStart");
-				}
+//				if (Log.D) { 
+//					Log.d("HttpGroup", "queryMd5Key.OnAllListener.onStart");
+//				}
 			}
 
 			@Override
 			public void onEnd(HttpResponse response) {
-				if (Log.D) { 
-					Log.d("HttpGroup", "queryMd5Key.OnAllListener.onEnd");
-				}
 				
 				String key = response.getJSONObject().getStringOrNull("key");
 				if (key != null) {
@@ -256,11 +298,11 @@ public abstract class HttpGroup{
 						i++;
 					}
 					String s1 = new String(bytes);
-					if (Log.D) {
-						String s2 = (new StringBuilder("md5Key -->> ")).append(
-								s1).toString();
-						Log.d("HttpGroup", s2);
-					}
+//					if (Log.D) {
+//						String s2 = (new StringBuilder("md5Key -->> ")).append(
+//								s1).toString();
+//						Log.d("HttpGroup", s2);
+//					}
 					HttpGroup.setMd5Key(s1);
 					if (listener != null)
 						listener.onComplete(null);
@@ -269,9 +311,6 @@ public abstract class HttpGroup{
 
 			@Override
 			public void onError(HttpError httpError) {
-				if (Log.D) { 
-					Log.d("HttpGroup", "queryMd5Key.OnAllListener.onError");
-				}
 				
 				if (listener != null)
 					listener.onComplete(null);
@@ -283,7 +322,6 @@ public abstract class HttpGroup{
 			}
 
 		});
-		httpsetting.setPost(true);
 		httpgroup.add(httpsetting);
 	}
 
@@ -299,42 +337,29 @@ public abstract class HttpGroup{
 		mMd5Key = s;
 	}
 
+	/**
+	 * 
+	 * @param httpSetting
+	 * @return
+	 */
 	public HttpRequest add(HttpSetting httpSetting) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "add");
-		}
 		
 		httpIdCounter += 1;
 		httpSetting.setId(httpIdCounter);
 		tryEffect(httpSetting);
-		if (Log.I) {
-			String s = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- onStart -->> ").toString();
-			Log.i("HttpGroup", s);
-		}
 		httpSetting.onStart();
-		HttpRequest request = new HttpRequest(httpSetting, this);
+		HttpRequest request = new HttpRequest(httpGroupSetting.getMyActivity(), httpSetting, this);
 		OnReadyListener readyListener = httpSetting.getOnReadyListener();
-		if (readyListener != null) {
-			if (Log.D) { 
-				Log.d("HttpGroup", "add -- ready listener isn't null");
-			}
-			
+		if (readyListener != null) {		
 			new HttpGroup_Thread(this, readyListener, httpSetting, request).start();
 		} else {
-			if (Log.D) { 
-				Log.d("HttpGroup", "add -- ready listener is null");
-			}
 			add2(request);
 		}
 		return request;
 	}
 
+
 	public HttpRequest add(String funcId, JSONObject jsonObj, OnAllListener listener) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "add(funcId, json, listener)");
-		}
-		
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(funcId);
 		httpSetting.setJsonParams(jsonObj);
@@ -343,10 +368,6 @@ public abstract class HttpGroup{
 	}
 
 	public HttpRequest add(String url, Map<String, String> map, OnAllListener listener) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "add(funcId, map, listener)");
-		}
-		
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setUrl(url);
 		httpSetting.setMapParams(map);
@@ -355,24 +376,20 @@ public abstract class HttpGroup{
 	}
 
 	public void add2(HttpRequest request) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "add2(request)");
-		}
-		
 		HttpSetting httpSetting = request.getHttpSetting();
 
-		if ((Log.I) && (httpSetting.getFunctionId() != null)) {
-			String s = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- functionId -->> ")
-					.append(httpSetting.getFunctionId()).toString();
-			Log.i("HttpGroup", s);
-		}
-		if ((Log.I) && (httpSetting.getUrl() != null)) {
-			String s = new StringBuilder("id:").append(httpSetting.getId())
-					.append("- url -->> ").append(httpSetting.getUrl())
-					.toString();
-			Log.i("HttpGroup", s);
-		}
+//		if ((Log.I) && (httpSetting.getFunctionId() != null)) {
+//			String s = new StringBuilder("id:").append(httpSetting.getId())
+//					.append("- functionId -->> ")
+//					.append(httpSetting.getFunctionId()).toString();
+//			Log.i("HttpGroup", s);
+//		}
+//		if ((Log.I) && (httpSetting.getUrl() != null)) {
+//			String s = new StringBuilder("id:").append(httpSetting.getId())
+//					.append("- url -->> ").append(httpSetting.getUrl())
+//					.toString();
+//			Log.i("HttpGroup", s);
+//		}
 		if (httpSetting.getType() == 0) {
 			httpSetting.setType(this.type);
 		}
@@ -398,29 +415,17 @@ public abstract class HttpGroup{
 
 	// here--------------
 	protected void addCompletesCount() {
-		if (Log.D) { 
-			Log.d("HttpGroup", "addCompletesCount");
-		}
-		
 		completesCount = completesCount + 1;
 		if (completesCount == httpList.size())
 			onEnd();
 	}
 
 	public void addMaxProgress(int i) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "addMaxProgress");
-		}
-		
 		maxProgress = maxProgress + i;
 		onProgress(maxProgress, progress);
 	}
 
 	protected void addMaxStep(int i) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "addMaxStep");
-		}
-		
 		int j = maxStep + i;
 		maxStep = j;
 		int k = maxStep;
@@ -429,19 +434,11 @@ public abstract class HttpGroup{
 	}
 
 	protected void addProgress(int i) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "addProgress");
-		}
-		
 		progress += i;
 		onProgress(maxProgress, progress);
 	}
 
 	protected void addStep(int i) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "addStep");
-		}
-		
 		step = step + i;
 		onStep(maxStep, step);
 	}
@@ -521,10 +518,11 @@ public abstract class HttpGroup{
 		this.useCaches = useCaches;
 	}
 
+	/**
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+	 * @param httpsetting
+	 */
 	private void tryEffect(HttpSetting httpsetting) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "tryEffect");
-		}
 		Activity activity = httpGroupSetting.getMyActivity();
 		int i = httpsetting.getEffect();
 		if ((ConstHttpProp.EFFECT_DEFAULT == i) && (httpsetting.getEffectState() == ConstHttpProp.EFFECT_STATE_NO)) {
@@ -535,29 +533,21 @@ public abstract class HttpGroup{
 	}
 }
 
-// ÄÚ²¿Àà
+// Ã„ÃšÂ²Â¿Ã€Ã 
 class HttpGroup_Thread extends Thread {
 	HttpGroup group;
 	HttpRequest httpRequest;
 	HttpSetting httpSetting;
 	HttpGroup.OnReadyListener onReadyListener;
 
-	public HttpGroup_Thread(HttpGroup httpGroup, OnReadyListener readyListener, HttpSetting httpSetting, HttpRequest request) {
-		if (Log.D) { 
-			Log.d("HttpGroup", "HttpGroup_Thread.HttpGroup_Thread");
-		}
-		
+	public HttpGroup_Thread(HttpGroup httpGroup, HttpGroup.OnReadyListener readyListener, HttpSetting httpSetting, HttpRequest request) {
 		this.httpSetting = httpSetting;
 		this.httpRequest = request;
 		this.onReadyListener = readyListener;
 		this.group = httpGroup;
 	}
 
-	public void run() {
-		if (Log.D) { 
-			Log.d("HttpGroup", "HttpGroup_Thread.run");
-		}
-		
+	public void run() {	
 		onReadyListener.onReady(httpSetting);
 		group.add2(httpRequest);
 	}

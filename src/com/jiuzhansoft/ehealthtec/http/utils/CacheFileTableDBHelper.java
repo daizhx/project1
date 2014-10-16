@@ -3,15 +3,20 @@ package com.jiuzhansoft.ehealthtec.http.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-
-import com.jiuzhansoft.ehealthtec.log.Log;
-
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
 public class CacheFileTableDBHelper {
+	private Context mContext;
+	private DBHelperUtil mDBHelperUtil;
+	public CacheFileTableDBHelper(Context context) {
+		// TODO Auto-generated constructor stub
+		mContext = context;
+		mDBHelperUtil = new DBHelperUtil(context);
+	}
 
 	public static void create(SQLiteDatabase paramSQLiteDatabase) {
 		paramSQLiteDatabase
@@ -22,20 +27,16 @@ public class CacheFileTableDBHelper {
 				.execSQL("CREATE INDEX name_index ON cache_file(first_name, last_name)");
 	}
 
-	public synchronized static void delete(CacheFileItem paramCacheFile) {
-		if (Log.D)
-			Log.d("Temp", "CacheFileTable delete() -->> ");
+	public synchronized void delete(CacheFileItem paramCacheFile) {
 
 		try {
-			SQLiteDatabase sqlitedatabase = DBHelperUtil.getDatabase();
+			SQLiteDatabase sqlitedatabase = mDBHelperUtil.getDatabase();
 			String str[] = new String[2];
 			str[0] = paramCacheFile.getFirstName();
 			str[1] = paramCacheFile.getLastName();
 
 			sqlitedatabase.delete("cache_file",
 					"first_name = ? AND last_name = ?", str);
-			if (Log.D)
-				Log.d("Temp", "CacheFileTable delete() -->> ok");
 
 			DBHelperUtil.closeDatabase();
 
@@ -45,13 +46,11 @@ public class CacheFileTableDBHelper {
 		}
 	}
 
-	public static ArrayList<CacheFileItem> getListByClean() {
-		if (Log.D)
-			Log.d("Temp", "CacheFileTable getListByClean() -->> ");
+	public ArrayList<CacheFileItem> getListByClean() {
 
 		ArrayList<CacheFileItem> localArrayList = new ArrayList<CacheFileItem>();
 		Cursor localCursor = null;
-		SQLiteDatabase localSQLiteDatabase = DBHelperUtil.getDatabase();
+		SQLiteDatabase localSQLiteDatabase = mDBHelperUtil.getDatabase();
 
 		try {
 			String[] arrayOfString1 = new String[5];
@@ -87,9 +86,6 @@ public class CacheFileTableDBHelper {
 				} while (localCursor.moveToNext());
 			}
 
-			if (Log.D)
-				Log.d("Temp", "CacheFileTable getListByClean() -->> ok");
-
 			if (localCursor != null && !localCursor.isClosed())
 				localCursor.close();
 			DBHelperUtil.closeDatabase();
@@ -107,11 +103,9 @@ public class CacheFileTableDBHelper {
 		return localArrayList;
 	}
 
-	public synchronized static void insertOrUpdate(CacheFileItem paramCacheFile) {
-		if (Log.D)
-			Log.d("Temp", "CacheFileTable insertOrUpdate() -->> ");
+	public synchronized void insertOrUpdate(CacheFileItem paramCacheFile) {
 
-		SQLiteDatabase sqlitedatabase = DBHelperUtil.getDatabase();
+		SQLiteDatabase sqlitedatabase = mDBHelperUtil.getDatabase();
 		ContentValues contentvalues = new ContentValues();
 		contentvalues.put("first_name", paramCacheFile.getFirstName());
 		contentvalues.put("last_name", paramCacheFile.getLastName());
@@ -136,8 +130,6 @@ public class CacheFileTableDBHelper {
 			else
 				sqlitedatabase.update("cache_file", contentvalues, s4, as);
 
-			if (Log.D)
-				Log.d("Temp", "CacheFileTable insertOrUpdate() -->> ok");
 
 			if (cursor != null && !cursor.isClosed())
 				cursor.close();
@@ -152,14 +144,12 @@ public class CacheFileTableDBHelper {
 		}
 	}
 
-	public static boolean isExpired(File paramFile) {
-		if (Log.D)
-			Log.d("Temp", "CacheFileTable isExpired() -->> ");
+	public boolean isExpired(File paramFile) {
 
 		boolean flag = true;
 		Cursor cursor = null;
 		CacheFileItem cachefile = new CacheFileItem(paramFile);
-		SQLiteDatabase sqlitedatabase = DBHelperUtil.getDatabase();
+		SQLiteDatabase sqlitedatabase = mDBHelperUtil.getDatabase();
 		String as[] = new String[2];
 		as[0] = cachefile.getFirstName();
 		as[1] = cachefile.getLastName();
@@ -178,12 +168,6 @@ public class CacheFileTableDBHelper {
 				if (l <= l1)
 					flag = false;
 
-				if (Log.D) {
-					String s2 = (new StringBuilder(
-							"CacheFileTable isExpired() -->> ")).append(l)
-							.toString();
-					Log.d("Temp", s2);
-				}
 			}
 
 			if (cursor != null && !cursor.isClosed())

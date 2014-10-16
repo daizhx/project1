@@ -505,7 +505,7 @@ public class Base64 {
 		try {
 			// ObjectOutputStream -> (GZIP) -> Base64 -> ByteArrayOutputStream
 			baos = new java.io.ByteArrayOutputStream();
-			b64os = new Base64.OutputStream(baos, ENCODE | options);
+			b64os = new OutputStream(baos, ENCODE | options);
 
 			// GZip?
 			if (gzip == GZIP) {
@@ -647,12 +647,12 @@ public class Base64 {
 		if (gzip == GZIP) {
 			java.io.ByteArrayOutputStream baos = null;
 			java.util.zip.GZIPOutputStream gzos = null;
-			Base64.OutputStream b64os = null;
+			OutputStream b64os = null;
 
 			try {
 				// GZip -> Base64 -> ByteArray
 				baos = new java.io.ByteArrayOutputStream();
-				b64os = new Base64.OutputStream(baos, ENCODE | options);
+				b64os = new OutputStream(baos, ENCODE | options);
 				gzos = new java.util.zip.GZIPOutputStream(b64os);
 
 				gzos.write(source, off, len);
@@ -1000,7 +1000,7 @@ public class Base64 {
 			e.printStackTrace();
 			obj = null;
 		} // end catch
-		catch (java.lang.ClassNotFoundException e) {
+		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			obj = null;
 		} // end catch
@@ -1031,9 +1031,9 @@ public class Base64 {
 	 */
 	public static boolean encodeToFile(byte[] dataToEncode, String filename) {
 		boolean success = false;
-		Base64.OutputStream bos = null;
+		OutputStream bos = null;
 		try {
-			bos = new Base64.OutputStream(
+			bos = new OutputStream(
 					new java.io.FileOutputStream(filename), Base64.ENCODE);
 			bos.write(dataToEncode);
 			success = true;
@@ -1065,9 +1065,9 @@ public class Base64 {
 	 */
 	public static boolean decodeToFile(String dataToDecode, String filename) {
 		boolean success = false;
-		Base64.OutputStream bos = null;
+		OutputStream bos = null;
 		try {
-			bos = new Base64.OutputStream(
+			bos = new OutputStream(
 					new java.io.FileOutputStream(filename), Base64.DECODE);
 			bos.write(dataToDecode.getBytes(PREFERRED_ENCODING));
 			success = true;
@@ -1096,7 +1096,7 @@ public class Base64 {
 	 */
 	public static byte[] decodeFromFile(String filename) {
 		byte[] decodedData = null;
-		Base64.InputStream bis = null;
+		InputStream bis = null;
 		try {
 			// Set up some useful variables
 			java.io.File file = new java.io.File(filename);
@@ -1114,7 +1114,7 @@ public class Base64 {
 			buffer = new byte[(int) file.length()];
 
 			// Open a stream
-			bis = new Base64.InputStream(new java.io.BufferedInputStream(
+			bis = new InputStream(new java.io.BufferedInputStream(
 					new java.io.FileInputStream(file)), Base64.DECODE);
 
 			// Read until done
@@ -1150,7 +1150,7 @@ public class Base64 {
 	 */
 	public static String encodeFromFile(String filename) {
 		String encodedData = null;
-		Base64.InputStream bis = null;
+		InputStream bis = null;
 		try {
 			// Set up some useful variables
 			java.io.File file = new java.io.File(filename);
@@ -1166,7 +1166,7 @@ public class Base64 {
 			int numBytes = 0;
 
 			// Open a stream
-			bis = new Base64.InputStream(new java.io.BufferedInputStream(
+			bis = new InputStream(new java.io.BufferedInputStream(
 					new java.io.FileInputStream(file)), Base64.ENCODE);
 
 			// Read until done
@@ -1680,5 +1680,52 @@ public class Base64 {
 
 	} // end inner class OutputStream
 
+    private static final char[] legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
+    /**
+     * ”√”⁄Des3º”√‹
+     * @param data
+     * @return
+     */
+    public static String encode(byte[] data) {
+        int start = 0;
+        int len = data.length;
+        StringBuffer buf = new StringBuffer(data.length * 3 / 2);
+
+        int end = len - 3;
+        int i = start;
+        int n = 0;
+
+        while (i <= end) {
+            int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 0x0ff) << 8) | (((int) data[i + 2]) & 0x0ff);
+
+            buf.append(legalChars[(d >> 18) & 63]);
+            buf.append(legalChars[(d >> 12) & 63]);
+            buf.append(legalChars[(d >> 6) & 63]);
+            buf.append(legalChars[d & 63]);
+
+            i += 3;
+
+            if (n++ >= 14) {
+                n = 0;
+                buf.append(" ");
+            }
+        }
+
+        if (i == start + len - 2) {
+            int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 255) << 8);
+
+            buf.append(legalChars[(d >> 18) & 63]);
+            buf.append(legalChars[(d >> 12) & 63]);
+            buf.append(legalChars[(d >> 6) & 63]);
+            buf.append("=");
+        } else if (i == start + len - 1) {
+            int d = (((int) data[i]) & 0x0ff) << 16;
+
+            buf.append(legalChars[(d >> 18) & 63]);
+            buf.append(legalChars[(d >> 12) & 63]);
+            buf.append("==");
+        }
+        return buf.toString();
+    }
 }

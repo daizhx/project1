@@ -6,7 +6,7 @@ import java.lang.ref.SoftReference;
 import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
-
+import android.content.Context;
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.application.EHTApplication;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
@@ -36,22 +36,23 @@ public class HttpResponse {
 	private SoftReference<byte[]> softReferenceInputData;
 	private String string;
 	private String type;
+	public Context mContext;
 
-	public HttpResponse() {
+	public HttpResponse(Context context) {
+		mContext = context;
 	}
 
-	public HttpResponse(Drawable drawable) {
+	public HttpResponse(Context context, Drawable drawable) {
+		mContext = context;
 		this.drawable = drawable;
 	}
 
-	public HttpResponse(HttpURLConnection conn) {
+	public HttpResponse(Context context, HttpURLConnection conn) {
+		mContext = context;
 		this.httpURLConnection = conn;
 	}
 
 	private void imageClean() {
-		if (Log.D) { 
-			Log.d("HttpResponse", "imageClean");
-		}
 		
 		softReferenceInputData = new SoftReference(inputData);
 		softReferenceBitmap = new SoftReference(bitmap);
@@ -66,17 +67,13 @@ public class HttpResponse {
 	}
 
 	public Bitmap getBitmap() {
-		if (Log.D) { 
-			Log.d("HttpResponse", "getBitmap");
-		}
 		
 		Bitmap retBitmap;
 		if (bitmap != null) {
 			retBitmap = bitmap;
 			imageClean();
 		} else if (softReferenceBitmap == null)
-			retBitmap = BitmapFactory.decodeResource(EHTApplication
-					.getInstance().getResources(), R.drawable.icon);
+			retBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
 		else
 			retBitmap = (Bitmap) softReferenceBitmap.get();
 		return retBitmap;
@@ -87,17 +84,13 @@ public class HttpResponse {
 	}
 
 	public Drawable getDrawable() {
-		if (Log.D) { 
-			Log.d("HttpResponse", "getDrawable");
-		}
-		
 		Drawable retDrawable;
 		if (this.drawable != null) {
 			retDrawable = drawable;
 			imageClean();
 		} else if (softReferenceDrawable == null) {
-			String s = EHTApplication.getInstance().getString(R.string.no_image);
-			retDrawable = new ExceptionDrawable(EHTApplication.getInstance(), s);
+			String s = mContext.getString(R.string.no_image);
+			retDrawable = new ExceptionDrawable(mContext, s);
 		} else {
 			retDrawable = (Drawable) softReferenceDrawable.get();
 		}
@@ -105,10 +98,6 @@ public class HttpResponse {
 	}
 
 	public String getHeaderField(String paramName) {
-		if (Log.D) { 
-			Log.d("HttpResponse", "getHeaderField");
-		}
-		
 		String fieldValue;
 		if (headerFields == null) {
 			fieldValue = null;
@@ -154,10 +143,6 @@ public class HttpResponse {
 	}
 
 	public Drawable getThumbDrawable(float f, float f1) {
-		if (Log.D) { 
-			Log.d("HttpResponse", "getThumbDrawable");
-		}
-		
 		Bitmap bitmap1 = getBitmap();
 		int i = bitmap1.getWidth();
 		int j = bitmap1.getHeight();

@@ -1,4 +1,4 @@
-package com.jiuzhansoft.ehealthtec.http.utils;
+﻿package com.jiuzhansoft.ehealthtec.http.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -40,6 +40,7 @@ public class Md5Encrypt {
 		} while (true);
 	}
 
+	//不使用
 	public static String md5(String s)
 	{
 		MessageDigest messagedigest;
@@ -67,9 +68,36 @@ public class Md5Encrypt {
 		return new String(ac);
 	}
 
-	public static final int CACHE_MODE_AUTO = 0;
-	public static final int CACHE_MODE_ONLY_CACHE = 1;
-	public static final int CACHE_MODE_ONLY_NET = 2;
+//	public static final int CACHE_MODE_AUTO = 0;
+//	public static final int CACHE_MODE_ONLY_CACHE = 1;
+//	public static final int CACHE_MODE_ONLY_NET = 2;
 
+	/**
+	 * MD5加密
+	 * @param s
+	 * @return
+	 */
+	public final static String MD5(String s) {
+        char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};       
+
+        try {
+            byte[] btInput = s.getBytes();
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            mdInst.update(btInput);
+            byte[] md = mdInst.digest();
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

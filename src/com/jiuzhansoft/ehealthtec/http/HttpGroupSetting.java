@@ -2,7 +2,6 @@ package com.jiuzhansoft.ehealthtec.http;
 
 import android.app.Activity;
 
-import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 
 

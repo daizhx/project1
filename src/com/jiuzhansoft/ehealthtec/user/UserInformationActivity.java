@@ -21,6 +21,7 @@ import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
 import com.jiuzhansoft.ehealthtec.constant.PreferenceKeys;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
+import com.jiuzhansoft.ehealthtec.http.HttpGroupaAsynPool;
 import com.jiuzhansoft.ehealthtec.http.HttpRequest;
 import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
@@ -261,7 +262,7 @@ public class UserInformationActivity extends BaseActivity {
 		});
 		// httpsetting.setNotifyUser(true);
 		httpsetting.setShowProgress(true);
-		getHttpGroupaAsynPool().add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 
 	}
 

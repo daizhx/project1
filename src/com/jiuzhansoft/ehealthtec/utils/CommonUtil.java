@@ -305,8 +305,6 @@ public class CommonUtil {
 
 		HttpGroupSetting httpgroupsetting = new HttpGroupSetting();
 		httpgroupsetting.setType(1000);
-		HttpGroupaAsynPool httpgroupaasynpool = new HttpGroupaAsynPool(
-				httpgroupsetting);
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId("genToken");
 		httpsetting.putJsonParam("action", s);
@@ -347,7 +345,7 @@ public class CommonUtil {
 			}
 		});
 		httpsetting.setNotifyUser(true);
-		httpgroupaasynpool.add(httpsetting);
+		HttpGroupaAsynPool.getHttpGroupaAsynPool().add(httpsetting);
 	}
 
 	public static boolean startCheck(String s, String s1) {
@@ -588,9 +586,8 @@ public class CommonUtil {
 		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
 		localHttpGroupSetting.setMyActivity((Activity)getContext);
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
-		HttpGroupaAsynPool httpGroupaAsynPool = new HttpGroupaAsynPool(
-				localHttpGroupSetting);
-		httpGroupaAsynPool.add(httpsetting);
+		
+		HttpGroupaAsynPool.getHttpGroupaAsynPool().add(httpsetting);
 	}
 
 }

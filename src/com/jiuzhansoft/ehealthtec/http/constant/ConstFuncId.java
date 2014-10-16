@@ -4,21 +4,22 @@ public class ConstFuncId {
 
 	public static final String FUNCTION_ID = "functionId";
 	
-	
-	public static final String HUMANACUPUNCTUREPOINTS= "getAcupuncturesByImageId";
-	public static final String HUMANPOINTSSEARCH= "getAcupuncturesByDiseaseName";
-	public static final String SEARCH_TIP = "getNameAndAcupunctureCountByDiseaseName";
-	public static final String ADVERTISEMENT = "advertisement.getAdvertisementInfos";
-	public static final String COMMONDIEASELIST = "getCommonDiseaseListByAgeRange";
-	public static final String IRISHISTORYLIST = "iris.getIrisHistoryList";
+
+//	public static final String HUMANACUPUNCTUREPOINTS= "getAcupuncturesByImageId";
+//	public static final String HUMANPOINTSSEARCH= "getAcupuncturesByDiseaseName";
+//	public static final String SEARCH_TIP = "getNameAndAcupunctureCountByDiseaseName";
+//	public static final String ADVERTISEMENT = "advertisement.getAdvertisementInfos";
+//	public static final String COMMONDIEASELIST = "getCommonDiseaseListByAgeRange";
+//	public static final String IRISHISTORYLIST = "iris.getIrisHistoryList";
 	public static final String IRISINFOBYPARTANDCOLOR="getIrisInfoByPartAndColor";
 	public static final String SKANANALYSISRESULT="skin.getAnalysisResult";
 	public static final String HAIRANALYSISRESULT="hair.getAnalysisResult";
 	
-	//get user info function id
-	public static final String FUNCTION_ID_FOR_USER_LOGIN = "user.login";
-	public static final String FUNCTION_ID_FOR_USER_INFO = "user.getUserInfo";
-	public static final String FUNCTION_ID_FOR_USER_REGISTER = "user.register";
+	//用户登录接口
+	public static final String FUNCTION_ID_FOR_USER_LOGIN = "user/login";
+	//用户注册接口
+//	public static final String FUNCTION_ID_FOR_USER_INFO = "user/register";
+	public static final String FUNCTION_ID_FOR_USER_REGISTER = "user/register";
 	public static final String FUNCTION_ID_FOR_USER_RESETPASSWORD = "user.resetPassword";
 	public static final String FUNCTION_ID_FOR_USER_CHANGEPASSWORD = "user.changePassword";
 	public static final String FUNCTION_ID_FOR_USER_EDIT = "user.editInfo";
@@ -48,7 +49,7 @@ public class ConstFuncId {
 	public static final String BODYFATREPORT = "fatweigh.getFatWeighHistoryList";
 	
 	//获取health tip的服务器接口
-	public static final String TODAY_TIP = "getNewInfo";
+	public static final String TODAY_TIP = "avdNew/getNewInfo";
 	//获取health tips list的服务器接口
 	public static final String HEALTH_TIPS = "getAllInfo";
 }
