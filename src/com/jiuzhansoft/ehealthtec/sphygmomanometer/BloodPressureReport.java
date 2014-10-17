@@ -314,12 +314,23 @@ public class BloodPressureReport extends BaseActivity{
 		getData();	
 	}
 
+	private long dateToUtc(String date){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			Date date2 = sdf.parse(date);
+			return date2.getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	public void getData(){
 		JSONObject jsonObject = new JSONObject();
 		try {
-			jsonObject.put("userPin", userPin);
-			jsonObject.put("startDate", startDate + " 00:00:00");
-			jsonObject.put("endDate", endDate + " 23:59:59");
+			jsonObject.put("userPIN", userPin);
+			jsonObject.put("startTime", dateToUtc(startDate + " 00:00:00"));
+			jsonObject.put("endTime", dateToUtc(endDate + " 23:59:59"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -327,6 +338,7 @@ public class BloodPressureReport extends BaseActivity{
 		
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.BLOODPRESSUREGETHISTORYLIST);
+		httpsetting.setRequestMethod("GET");
 		httpsetting.setJsonParams(jsonObject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -339,48 +351,36 @@ public class BloodPressureReport extends BaseActivity{
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				if (response.getJSONObject() != null
-						&& response.getJSONObject().getJSONArrayOrNull(
-								"bloodpressureInfoList") != null
-						&& response.getJSONObject()
-								.getJSONArrayOrNull("bloodpressureInfoList").length() > 0){
-					JSONArrayPoxy datePoxy = response.getJSONObject().getJSONArrayOrNull("bloodpressureInfoList");
-					for(int i = 0; i < datePoxy.length(); i++){
-						JSONObjectProxy objectproxy;
-						try {
-							objectproxy = datePoxy.getJSONObject(i);
-							arrList.add(objectproxy.getStringOrNull("date"));
-							sysList.add(objectproxy.getIntOrNull("high"));
-							diaList.add(objectproxy.getIntOrNull("low"));
-							pulList.add(objectproxy.getIntOrNull("pulse"));
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+					if(code == 1 && object != null){
+						for(int i = 0; i < object.length(); i++){
+							JSONObjectProxy objectproxy;
+							try {
+								objectproxy = object.getJSONObject(i);
+								arrList.add(objectproxy.getStringOrNull("date"));
+								sysList.add(objectproxy.getIntOrNull("high"));
+								diaList.add(objectproxy.getIntOrNull("low"));
+								pulList.add(objectproxy.getIntOrNull("pulse"));
+								
+								showChart();
+								showList();
+								reportView.setList(sysList, diaList);
+								reportView.invalidate();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
+					}else{
+						Toast.makeText(BloodPressureReport.this, getResources().getString(R.string.no_data), Toast.LENGTH_LONG).show();
 					}
-					post(new Runnable(){
-
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							showChart();
-							showList();
-							reportView.setList(sysList, diaList);
-							reportView.invalidate();
-						}
-						
-					});
-					
-				}else{
-					post(new Runnable(){
-
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub							
-							Toast.makeText(BloodPressureReport.this, getResources().getString(R.string.no_data), Toast.LENGTH_LONG).show();
-						}
-						
-					});
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 
@@ -754,9 +754,9 @@ public class BloodPressureReport extends BaseActivity{
 		 getBarDate();
 			JSONObject jsonObject = new JSONObject();
 			try {
-				jsonObject.put("userPin", userPin);
-				jsonObject.put("startDate", startBarDate + " 00:00:00");
-				jsonObject.put("endDate", endBarDate + " 23:59:59");
+				jsonObject.put("userPIN", userPin);
+				jsonObject.put("startTime", dateToUtc(startDate + " 00:00:00"));
+				jsonObject.put("endTime", dateToUtc(endDate + " 23:59:59"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -764,6 +764,7 @@ public class BloodPressureReport extends BaseActivity{
 			
 			HttpSetting httpsetting=new HttpSetting();
 			httpsetting.setFunctionId(ConstFuncId.BLOODPRESSUREGETHISTORYLIST);
+			httpsetting.setRequestMethod("GET");
 			httpsetting.setJsonParams(jsonObject);
 			httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -780,43 +781,33 @@ public class BloodPressureReport extends BaseActivity{
 					dateBarList.clear();
 					sysBarList.clear();
 					diaBarList.clear();
-					if (response.getJSONObject() != null
-							&& response.getJSONObject().getJSONArrayOrNull(
-									"bloodpressureInfoList") != null
-							&& response.getJSONObject()
-									.getJSONArrayOrNull("bloodpressureInfoList").length() > 0){
-						JSONArrayPoxy datePoxy = response.getJSONObject().getJSONArrayOrNull("bloodpressureInfoList");
-						for(int i = 0; i < datePoxy.length(); i++){
-							JSONObjectProxy objectproxy;
-							try {
-								objectproxy = datePoxy.getJSONObject(i);
-								dateBarList.add(objectproxy.getStringOrNull("date"));
-								sysBarList.add(objectproxy.getIntOrNull("low"));
-								diaBarList.add(objectproxy.getIntOrNull("high"));
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+					
+					JSONObjectProxy json = response.getJSONObject();
+					try {
+						int code = json.getInt("code");
+						String msg = json.getString("msg");
+						JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+						if(code == 1 && object != null){
+							for(int i = 0; i < object.length(); i++){
+								JSONObjectProxy objectproxy;
+								try {
+									objectproxy = object.getJSONObject(i);
+									dateBarList.add(objectproxy.getStringOrNull("date"));
+									diaBarList.add(objectproxy.getIntOrNull("high"));
+									sysBarList.add(objectproxy.getIntOrNull("low"));
+									showBarChart();
+									
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
-						}	
-						post(new Runnable(){
-
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								showBarChart();					
-							}
-							
-						});
-					}else{
-						post(new Runnable(){
-
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub								
-								Toast.makeText(BloodPressureReport.this, getResources().getString(R.string.no_data), Toast.LENGTH_LONG).show();				
-							}
-							
-						});
+						}else{
+							Toast.makeText(BloodPressureReport.this, getResources().getString(R.string.no_data), Toast.LENGTH_LONG).show();
+						}
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 					
 				}

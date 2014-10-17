@@ -15,6 +15,7 @@ public class ConstSysConfig {
 //    public static final String HOST_IP = "127.0.0.1:8080";
 	public static final String SERVER_NAME = "/ehtrest/api/";
 	public static final boolean USE_TOKEN = true;
+	public static final boolean IS_REST = true;
 
 	public static final String REQUEST_METHOD = "GET";
 	

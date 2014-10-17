@@ -19,6 +19,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.AsynImageLoader;
 
@@ -136,8 +137,10 @@ public class HealthTipsFragment extends Fragment {
 			map = datalist.get(position);
 			Log.d(TAG, "Position=" + position + ",map=" + map);
 			
-//			asynImageLoader.showImageAsyn(getActivity(),holder.icon, (String) map.get("url"),
-//					0);
+			asynImageLoader.setCacheDisk(false);
+			asynImageLoader.showImageAsyn(getActivity(),holder.icon, "http://182.254.137.149/"+(String) map.get("url"),
+					0);
+			
 			holder.title.setText((String) map.get("title"));
 			//ÄÚÈÝÕªÒª
 			String shortContent =  (String) map.get("content");
@@ -163,6 +166,7 @@ public class HealthTipsFragment extends Fragment {
 
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(ConstFuncId.HEALTH_TIPS);
+		httpSetting.setRequestMethod("GET");
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put("pageNo", 1);
@@ -182,17 +186,22 @@ public class HealthTipsFragment extends Fragment {
 			@Override
 			public void onError(HttpError httpError) {
 				// TODO Auto-generated method stub
-				Log.d(TAG, "onError");
+				Log.d(TAG, "onError:"+httpError.getMessage());
 			}
 
 			@Override
 			public void onEnd(HttpResponse response) {
+				JSONObjectProxy json = response.getJSONObject();
 				Log.d(TAG, "onEnd:response---");
-
+				
 				// TODO Auto-generated method stub
 				try {
-					JSONArrayPoxy jsonArray = response.getJSONARRAY();
-					if (jsonArray != null) {
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONObject object = json.getJSONObjectOrNull("object");
+					
+					if (code == 1 && object != null) {
+						JSONArrayPoxy jsonArray = (JSONArrayPoxy) object.getJSONArray("data");
 						for (int i = 0; i < jsonArray.length(); i++) {
 							JSONObject jsonObject = (JSONObject) jsonArray
 									.get(i);
@@ -207,7 +216,8 @@ public class HealthTipsFragment extends Fragment {
 							map.put("url", url);
 							datalist.add(map);
 						}
-						mHandler.sendEmptyMessage(1);
+//						mHandler.sendEmptyMessage(1);
+						listViewAdapter.notifyDataSetChanged();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

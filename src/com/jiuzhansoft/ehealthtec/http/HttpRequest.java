@@ -1437,14 +1437,18 @@ public class HttpRequest implements HttpGroup.StopController {
 				}
 		} else {
 			String url = httpSetting.getUrl();
+			String completeUrl = url;
 //			Map map = httpSetting.getMapParams();
 //			String functionId=(String) map.get("functionId");
 			String functionId = httpSetting.getFunctionId();
 			url=url+functionId;
 			JSONObject json=httpSetting.getJsonParams();
-			String completeUrl = addParams(url, json);
-			if (httpGroup.isReportUserInfoFlag()
-					&& httpSetting.getType() == ConstHttpProp.TYPE_JSON) {
+			if(ConstSysConfig.IS_REST){
+				completeUrl = addParamsRest(url, json);
+			}else{
+				completeUrl = addParams(url, json);
+			}
+			if (httpGroup.isReportUserInfoFlag() && httpSetting.getType() == ConstHttpProp.TYPE_JSON) {
 				sb = new StringBuilder(String.valueOf(completeUrl));
 				//String s10 = StatisticsReportUtil.getReportString(httpSetting.isNeedGlobalInitialization());
 				//httpSetting.setUrl(sb.append(s10).toString());
@@ -1454,6 +1458,39 @@ public class HttpRequest implements HttpGroup.StopController {
 			}
 		}
 	}
+	
+	
+	/**
+	 * 添加参数，REST模式
+	 * @param s
+	 * @param json
+	 * @return
+	 */
+	public String addParamsRest(String s, JSONObject json){
+		String retUrlAndParams = s;
+		if(json != null){
+			Iterator<?> iterator = json.keys();
+			while(iterator.hasNext()){
+				String key = (String) iterator.next();
+				try {
+					String value = json.getString(key);
+					retUrlAndParams += "/";
+					retUrlAndParams += value;
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				};
+				
+			}
+		}
+		return retUrlAndParams;
+	}
+	/**
+	 * 添加参数
+	 * @param s
+	 * @param json
+	 * @return
+	 */
 	public String addParams(String s, JSONObject json) {
 		String retUrlAndParams = null;
 		if (json != null) {

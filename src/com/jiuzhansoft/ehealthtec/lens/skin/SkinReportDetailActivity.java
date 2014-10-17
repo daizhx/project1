@@ -27,6 +27,7 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.lens.hair.HairReportDetailActivity;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 public class SkinReportDetailActivity extends BaseActivity {
 
@@ -108,16 +109,20 @@ public class SkinReportDetailActivity extends BaseActivity {
 	private void queryData(){
 		JSONObject jsonObject = new JSONObject();
 		try {
-			jsonObject.put("userPin", getUserPin);
-			jsonObject.put("currentDate", getDate);
+			jsonObject.put("local", CommonUtil.getLocalLauguage(this));
+			jsonObject.put("infotype", "0");
+			jsonObject.put("userId", getUserPin);
+			jsonObject.put("beginTime", getDate);
+			jsonObject.put("endTime", getDate);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		HttpSetting httpsetting=new HttpSetting();
-		httpsetting.setFunctionId(ConstFuncId.SKANCONTENTLIST);
+		httpsetting.setFunctionId(ConstFuncId.SKANDATELIST);
 		httpsetting.setJsonParams(jsonObject);
+		httpsetting.setRequestMethod("GET");
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -129,20 +134,24 @@ public class SkinReportDetailActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				Message message = new Message();
-				if (response.getJSONObject() != null
-						&& response.getJSONObject().getJSONArrayOrNull(
-								"skinInfoList") != null
-						&& response.getJSONObject()
-								.getJSONArrayOrNull("skinInfoList").length() > 0){
-					JSONArrayPoxy common_diease_list = 
-						response.getJSONObject().getJSONArrayOrNull("skinInfoList");
-					dataToContentlist(common_diease_list);
-					message.what = 1;
-					handler.sendMessage(message);
-				}else{
-					message.what = 2;
-					handler.sendMessage(message);
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+					Message message = new Message();
+					if(code == 1 && object != null){
+						dataToContentlist(object);
+						message.what = 1;
+						handler.sendMessage(message);
+					}else{
+						message.what = 2;
+						handler.sendMessage(message);
+					}
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 

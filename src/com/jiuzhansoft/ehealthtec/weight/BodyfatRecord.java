@@ -676,15 +676,16 @@ public class BodyfatRecord extends com.jiuzhansoft.ehealthtec.activity.BaseActiv
 		String userPin = getStringFromPreference(ConstHttpProp.USER_PIN);
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("userPin", userPin);
-			jsonobject.put("startDate", startDate);
-			jsonobject.put("endDate", endDate);
+			jsonobject.put("userId", userPin);
+			jsonobject.put("beginTime", startDate);
+			jsonobject.put("endTime", endDate);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.BODYFATREPORT);
+		httpsetting.setRequestMethod("GET");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -700,34 +701,32 @@ public class BodyfatRecord extends com.jiuzhansoft.ehealthtec.activity.BaseActiv
 				weightList.clear();
 				dampList.clear();
 				dateList.clear();
-				if (response.getJSONObject() != null
-						&& response.getJSONObject().getJSONArrayOrNull(
-								"clientInfo") != null
-						&& response.getJSONObject()
-								.getJSONArrayOrNull("clientInfo").length() > 0){
-					JSONArrayPoxy datePoxy = response.getJSONObject().getJSONArrayOrNull("clientInfo");
-					for(int i = 0; i < datePoxy.length(); i++){
-						JSONObjectProxy objectproxy;
-						try {
-							objectproxy = datePoxy.getJSONObject(i);	
-							dateList.add(objectproxy.getStringOrNull("date"));
-							weightList.add(Float.parseFloat(objectproxy.getStringOrNull("weight")));
-							dampList.add(objectproxy.getIntOrNull("impedance"));
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+					if(code == 1 && object != null){
+						for(int i = 0; i < object.length(); i++){
+							JSONObjectProxy objectproxy;
+							try {
+								objectproxy = object.getJSONObject(i);	
+								dateList.add(objectproxy.getStringOrNull("date"));
+								weightList.add(Float.parseFloat(objectproxy.getStringOrNull("weight")));
+								dampList.add(objectproxy.getIntOrNull("impedance"));
+								showRecords();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				post(new Runnable(){
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub							
-						showRecords();
-					}
-					
-				});
+				
 			}
 
 			@Override

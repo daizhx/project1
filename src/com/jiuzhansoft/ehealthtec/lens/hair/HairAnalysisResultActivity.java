@@ -26,7 +26,9 @@ import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 
 
@@ -160,6 +162,8 @@ public class HairAnalysisResultActivity extends BaseActivity {
 
 		JSONObject jsonobject=new JSONObject();
 		try {
+			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
+			jsonobject.put("infotype", "1");
 			jsonobject.put("type", analysisMode);
 			jsonobject.put("content", content);
 		} catch (JSONException e) {
@@ -169,6 +173,7 @@ public class HairAnalysisResultActivity extends BaseActivity {
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.HAIRANALYSISRESULT);
 		httpsetting.setJsonParams(jsonobject);
+		httpsetting.setRequestMethod("GET");
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -184,37 +189,18 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			
 			@Override
 			public void onEnd(HttpResponse response) {
-				if(response.getJSONObject()!=null){
-					try {									
-						jsonPoxy=response.getJSONObject().getJSONArray("hairInfo");
-						post(new Runnable(){
-							
-							@Override
-							public void run() {
-								try {
-									json=jsonPoxy.getJSONObject(0);
-									state.setText(json.getString("description"));
-									reason.setText(json.getString("reason"));
-									suggest.setText(json.getString("suggestion"));	
-									addtoReportBtn.setEnabled(true);
-								} catch (JSONException e) {
-									
-									final AlertDialog dialog = (new AlertDialog.Builder(HairAnalysisResultActivity.this)).create();
-									dialog.show();
-									dialog.setMessage(getResources().getString(R.string.notalldata));
-									dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-										
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											dialog.dismiss();
-										}
-									});
-									
-									e.printStackTrace();
-								}															
-							}
-							
-						});
+				JSONObjectProxy data = response.getJSONObject();
+				if(data!=null){
+					try {
+						int code = data.getInt("code");
+						String msg = data.getString("msg");
+						JSONObject object = data.getJSONObjectOrNull("object");
+						if(1 == code && null != object){
+							state.setText(object.getString("description"));
+							reason.setText(object.getString("reason"));
+							suggest.setText(object.getString("suggestion"));	
+							addtoReportBtn.setEnabled(true);
+						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -237,17 +223,20 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			int type, String content){
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("client_code", "GZ-Hengxuan");
-			jsonobject.put("currentDate", currentDate);
-			jsonobject.put("userPin", userPin);
-			jsonobject.put("type", type);
-			jsonobject.put("content", content);
+			jsonobject.put("clientId", "GZ-Hengxuan");
+//			jsonobject.put("currentDate", currentDate);
+			jsonobject.put("userId", userPin);
+			jsonobject.put("Type", type);
+			jsonobject.put("Content", content);
+			jsonobject.put("Infotype", "1");
+			jsonobject.put("imgUrl", "null");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.ADDHAIRRESULTTOSERVER);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -258,17 +247,19 @@ public class HairAnalysisResultActivity extends BaseActivity {
 
 			@Override
 			public void onEnd(HttpResponse response) {
-				final int getcode = response.getCode();
-				post(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(getcode == 200)
-							Toast.makeText(HairAnalysisResultActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
-						else
-							Toast.makeText(HairAnalysisResultActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					if(code == 1){
+						Toast.makeText(HairAnalysisResultActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(HairAnalysisResultActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
 					}
-				});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 
 			@Override

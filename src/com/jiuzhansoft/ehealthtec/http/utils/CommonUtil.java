@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import com.jiuzhansoft.ehealthtec.application.EHTApplication;
@@ -352,5 +353,7 @@ public class CommonUtil {
 		
 		return null;
 	}
+	
+
 
 }

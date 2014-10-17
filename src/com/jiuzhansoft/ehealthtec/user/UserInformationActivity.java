@@ -27,6 +27,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
@@ -182,8 +183,9 @@ public class UserInformationActivity extends BaseActivity {
 		}
 		JSONObject jsonobject = new JSONObject();
 		try {
-			jsonobject.put("userPin", Integer
-					.parseInt(getStringFromPreference(ConstHttpProp.USER_PIN)));
+//			jsonobject.put("userPin", Integer
+//					.parseInt(getStringFromPreference(ConstHttpProp.USER_PIN)));
+			jsonobject.put("username", UserLogin.UserName);
 			jsonobject.put("realName", name);
 			jsonobject.put("phone", phoneNum);
 			jsonobject.put("address", address);
@@ -198,6 +200,7 @@ public class UserInformationActivity extends BaseActivity {
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.FUNCTION_ID_FOR_USER_EDIT);
 		httpsetting.setJsonParams(jsonobject);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -216,31 +219,26 @@ public class UserInformationActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				Log.d("daizhx", "onEnd:"+response.getJSONObject());
+				JSONObjectProxy json = response.getJSONObject();
 				try {
-					if ("1".equals(response.getJSONObject().get("code").toString())) {
-						post(new Runnable() {
-							public void run() {
-								// alertDialogBuilder.show();
-								final AlertDialog dialog = (new AlertDialog.Builder(
-										UserInformationActivity.this)).create();
-								dialog.setTitle(getString(R.string.submit_success));
-								dialog.setButton(AlertDialog.BUTTON_NEUTRAL,
-										getString(R.string.ok),
-										new DialogInterface.OnClickListener() {
-
-											@Override
-											public void onClick(DialogInterface arg0, int arg1) {
-												// TODO Auto-generated method stub
-												dialog.dismiss();
-												finish();
-											}
-
-										});
-								dialog.show();
-
-							}
-						});
+					if (json != null && json.getInt("code") == 1) {
+						// alertDialogBuilder.show();
+						final AlertDialog dialog = (new AlertDialog.Builder(
+								UserInformationActivity.this)).create();
+						dialog.setTitle(getString(R.string.submit_success));
+						dialog.setButton(AlertDialog.BUTTON_NEUTRAL,
+								getString(R.string.ok),
+								new DialogInterface.OnClickListener() {
+	
+									@Override
+									public void onClick(DialogInterface arg0, int arg1) {
+										// TODO Auto-generated method stub
+										dialog.dismiss();
+										finish();
+									}
+	
+								});
+						dialog.show();
 						
 					}else{
 						String s = getText(R.string.register_err_busy).toString();
@@ -249,8 +247,6 @@ public class UserInformationActivity extends BaseActivity {
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					String s = getText(R.string.register_err_busy).toString();
-					showAlertDialog(s);
 				}
 			}
 
@@ -267,26 +263,21 @@ public class UserInformationActivity extends BaseActivity {
 	}
 
 	void showAlertDialog(final String s) {
-		post(new Runnable() {
-			public void run() {
-				// alertDialogBuilder.show();
-				final AlertDialog dialog = (new AlertDialog.Builder(
-						UserInformationActivity.this)).create();
-				dialog.setTitle(s);
-				dialog.setButton(AlertDialog.BUTTON_NEUTRAL,
-						getString(R.string.ok),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface arg0, int arg1) {
-								// TODO Auto-generated method stub
-								dialog.dismiss();
-							}
-
-						});
-				dialog.show();
-
-			}
-		});
+		// alertDialogBuilder.show();
+		final AlertDialog dialog = (new AlertDialog.Builder(
+				UserInformationActivity.this)).create();
+		dialog.setTitle(s);
+		dialog.setButton(AlertDialog.BUTTON_NEUTRAL,
+				getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+	
+				});
+		dialog.show();
 	}
 }

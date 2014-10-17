@@ -562,9 +562,9 @@ public class WeightDataAnalysis extends BaseActivity{
 	private void addToServer(String currentDate, String userPin){
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("client_code", "SZ-Youruien");
-			jsonobject.put("currentDate", currentDate);
-			jsonobject.put("userPin", userPin);
+			jsonobject.put("clientId", "SZ-Youruien");
+//			jsonobject.put("currentDate", currentDate);
+			jsonobject.put("userId", userPin);
 			jsonobject.put("weight", weight);
 			jsonobject.put("impedance", damp);
 		} catch (JSONException e) {
@@ -573,6 +573,7 @@ public class WeightDataAnalysis extends BaseActivity{
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.BODYFATADDTOSERVER);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -585,25 +586,24 @@ public class WeightDataAnalysis extends BaseActivity{
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				final int getcode = response.getJSONObject().getIntOrNull("code");
-				post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if(getcode == 1){
-							Toast.makeText(WeightDataAnalysis.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
-							submit.setEnabled(false);
-							submit.setText(getResources().getString(R.string.submitted));
-							hasSubmit = true;
-						}
-						else{
-							Toast.makeText(WeightDataAnalysis.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
-							submit.setEnabled(true);
-							hasSubmit = true;
-						}
+				JSONObject json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					if(code == 1){
+						Toast.makeText(WeightDataAnalysis.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
+						submit.setEnabled(false);
+						submitEnable = false;
+						submit.setText(getResources().getString(R.string.submitted));
+						hasSubmit = true;
+					}else{
+						Toast.makeText(WeightDataAnalysis.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
+						submit.setEnabled(true);
+						submitEnable = true;
 					}
-				});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override

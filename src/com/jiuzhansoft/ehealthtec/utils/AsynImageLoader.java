@@ -162,7 +162,11 @@ public class AsynImageLoader {
 					Task task = taskQueue.remove(0);
 					
 					// 将下载的图片添加到缓存
-					task.bitmap = PicUtil.getbitmapAndwrite(mContext, task.path);
+					if(isCacheDisk){
+						task.bitmap = PicUtil.getbitmapAndwrite(mContext, task.path);
+					}else{
+						task.bitmap = PicUtil.getbitmap(task.path);
+					}
 
 					caches.put(task.path, new SoftReference<Bitmap>(task.bitmap));
 					

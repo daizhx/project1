@@ -3,6 +3,7 @@ package com.jiuzhansoft.ehealthtec.lens.iris;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,6 +114,7 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 		isEmptytv.setVisibility(View.GONE);
 		JSONObject jsonObject = new JSONObject();
 		try {
+			jsonObject.put("clientId", "GZ-Hengxuan");
 			jsonObject.put("userPin", getUserPin);
 			jsonObject.put("startDate", getStartDate);
 			jsonObject.put("endDate", getEndDate);
@@ -124,6 +126,7 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 		
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.DATELIST);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonObject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -136,21 +139,23 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				Message message = new Message();
-				if (response.getJSONObject() != null
-						&& response.getJSONObject().getJSONArrayOrNull(
-								"dateList") != null
-						&& response.getJSONObject()
-								.getJSONArrayOrNull("dateList").length() > 0){
-					JSONArrayPoxy datePoxy = response.getJSONObject().getJSONArrayOrNull("dateList");
-					dateToList(datePoxy);
-					
-					message.what = 1;
-					message.arg1 = index;
-					handler.sendMessage(message);
-				}else{
-					message.what = 2;
-					handler.sendMessage(message);
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+					Message message = new Message();
+					if(code == 1 && object != null){
+						dateToList(object);
+						message.what = 1;
+						message.arg1 = index;
+						handler.sendMessage(message);
+					}else{
+						message.what = 2;
+						handler.sendMessage(message);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 

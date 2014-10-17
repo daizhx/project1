@@ -26,6 +26,8 @@ import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 public class SkinAnalysisResultActivity extends BaseActivity {
 
@@ -227,9 +229,15 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 		getSkanResult(sentContent);
 	}
 
+	/**
+	 * 获取皮肤分析结果
+	 * @param content
+	 */
 	public void getSkanResult(String content){
 		JSONObject jsonobject=new JSONObject();
 		try {
+			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
+			jsonobject.put("infotype", "0");
 			jsonobject.put("type", analysisMode);
 			jsonobject.put("content", content);
 		} catch (JSONException e) {
@@ -238,6 +246,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.SKANANALYSISRESULT);
+		httpsetting.setRequestMethod("GET");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
@@ -256,40 +265,19 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				if(response.getJSONObject()!=null){
-					try {									
-						jsonPoxy=response.getJSONObject().getJSONArray("skinInfo");
-						post(new Runnable(){
-							
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub								
-								try {
-									json=jsonPoxy.getJSONObject(0);
-									state.setText(json.getString("status"));
-									reason.setText(json.getString("reason"));
-									suggest.setText(json.getString("suggestion"));	
-									addtoReportBtn.setEnabled(true);
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									
-									final AlertDialog dialog = (new AlertDialog.Builder(SkinAnalysisResultActivity.this)).create();
-									dialog.show();
-									dialog.setMessage(getResources().getString(R.string.notalldata));
-									dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-										
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											// TODO Auto-generated method stub
-											dialog.dismiss();
-										}
-									});
-									
-									e.printStackTrace();
-								}															
-							}
-							
-						});
+				JSONObjectProxy data = response.getJSONObject();
+				if(data != null){
+					try {
+						int code = data.getInt("code");
+						String msg = data.getString("msg");
+						JSONObject object = data.getJSONObjectOrNull("object");
+						if(1 == code && null != object){
+							state.setText(object.getString("status"));
+							reason.setText(object.getString("reason"));
+							suggest.setText(object.getString("suggestion"));	
+							addtoReportBtn.setEnabled(true);
+						}
+
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -311,11 +299,13 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			int type, String content){
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("client_code", "GZ-Hengxuan");
-			jsonobject.put("currentDate", currentDate);
-			jsonobject.put("userPin", userPin);
-			jsonobject.put("type", type);
-			jsonobject.put("content", content);
+			jsonobject.put("clientId", "GZ-Hengxuan");
+//			jsonobject.put("currentDate", currentDate);
+			jsonobject.put("userId", userPin);
+			jsonobject.put("Type", type);
+			jsonobject.put("Content", content);
+			jsonobject.put("Infotype", "0");
+			jsonobject.put("imgUrl", "null");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -323,6 +313,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.ADDSKANRESULTTOSERVER);
 		httpsetting.setJsonParams(jsonobject);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -334,18 +325,18 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				final int getcode = response.getCode();
-				post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if(getcode == 200)
-							Toast.makeText(SkinAnalysisResultActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
-						else
-							Toast.makeText(SkinAnalysisResultActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					if(code == 1){
+						Toast.makeText(SkinAnalysisResultActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(SkinAnalysisResultActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
 					}
-				});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override

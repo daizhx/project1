@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.json.JSONException;
@@ -588,6 +589,23 @@ public class CommonUtil {
 		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
 		
 		HttpGroupaAsynPool.getHttpGroupaAsynPool().add(httpsetting);
+	}
+	
+	
+	/**
+	 * 获取本地语言环境，中文简单返回1，中文繁体返回2，英语返回3，其他返回0
+	 * @return
+	 */
+	public static int getLocalLauguage(Context context){
+		int code = 0;
+		Locale local = context.getResources().getConfiguration().locale;
+		String s = local.getLanguage();
+		if(s.equals("en")){
+			code = 2;
+		}else if(s.equals("zh")){
+			code = 1;
+		}
+		return code;
 	}
 
 }

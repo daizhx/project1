@@ -17,6 +17,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -95,6 +96,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.IRISINFOBYPARTANDCOLOR);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
@@ -113,61 +115,38 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				if(response.getJSONObject()!=null){
-					try {									
-						jsonPoxy=response.getJSONObject().getJSONArray("irisInfo");
-						post(new Runnable(){
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					String msg = json.getString("msg");
+					JSONObject object = json.getJSONObjectOrNull("object");
+					if(code == 1 && object != null){
+						iris_result_bingzheng.setText(object.getString("symptom_desc"));
+						iris_result_bingfazheng.setText(object.getString("announcements"));
+						iris_result_suggesstion.setText(object.getString("suggestion"));
+						addtoReportBtn.setEnabled(true);
+						addtoReportBtn.setOnClickListener(new OnClickListener() {
 							
 							@Override
-							public void run() {
-								// TODO Auto-generated method stub								
-								try {
-									JSONObject json=jsonPoxy.getJSONObject(0);
-									iris_result_bingzheng.setText(json.getString("symptomDesc"));
-									iris_result_bingfazheng.setText(json.getString("announcements"));
-									iris_result_suggesstion.setText(json.getString("maintenancesSuggestion"));	
-									addtoReportBtn.setEnabled(true);
-									addtoReportBtn.setOnClickListener(new OnClickListener() {
-										
-										@Override
-										public void onClick(View v) {
-											addtoReportBtn.setEnabled(false);
-											// TODO Auto-generated method stub
-											int getCurIndex = getIntFromPreference("currentIndex");
-											SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-											Date currentdate = new Date(System.currentTimeMillis());
-											String timestr = format.format(currentdate);
-											if(getCurIndex != -1){
-												String getUserPin = getStringFromPreference(ConstHttpProp.USER_PIN);
-												addToServer(timestr, getUserPin, getCurIndex, organ.getOrganId(), colorId);
-											}												
-										}
-									});
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									
-									final AlertDialog dialog = (new AlertDialog.Builder(IrisDetailInfoActivity.this)).create();
-									dialog.show();
-									dialog.setMessage(getText(R.string.notalldata));
-									dialog.setButton(AlertDialog.BUTTON_POSITIVE, getText(R.string.ok), new DialogInterface.OnClickListener() {
-										
-										@Override
-										public void onClick(DialogInterface arg0, int arg1) {
-											// TODO Auto-generated method stub
-											dialog.dismiss();
-										}
-									});
-									
-									e.printStackTrace();
-								}															
+							public void onClick(View v) {
+								addtoReportBtn.setEnabled(false);
+								// TODO Auto-generated method stub
+								int getCurIndex = getIntFromPreference("currentIndex");
+								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+								Date currentdate = new Date(System.currentTimeMillis());
+								String timestr = format.format(currentdate);
+								if(getCurIndex != -1){
+									String getUserPin = getStringFromPreference(ConstHttpProp.USER_PIN);
+									addToServer(timestr, getUserPin, getCurIndex, organ.getOrganId(), colorId);
+								}												
 							}
-							
 						});
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				
 			}
 			
 			@Override
@@ -238,11 +217,11 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			int eyeIndex, int bodyId, int colorId){
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("client_code", "GZ-Hengxuan");
-			jsonobject.put("currentDate", currentDate);
+			jsonobject.put("clientId", "GZ-Hengxuan");
+//			jsonobject.put("currentDate", currentDate);
 			jsonobject.put("userPin", userPin);
 			jsonobject.put("eye", eyeIndex);
-			jsonobject.put("bodyId", bodyId);
+			jsonobject.put("partId", bodyId);
 			jsonobject.put("colorId", colorId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -250,6 +229,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.ADDTOSERVER);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -262,18 +242,18 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				final int getcode = response.getCode();
-				post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if(getcode == 200)
-							Toast.makeText(IrisDetailInfoActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
-						else
-							Toast.makeText(IrisDetailInfoActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					if(code == 1){
+						Toast.makeText(IrisDetailInfoActivity.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(IrisDetailInfoActivity.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
 					}
-				});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override

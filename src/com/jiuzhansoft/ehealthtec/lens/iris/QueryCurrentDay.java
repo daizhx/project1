@@ -82,8 +82,10 @@ public class QueryCurrentDay extends BaseActivity implements OnClickListener{
 	private void queryData(){
 		JSONObject jsonObject = new JSONObject();
 		try {
+			jsonObject.put("clientId", "GZ_hengxuan");
 			jsonObject.put("userPin", getUserPin);
-			jsonObject.put("currentDate", getDate);
+			jsonObject.put("beginTime", getDate);
+			jsonObject.put("endTime", getDate);
 			jsonObject.put("eye", eyeIndex+"");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -91,7 +93,7 @@ public class QueryCurrentDay extends BaseActivity implements OnClickListener{
 		}
 		
 		HttpSetting httpsetting=new HttpSetting();
-		httpsetting.setFunctionId(ConstFuncId.CONTENTLIST);
+		httpsetting.setFunctionId(ConstFuncId.DATELIST);
 		httpsetting.setJsonParams(jsonObject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -104,20 +106,22 @@ public class QueryCurrentDay extends BaseActivity implements OnClickListener{
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				Message message = new Message();
-				if (response.getJSONObject() != null
-						&& response.getJSONObject().getJSONArrayOrNull(
-								"diseaseList") != null
-						&& response.getJSONObject()
-								.getJSONArrayOrNull("diseaseList").length() > 0){
-					JSONArrayPoxy common_diease_list = 
-						response.getJSONObject().getJSONArrayOrNull("diseaseList");
-					dataToContentlist(common_diease_list);
-					message.what = 1;
-					handler.sendMessage(message);
-				}else{
-					message.what = 2;
-					handler.sendMessage(message);
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					JSONArrayPoxy object = json.getJSONArrayOrNull("object");
+					Message message = new Message();
+					if(code == 1 && object != null){
+						dataToContentlist(object);
+						message.what = 1;
+						handler.sendMessage(message);
+					}else{
+						message.what = 2;
+						handler.sendMessage(message);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 

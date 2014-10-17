@@ -13,6 +13,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.sphygmomanometer.data.Data;
 
 import android.app.AlertDialog;
@@ -133,8 +134,8 @@ public class BloodPressureResult extends BaseActivity implements OnClickListener
 	private void addToServer(String currentDate, String userPin){
 		JSONObject jsonobject=new JSONObject();
 		try {
-			jsonobject.put("client_code", "SZ-Youruien");
-			jsonobject.put("currentDate", currentDate);
+			jsonobject.put("clientID", "SZ-Youruien");
+//			jsonobject.put("currentDate", currentDate);
 			jsonobject.put("userPin", userPin);
 			jsonobject.put("high", sys);
 			jsonobject.put("low", dia);
@@ -145,6 +146,7 @@ public class BloodPressureResult extends BaseActivity implements OnClickListener
 		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.BLOODPRESSUREADDTOSERVER);
+		httpsetting.setRequestMethod("POST");
 		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
@@ -157,18 +159,18 @@ public class BloodPressureResult extends BaseActivity implements OnClickListener
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				final int getcode = response.getJSONObject().getIntOrNull("code");
-				post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if(getcode == 1)
-							Toast.makeText(BloodPressureResult.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
-						else
-							Toast.makeText(BloodPressureResult.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
+				JSONObjectProxy json = response.getJSONObject();
+				try {
+					int code = json.getInt("code");
+					if(code == 1){
+						Toast.makeText(BloodPressureResult.this, getResources().getString(R.string.addtoreport), Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(BloodPressureResult.this, getResources().getString(R.string.failedtoadd), Toast.LENGTH_SHORT).show();
 					}
-				});
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override
