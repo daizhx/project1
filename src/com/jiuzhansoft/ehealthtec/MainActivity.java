@@ -1,6 +1,10 @@
 package com.jiuzhansoft.ehealthtec;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ import com.jiuzhansoft.ehealthtec.utils.AsynImageLoader;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -122,10 +127,10 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 				.add(R.id.fragment_container, mMainMenuFragment).commit();
 		initView();
 		getLoginState();
-
-		// 更新
-		//UpdateManager updateManager = UpdateManager.getUpdateManager(this);
-		//updateManager.checkAndUpdate();
+		
+		//检查更新
+		UpdateManager updateManager = UpdateManager.getUpdateManager(this);
+		updateManager.checkUpdate();
 	}
 
 	@Override

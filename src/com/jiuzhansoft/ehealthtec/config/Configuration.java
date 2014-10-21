@@ -45,6 +45,9 @@ public class Configuration {
 	//保存应用程序默认的属性-值对
 	private static Map<String, String> localProperties = new HashMap<String, String>();
 	
+	//检查应用更新间隔
+    public static final long CHECK_UPDATE_INTERVAl = 24*60*60*1000;
+	
 	static{
 		// 设置调试信息输出参数
 		localProperties.put(PRINT_LOG, "true");

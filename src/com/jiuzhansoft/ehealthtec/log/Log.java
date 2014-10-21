@@ -1,5 +1,16 @@
 package com.jiuzhansoft.ehealthtec.log;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import android.content.Context;
+import android.os.Environment;
+import android.text.format.DateFormat;
+
 import com.jiuzhansoft.ehealthtec.config.Configuration;
 
 
@@ -115,4 +126,56 @@ public class Log {
 		}
 	}
 
+	
+	/**
+	 * 将log信息写到sd卡中
+	 * @param msg
+	 */
+    public static void writeLogToSd(Context content, String msg){
+        long time = System.currentTimeMillis();
+        DateFormat df = new DateFormat();
+        CharSequence timeStr = df.format("yyyy MM dd hh:mm:ss", time);
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            String path = null;
+            try {
+                path = Environment.getExternalStorageDirectory().getCanonicalPath() + File.separator + "eht" + File.separator + "log";
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            File file = new File(path);
+
+            if(!file.getParentFile().exists()){
+                file.getParentFile().mkdirs();
+            }
+
+            BufferedWriter out = null;
+            try {
+                out = new BufferedWriter(new FileWriter(file, true));
+                out.write(timeStr +" " +  msg + "\n");
+            }catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+        	//没有sd卡时，写到内部文件系统中
+        	String file = "crash" + System.currentTimeMillis() + ".log";
+        	try {
+				FileOutputStream fos = content.openFileOutput(file, Context.MODE_PRIVATE);
+				fos.write(msg.getBytes());
+				fos.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        }
+    }
 }

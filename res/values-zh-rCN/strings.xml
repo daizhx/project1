@@ -4,7 +4,7 @@
     <string name="app_name">EHT</string>
     <string name="soft_update">软件升级</string>
     <string name="soft_update_message">请更新应用!</string>
-    <string name="update">更新</string>
+    <string name="update">版本更新</string>
     <string name="downloading">下载中。。。</string>
     <string name="download_complete">下载完成</string>
     <string name="download_fail">下载失败</string>
@@ -107,7 +107,7 @@
     <string name="assist_line">辅助线</string>
     <string name="lens_shoot_hint">将虹膜对准中心</string>
     <string name="left_eye">左眼</string>
-    <string name="Right_eye">又眼</string>
+    <string name="Right_eye">右眼</string>
     <string name="login_user_name_hint">请输入姓名</string>
     <string name="login_user_password_hint">请输入密码</string>
 
@@ -365,8 +365,8 @@
     <string name="which_eye">哪个眼睛?</string>
     <string name="alert_title_poor_network2">网络不可用</string> 
     <string name="alert_message_poor_network2">网络连接失败，请重试.</string>
-    <string name="analysis_mode">分析模式</string>
-    <string name="analysis_status">分析状态</string>
+    <string name="analysis_mode">分析模式:</string>
+    <string name="analysis_status">分析状态:</string>
     <!-- 血压计 -->
     <string name="sphygmomanometer">血压计</string>
     <string name="please_sit_down_and_be_quiet">请坐下并保持安静</string>

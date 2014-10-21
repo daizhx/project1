@@ -64,4 +64,6 @@ public class ConstFuncId {
 	public static final String TODAY_TIP = "avdNew/getNewInfo";
 	//获取health tips list的服务器接口
 	public static final String HEALTH_TIPS = "avdNew/getAllInfo";
+	//查询是否有版本更新
+	public static final String UPDATE = "soft/version_update";
 }

@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import com.jiuzhansoft.ehealthtec.MainActivity;
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
+import com.jiuzhansoft.ehealthtec.config.Configuration;
+import com.jiuzhansoft.ehealthtec.constant.PreferenceKeys;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
 import com.jiuzhansoft.ehealthtec.http.HttpGroupSetting;
@@ -23,12 +25,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
- * singleton
- * 
+ * 版本更新管理
+ * 1,检查是否有更新，启动更新
  * @author daizhx
  * 
  */
@@ -40,6 +44,15 @@ public class UpdateManager {
 	private int serverVersion;
 	private String downloadUrl;
 	private static final String GET_NEW_VERSION = "getNewVersion";
+	
+	//可更新的版本号
+    private String versionCode;
+    //可更新的标志,1-可选更新，2-强制更新
+    private int updateFlag;
+    //下载包url
+    private String updateUrl;
+    //更新详情信息
+    private String updateDetail;
 
 	public static UpdateManager getUpdateManager(Context context) {
 		if (mUpdateManager == null) {
@@ -52,77 +65,19 @@ public class UpdateManager {
 		mContext = context;
 	}
 
-	public void checkAndUpdate() {
-		// 获取当前版本
-		try {
-			PackageInfo packageInfo = mContext.getPackageManager().getPackageInfo(
-					mContext.getPackageName(), 0);
-			localVersion = packageInfo.versionCode;
-			Log.d(TAG, "localVersion="+localVersion);
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//获取服务器上的最新版本及URL
-		HttpSetting	httpsetting = new HttpSetting();
-		httpsetting.setFunctionId(GET_NEW_VERSION);
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("sysName", "1");
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		httpsetting.setJsonParams(jsonObject);
-		httpsetting.setListener(new HttpGroup.OnAllListener() {
-			
-			@Override
-			public void onProgress(int i, int j) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onError(HttpError httpError) {
-				// TODO Auto-generated method stub
-				Log.d(TAG, "onError");
-			}
-			
-			@Override
-			public void onEnd(HttpResponse response) {
-				// TODO Auto-generated method stub
-				Log.d(TAG, "onEnd:response"+response);
-				try {
-					JSONObjectProxy json = response.getJSONObject();
-					//it is a bug,not fixed,so added this code
-					if(json == null)return;
-					String versionCode = json.get("version").toString();
-					Log.d(TAG, "serverVersion="+versionCode);
-					downloadUrl = response.getJSONObject().get("url").toString();
-//					downloadUrl = response.getJSONObject().get("url").toString();
-					Log.d(TAG, "downloadUrl="+downloadUrl);
-					
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				Log.d(TAG, "downloadUrl="+downloadUrl);
-			}
-			
-			@Override
-			public void onStart() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		httpsetting.setShowProgress(false);
-		HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
-		localHttpGroupSetting.setMyActivity((Activity)mContext);
-		localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
-		HttpGroupaAsynPool.getHttpGroupaAsynPool((Activity)mContext).add(httpsetting);
+	public void checkUpdate() {
+		//检查更新--需间隔24小时以上
+        SharedPreferences sp = mContext.getSharedPreferences(PreferenceKeys.FILE_NAME, Context.MODE_PRIVATE);
+        long lastTime = sp.getLong("lastCheckTime", 0);
+        if((System.currentTimeMillis() - lastTime) > Configuration.CHECK_UPDATE_INTERVAl) {
+            try {
+                int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(),0).versionCode;
+                checkUpdate(mContext.getPackageName(), ""+versionCode);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            sp.edit().putLong("lastCheckTime", System.currentTimeMillis());
+        }
 	}
 	
 	
@@ -160,5 +115,111 @@ public class UpdateManager {
 		}
 	}
 
+    private void getUpdateInfo(JSONObject object) {
+        try {
+            versionCode = object.getString("version_code");
+            updateFlag = object.getInt("update_flag");
+            updateUrl = object.getString("soft_url");
+            updateDetail = object.getString("update_detail");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    
+	/**
+	 * 新检查更新接口
+	 * @param packageName
+	 * @param versionCode
+	 */
+	private void checkUpdate(String packageName, String versionCode){
+		{
+	        Log.d(TAG, "check update:package="+packageName+",versionCode="+versionCode);
+	        HttpSetting httpSetting = new HttpSetting();
+	        httpSetting.setFunctionId(ConstFuncId.UPDATE);
+	        httpSetting.setRequestMethod("GET");
+	        httpSetting.addArrayListParam(packageName);
+	        httpSetting.addArrayListParam(versionCode);
+	        httpSetting.addArrayListParam("2");//android
+	        httpSetting.setListener(new HttpGroup.OnAllListener() {
+				
+				@Override
+				public void onProgress(int i, int j) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onError(HttpError httpError) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onEnd(HttpResponse response) {
+					// TODO Auto-generated method stub
+					JSONObjectProxy json = response.getJSONObject();
+					try {
+	                    if(json.getInt("code") == 1){
+	                        //可更新-弹出提示框
+	                        JSONObject object = json.getJSONObject("object");
+	                        getUpdateInfo(object);
+	                        final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+	                        alertDialog.setTitle(R.string.update);
+	                        alertDialog.setMessage(updateDetail);
+	                        if(updateFlag == 1){
+	                        	//可选更新
+	                            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,mContext.getString(R.string.update), new DialogInterface.OnClickListener() {
+	                                @Override
+	                                public void onClick(DialogInterface dialogInterface, int i) {
+	                                    //启动下载更新服务
+	                                    Intent intent = new Intent(mContext, UpdateService.class);
+	                                    intent.putExtra("apkPath", updateUrl);
+	                                    mContext.startService(intent);
+	                                    alertDialog.dismiss();
+	                                }
+	                            });
+	                            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, mContext.getString(R.string.cancel),new DialogInterface.OnClickListener() {
+	                                @Override
+	                                public void onClick(DialogInterface dialogInterface, int i) {
+	                                    alertDialog.dismiss();
+	                                }
+	                            });
+	                        }else{
+	                            //必须更新
+	                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, mContext.getString(R.string.update), new DialogInterface.OnClickListener() {
+	                                @Override
+	                                public void onClick(DialogInterface dialogInterface, int i) {
+	                                    //启动下载更新服务
+	                                    Intent intent = new Intent(mContext, UpdateService.class);
+	                                    intent.putExtra("apkPath", updateUrl);
+	                                    mContext.startService(intent);
+	                                    alertDialog.dismiss();
+	                                }
+	                            });
+	                        }
+	                        alertDialog.show();
+	                    }else{
+	                        //没有更新
+	                        //TODO should remove after test
+	                    }
+	                } catch (JSONException e) {
+	                    e.printStackTrace();
+	                }
+				}
+				
+				@Override
+				public void onStart() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+	        httpSetting.setShowProgress(false);
+			HttpGroupSetting localHttpGroupSetting = new HttpGroupSetting();
+			localHttpGroupSetting.setMyActivity((Activity)mContext);
+			localHttpGroupSetting.setType(ConstHttpProp.TYPE_JSON);
+			HttpGroupaAsynPool.getHttpGroupaAsynPool((Activity)mContext).add(httpSetting);
+	    }
+		
+	}
 
 }

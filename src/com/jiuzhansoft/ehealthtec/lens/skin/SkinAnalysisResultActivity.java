@@ -27,11 +27,11 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 public class SkinAnalysisResultActivity extends BaseActivity {
-
-	
+	private static final String TAG = "skin";
 	private int analysisMode;
 	private TextView contentText;
 	private TextView content;
@@ -234,20 +234,24 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 	 * @param content
 	 */
 	public void getSkanResult(String content){
-		JSONObject jsonobject=new JSONObject();
-		try {
-			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
-			jsonobject.put("infotype", "0");
-			jsonobject.put("type", analysisMode);
-			jsonobject.put("content", content);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		JSONObject jsonobject=new JSONObject();
+//		try {
+//			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
+//			jsonobject.put("infotype", "0");
+//			jsonobject.put("type", analysisMode);
+//			jsonobject.put("content", content);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.SKANANALYSISRESULT);
 		httpsetting.setRequestMethod("GET");
-		httpsetting.setJsonParams(jsonobject);
+		httpsetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+"");
+		httpsetting.addArrayListParam("0");
+		httpsetting.addArrayListParam(analysisMode+"");
+		httpsetting.addArrayListParam(content);
+//		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -302,10 +306,10 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			jsonobject.put("clientId", "GZ-Hengxuan");
 //			jsonobject.put("currentDate", currentDate);
 			jsonobject.put("userId", userPin);
-			jsonobject.put("Type", type);
-			jsonobject.put("Content", content);
-			jsonobject.put("Infotype", "0");
-			jsonobject.put("imgUrl", "null");
+			jsonobject.put("type", type);
+			jsonobject.put("content", content);
+			jsonobject.put("infoType", "0");
+			jsonobject.put("imgUrl", "0");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -326,6 +330,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "addToServer:onEnd--"+json);
 				try {
 					int code = json.getInt("code");
 					if(code == 1){
@@ -351,6 +356,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 				
 			}});
 		httpsetting.setNotifyUser(true);
+		httpsetting.setShowProgress(true);
 		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 

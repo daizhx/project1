@@ -167,14 +167,15 @@ public class HealthTipsFragment extends Fragment {
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(ConstFuncId.HEALTH_TIPS);
 		httpSetting.setRequestMethod("GET");
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("pageNo", 1);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		httpSetting.setJsonParams(jsonObject);
+//		JSONObject jsonObject = new JSONObject();
+//		try {
+//			jsonObject.put("pageNo", 1);
+//		} catch (JSONException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		httpSetting.setJsonParams(jsonObject);
+		httpSetting.addArrayListParam("1");
 		httpSetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override

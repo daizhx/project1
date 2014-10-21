@@ -20,8 +20,6 @@ import android.text.format.DateFormat;
 
 public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
-
-	private static StringBuffer errorDataBuffer = new StringBuffer();
 	private Context context;
 	private Thread.UncaughtExceptionHandler mOldUncaughtExceptionHandler;
 
@@ -31,83 +29,56 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		mOldUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
 	}
 
-	public static void appendErrorInfo(String s)
+	
+	/**
+	 * always return false,交给系统处理，不能会遇到麻烦
+	 * @param thread
+	 * @param throwable
+	 * @return
+	 */
+	private boolean myUncaughtException(Thread thread, Throwable ex)
 	{
-		if (Log.D) { 
-			Log.d("MyUncaughtExceptionHandler", "appendErrorInfo");
-		}
-		
-		errorDataBuffer.append(s);
-	}
-
-	public static void writeLogToSd(String msg){
-        long time = System.currentTimeMillis();
-        DateFormat df = new DateFormat();
-        CharSequence timeStr = df.format("yyyy MM dd hh:mm:ss", time);
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            String path = null;
-            try {
-                path = Environment.getExternalStorageDirectory().getCanonicalPath() + File.separator + "eht" + File.separator + "log";
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            File file = new File(path);
-
-            if(!file.getParentFile().exists()){
-                file.getParentFile().mkdirs();
-            }
-
-            BufferedWriter out = null;
-            try {
-                out = new BufferedWriter(new FileWriter(file, true));
-                out.write(timeStr +" " +  msg + "\n");
-            }catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+		if (ex == null) {
+            return true;
+        }
+        final String msg = ex.getLocalizedMessage();
+        StackTraceElement[] arr = ex.getStackTrace();
+        String report = ex.toString() + "\n\n";
+        report += "--------------Stack trace----------\n\n";
+        for(int i=0;i<arr.length;i++){
+            report += "		" + arr[i].toString() + "\n";
+        }
+        report += "---------------------------------------\n\n";
+        //if the exception was thrown in a background thread inside
+        //AsyncTask,then the actual exception can be found with getCause
+        report += "-------------cause-------------\n\n";
+        Throwable cause = ex.getCause();
+        if(cause != null){
+            report += cause.toString() + "\n\n";
+            arr = cause.getStackTrace();
+            for(int i=0; i<arr.length ; i++){
+                report += "     " + arr[i].toString() + "\n";
             }
         }
-    }
-	private boolean myUncaughtException(Thread thread, Throwable throwable)
-	{
-		if (Log.D) { 
-			Log.d("MyUncaughtExceptionHandler", "myUncaughtException");
-		}
-		
-		StringWriter stringwriter = new StringWriter();
-		PrintWriter printwriter = new PrintWriter(stringwriter);
-		if (Log.D) {
-			Log.d("MyUncaughtExceptionHandler", "throwable printwriter");
-			throwable.printStackTrace(printwriter);
-		}
-		
-		String s = String.valueOf(errorDataBuffer.toString());
-		StringBuilder stringbuilder = (new StringBuilder(s)).append("||");
-		
-		if (Log.D) {
-			Log.d("MyUncaughtExceptionHandler", "start activity");
-		}
-		writeLogToSd(throwable.getStackTrace().toString());
-		
-		//context.startActivity(intent);
+        report += "-------------cause end-------------\n\n";
+
+//        try {
+//            FileOutputStream fos = context.openFileOutput("stact.trace", Context.MODE_PRIVATE);
+//            fos.write(report.getBytes());
+//            fos.close();
+//
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+        //错误日志写到SD卡中
+        Log.writeLogToSd(context, report);
+        //TODO 上传到后台
 		return false;
 	}
-
-	public static void resetErrorInfo(String s)
-	{
-		if (Log.D) { 
-			Log.d("MyUncaughtExceptionHandler", "resetErrorInfo");
-		}
-		
-		errorDataBuffer.setLength(0);
-		errorDataBuffer.append(s);
-	}
-
-
 
 
 	@Override
@@ -122,8 +93,9 @@ public class MyUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			mOldUncaughtExceptionHandler.uncaughtException(thread, throwable);
 		} else
 		{
-			Process.killProcess(Process.myPid());
-			System.exit(0);
+			//关闭程序后，会被系统重启，remove
+//			Process.killProcess(Process.myPid());
+//			System.exit(0);
 		}		
 	}
 

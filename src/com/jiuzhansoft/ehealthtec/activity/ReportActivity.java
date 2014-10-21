@@ -62,10 +62,10 @@ public class ReportActivity extends BaseActivity {
 					startActivity(new Intent(ReportActivity.this, IrisReportActivity.class));
 					break;
 				case 1:
-					startActivity(new Intent(ReportActivity.this, HairReportActivity.class));
+					startActivity(new Intent(ReportActivity.this, SkinReportActivity.class));
 					break;
 				case 2:
-					startActivity(new Intent(ReportActivity.this, SkinReportActivity.class));
+					startActivity(new Intent(ReportActivity.this, HairReportActivity.class));
 					break;
 				case 3:
 					break;

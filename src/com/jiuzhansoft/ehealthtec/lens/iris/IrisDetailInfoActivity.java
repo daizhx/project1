@@ -18,6 +18,8 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -40,8 +42,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 虹膜分析结果
+ * @author Administrator
+ *
+ */
 public class IrisDetailInfoActivity extends BaseActivity {
-
+	private static final String TAG = "iris";
 	private TextView titleText;
 	private TextView iris_result_buwei;
 	private TextView iris_result_color;
@@ -86,18 +93,22 @@ public class IrisDetailInfoActivity extends BaseActivity {
 
 	private void getServerData2InitView() {
 		// TODO Auto-generated method stub
-		JSONObject jsonobject=new JSONObject();
-		try {
-			jsonobject.put("bid",organ.getOrganId());
-			jsonobject.put("cid",colorId);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		JSONObject jsonobject=new JSONObject();
+//		try {
+//			jsonobject.put("local", CommonUtil.getLocalLauguage(this));
+//			jsonobject.put("bid",organ.getOrganId());
+//			jsonobject.put("cid",colorId);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.IRISINFOBYPARTANDCOLOR);
-		httpsetting.setRequestMethod("POST");
-		httpsetting.setJsonParams(jsonobject);
+		httpsetting.setRequestMethod("GET");
+		httpsetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+ "");
+		httpsetting.addArrayListParam(organ.getOrganId()+"");
+		httpsetting.addArrayListParam(colorId+"");
+//		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -109,19 +120,21 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			@Override
 			public void onError(HttpError httpError) {
 				// TODO Auto-generated method stub
-				
+				Log.d(TAG, "httpError:"+httpError.getMessage());
 			}
 			
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "response json = " + json);
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");
+					Log.d(TAG, "msg="+msg);
 					JSONObject object = json.getJSONObjectOrNull("object");
 					if(code == 1 && object != null){
-						iris_result_bingzheng.setText(object.getString("symptom_desc"));
+						iris_result_bingzheng.setText(object.getString("symptomDesc"));
 						iris_result_bingfazheng.setText(object.getString("announcements"));
 						iris_result_suggesstion.setText(object.getString("suggestion"));
 						addtoReportBtn.setEnabled(true);
@@ -219,10 +232,11 @@ public class IrisDetailInfoActivity extends BaseActivity {
 		try {
 			jsonobject.put("clientId", "GZ-Hengxuan");
 //			jsonobject.put("currentDate", currentDate);
-			jsonobject.put("userPin", userPin);
+			jsonobject.put("userId", userPin);
 			jsonobject.put("eye", eyeIndex);
 			jsonobject.put("partId", bodyId);
 			jsonobject.put("colorId", colorId);
+			jsonobject.put("imgUrl", "0");//写成"null"服务器不通过
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -243,6 +257,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "addToServer:onEnd---"+json);
 				try {
 					int code = json.getInt("code");
 					if(code == 1){
@@ -268,6 +283,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 				
 			}});
 		httpsetting.setNotifyUser(true);
+		httpsetting.setShowProgress(true);
 		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 }

@@ -160,10 +160,10 @@ public class HttpRequest implements HttpGroup.StopController {
 //					String s = httpSetting.getFunctionId();
 //					httpSetting.putMapParams(ConstFuncId.FUNCTION_ID, s);
 					String s1 = httpSetting.getJsonParams().toString();
-                    Log.d("daizhx", "HttpRequest params="+s1);
+                    Log.d(TAG, "HttpRequest params="+s1);
 					try {
 						s1 = new String(s1.getBytes(),"utf-8");
-                        Log.d("daizhx", "2HttpRequest params="+s1);
+                        Log.d(TAG, "2HttpRequest params="+s1);
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -407,7 +407,7 @@ public class HttpRequest implements HttpGroup.StopController {
 						String s = httpSetting.getFinalUrl();						
 						if (s == null)
 							s = httpSetting.getUrl();
-						Log.d("daizhx", "url="+s);
+						Log.d(TAG, "url="+s);
 						URL url = new URL(s);
 						try {
 							conn = (HttpURLConnection) url.openConnection();
@@ -438,7 +438,7 @@ public class HttpRequest implements HttpGroup.StopController {
                             //TODO param
 //                            String param = httpSetting.getMapParams().get("param");
                             String param = httpSetting.getJsonParams().toString();
-                            Log.d("daizhx", "signature add param="+param);
+                            Log.d(TAG, "signature add param="+param);
                             if(httpSetting.isGet()){
                                 String apiSignature = EhtWebUtil.sgin(ConstSysConfig.APP_KEY, Long.toString(time), ConstSysConfig.SECRET, HttpGroup.token, "");
                                 conn.setRequestProperty("signature", apiSignature);
@@ -548,7 +548,7 @@ public class HttpRequest implements HttpGroup.StopController {
 		};
 		continueListener = new HttpGroup.CompleteListener() {
 			public void onComplete(Bundle paramBundle) {
-				Log.d("daizhx", "lock obj2=" + HttpRequest.this);
+				Log.d(TAG, "lock obj2=" + HttpRequest.this);
 				synchronized (HttpRequest.this) {
 					HttpRequest.this.notify();
 				}
@@ -685,7 +685,7 @@ public class HttpRequest implements HttpGroup.StopController {
 	}
 
 	private void beforeConnection() {
-		Log.d("daizhx", "beforeconnection token="+HttpGroup.token);
+		Log.d(TAG, "beforeconnection token="+HttpGroup.token);
 		if(HttpGroup.token == null && !httpSetting.getFunctionId().equals("getToken")){
 			HttpGroup.getToken(this.continueListener);
 			synchronized (HttpRequest.this) {
@@ -779,13 +779,13 @@ public class HttpRequest implements HttpGroup.StopController {
 		Object obj = null;
 		
 		try {
-			Log.d("daizhx", "connect:"+conn.getURL());
+			Log.d(TAG, "connect:"+conn.getURL());
 			conn.connect();			
 			Map map = conn.getHeaderFields();
 			httpResponse.setHeaderFields(map);
 			{
 				JSONObject jsonObject = new JSONObject();
-				Log.d("daizhx", "================"+conn.getHeaderFields());
+				Log.d(TAG, "================"+conn.getHeaderFields());
 				Set set = conn.getHeaderFields().entrySet();
 				Iterator iterator = set.iterator();
 				String key = null;
@@ -850,7 +850,6 @@ public class HttpRequest implements HttpGroup.StopController {
 				httpError.setErrorCode(ConstHttpProp.RESPONSE_CODE);
 				httpError.setResponseCode(httpResponse.getCode());
 				throwError(httpError);
-				Log.d(TAG, "11111111111111111111111");
 				connectionRetry = true;
 			}
 		} catch (Exception e) {
@@ -1321,7 +1320,7 @@ public class HttpRequest implements HttpGroup.StopController {
 						requestString.append("&");
 				}
 			}
-            Log.d("daizhx", "requestString="+requestString.toString());
+            Log.d(TAG, "requestString="+requestString.toString());
 			bytes = requestString.toString().getBytes();
 		}
 		conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
@@ -1405,6 +1404,11 @@ public class HttpRequest implements HttpGroup.StopController {
 
 	
 	public void throwError(HttpError error) {
+		if(Log.D){
+			String logString = new StringBuilder("id:").append(httpSetting.getId()).append("- throwError() -->> ")
+					.append(error.toString()).toString();
+			Log.d(TAG, logString);
+		}
 		getErrorList().add(error);
 		int errListSize = getErrorList().size();
 		error.setTimes(errListSize);
@@ -1442,12 +1446,11 @@ public class HttpRequest implements HttpGroup.StopController {
 //			String functionId=(String) map.get("functionId");
 			String functionId = httpSetting.getFunctionId();
 			url=url+functionId;
-			JSONObject json=httpSetting.getJsonParams();
 			if(ConstSysConfig.IS_REST){
-				completeUrl = addParamsRest(url, json);
-			}else{
-				completeUrl = addParams(url, json);
+				ArrayList<String> params =httpSetting.getArrayListParams();
+				completeUrl = addParamsRest(url, params);
 			}
+			
 			if (httpGroup.isReportUserInfoFlag() && httpSetting.getType() == ConstHttpProp.TYPE_JSON) {
 				sb = new StringBuilder(String.valueOf(completeUrl));
 				//String s10 = StatisticsReportUtil.getReportString(httpSetting.isNeedGlobalInitialization());
@@ -1466,20 +1469,14 @@ public class HttpRequest implements HttpGroup.StopController {
 	 * @param json
 	 * @return
 	 */
-	public String addParamsRest(String s, JSONObject json){
+	public String addParamsRest(String s, ArrayList<String> params){
 		String retUrlAndParams = s;
-		if(json != null){
-			Iterator<?> iterator = json.keys();
+		if(params != null){
+			Iterator<?> iterator = params.iterator();
 			while(iterator.hasNext()){
-				String key = (String) iterator.next();
-				try {
-					String value = json.getString(key);
-					retUrlAndParams += "/";
-					retUrlAndParams += value;
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				};
+				String s1 = (String) iterator.next();
+				retUrlAndParams += "/";
+				retUrlAndParams += s1;
 				
 			}
 		}

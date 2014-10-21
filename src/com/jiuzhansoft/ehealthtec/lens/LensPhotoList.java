@@ -91,8 +91,10 @@ public class LensPhotoList extends BaseActivity {
 					break;
 				case LensConstant.INDEX_SKIN:
 					intent.setClass(LensPhotoList.this, SkinAnalysisActivity.class);
+					break;
 				case LensConstant.INDEX_NAEVUS:
 					intent.setClass(LensPhotoList.this, NaevusAnalysisActivity.class);
+					break;
 				default:
 					break;
 				}

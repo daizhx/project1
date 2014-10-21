@@ -27,53 +27,65 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.lens.hair.HairReportDetailActivity;
+import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 public class SkinReportDetailActivity extends BaseActivity {
-
+	private static final String TAG = "skin";
 	private ListView listview;
 	private ArrayList<HashMap<String, String>> list;
 	private String getDate;
+	private HashMap<String, String> content;
 	private String getUserPin;
 	private TextView badnettv;
 	private Handler handler;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContent(R.layout.simple_list);
 		setTitle(R.string.skin_report);
 		badnettv = (TextView) findViewById(R.id.isempty);
 		Intent intent = getIntent();
-		getDate = intent.getStringExtra("currentdate");
+//		getDate = intent.getStringExtra("currentdate");
+		content = (HashMap<String, String>)intent.getSerializableExtra("content");
 		getUserPin = getStringFromPreference(ConstHttpProp.USER_PIN);
 		list = new ArrayList<HashMap<String, String>>();
-		queryData();
+//		queryData();
+		list.add(content);
 		listview = (ListView) findViewById(R.id.expandlist);
-		handler = new Handler(){
-
-			@Override
-			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
-				switch(msg.what){
-				case 1:
-					listview.setAdapter(
-							new SimpleAdapter(SkinReportDetailActivity.this, 
-									list, 
-									R.layout.skin_hair_report_detail, 
-									new String[]{"name", "status", "reason", "suggestion"}, 
-									new int[]{R.id.analysis_mode,
-									R.id.analysis_status,
-									R.id.cause_of_formation,
-									R.id.recommendations_for_improvement}));
-					break;
-				case 2:
-					badnettv.setVisibility(View.VISIBLE);
-					listview.setVisibility(View.GONE);
-				default:break;
-				}
-				super.handleMessage(msg);
-			}			
-		};
+		listview.setAdapter(
+		new SimpleAdapter(SkinReportDetailActivity.this, 
+				list, 
+				R.layout.skin_hair_report_detail, 
+				new String[]{"name", "status", "reason", "suggestion"}, 
+				new int[]{R.id.analysis_mode,
+				R.id.analysis_status,
+				R.id.cause_of_formation,
+				R.id.recommendations_for_improvement}));
+//		handler = new Handler(){
+//			@Override
+//			public void handleMessage(Message msg) {
+//				// TODO Auto-generated method stub
+//				switch(msg.what){
+//				case 1:
+//					listview.setAdapter(
+//							new SimpleAdapter(SkinReportDetailActivity.this, 
+//									list, 
+//									R.layout.skin_hair_report_detail, 
+//									new String[]{"name", "status", "reason", "suggestion"}, 
+//									new int[]{R.id.analysis_mode,
+//									R.id.analysis_status,
+//									R.id.cause_of_formation,
+//									R.id.recommendations_for_improvement}));
+//					break;
+//				case 2:
+//					badnettv.setVisibility(View.VISIBLE);
+//					listview.setVisibility(View.GONE);
+//				default:break;
+//				}
+//				super.handleMessage(msg);
+//			}			
+//		};
 
 	}
 	

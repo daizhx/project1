@@ -30,14 +30,20 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
+/**
+ * 查看毛发体检报告
+ * @author Administrator
+ *
+ */
 public class HairReportActivity extends BaseActivity {
-
+	private static final String TAG = "hair";
 	private String getStartDate, getEndDate;
 
 	private ArrayList<HashMap<String, String>> datelist;
-	private ArrayList<ArrayList<HashMap<String, String>>> contentlist;
+	private ArrayList<HashMap<String, String>> contentlist;
 	private String getUserPin;
 	private ListView expandListView;
 	private TextView isEmptytv;
@@ -50,11 +56,11 @@ public class HairReportActivity extends BaseActivity {
 		setTitle(R.string.hair_report);
 		setContentView(R.layout.simple_list);
 		datelist = new ArrayList<HashMap<String, String>>();
-		contentlist = new ArrayList<ArrayList<HashMap<String, String>>>();
+		contentlist = new ArrayList<HashMap<String, String>>();
 		getUserPin = getStringFromPreference(ConstHttpProp.USER_PIN);
 
 		// 历史时间段保存的数据
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date currentDate = new Date(System.currentTimeMillis());
 		String dateStr = sdf.format(currentDate);
 
@@ -64,7 +70,7 @@ public class HairReportActivity extends BaseActivity {
 		int monthToInt = Integer.parseInt(getMonth);
 		int getDay = Integer.parseInt(dateStr.substring(8, 10));
 
-		Date startDate = new Date(yearToInt - 1, monthToInt, getDay);
+		Date startDate = new Date(yearToInt - 1 - 1900, monthToInt, getDay);
 		String sDateStr = sdf.format(startDate);
 		getStartDate = sDateStr;
 		getEndDate = dateStr;
@@ -95,8 +101,10 @@ public class HairReportActivity extends BaseActivity {
 									Intent intent = new Intent();
 									intent.setClass(HairReportActivity.this,
 											HairReportDetailActivity.class);
-									intent.putExtra("currentdate", dateview
-											.getText().toString());
+//									intent.putExtra("currentdate", dateview
+//											.getText().toString());
+									HashMap<String, String> content = contentlist.get(arg2);
+									intent.putExtra("content", contentlist.get(arg2));
 									startActivity(intent);
 
 									if (Integer
@@ -126,10 +134,19 @@ public class HairReportActivity extends BaseActivity {
 			JSONObjectProxy objectproxy;
 			try {
 				objectproxy = poxy.getJSONObject(i);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date date = new Date(Long.parseLong(objectproxy.getStringOrNull("createOn")));
+				String dateStr = sdf.format(date);
 				HashMap<String, String> dateMap = new HashMap<String, String>();
-				dateMap.put("retDate", objectproxy.getStringOrNull("retDate"));
+				dateMap.put("retDate", dateStr);
 				datelist.add(dateMap);
-				contentlist.add(new ArrayList<HashMap<String, String>>());
+				
+				HashMap<String, String> dataMap = new HashMap<String, String>();
+				dataMap.put("name", objectproxy.getJSONObjectOrNull("skinHairInfo").getStringOrNull("name"));
+				dataMap.put("status", objectproxy.getJSONObjectOrNull("skinHairInfo").getStringOrNull("status"));
+				dataMap.put("reason", objectproxy.getJSONObjectOrNull("skinHairInfo").getStringOrNull("reason"));
+				dataMap.put("suggestion", objectproxy.getJSONObjectOrNull("skinHairInfo").getStringOrNull("suggestion"));
+				contentlist.add(dataMap);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,22 +160,28 @@ public class HairReportActivity extends BaseActivity {
 		datelist = new ArrayList<HashMap<String, String>>();
 		expandListView.setVisibility(View.VISIBLE);
 		isEmptytv.setVisibility(View.GONE);
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("local", CommonUtil.getLocalLauguage(this));
-			jsonObject.put("infotype", "1");
-			jsonObject.put("userId", getUserPin);
-			jsonObject.put("beginTime", getStartDate);
-			jsonObject.put("endTime", getEndDate);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		JSONObject jsonObject = new JSONObject();
+//		try {
+//			jsonObject.put("local", CommonUtil.getLocalLauguage(this));
+//			jsonObject.put("infotype", "1");
+//			jsonObject.put("userId", getUserPin);
+//			jsonObject.put("beginTime", getStartDate);
+//			jsonObject.put("endTime", getEndDate);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		HttpSetting httpsetting = new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.HAREDATELIST);
 		httpsetting.setRequestMethod("GET");
-		httpsetting.setJsonParams(jsonObject);
+//		httpsetting.setJsonParams(jsonObject);
+		httpsetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+"");
+		httpsetting.addArrayListParam(getUserPin);
+		httpsetting.addArrayListParam("1");
+		Log.d(TAG, "showHistory()---getStartDate="+getStartDate+",getEndDate="+getEndDate);
+		httpsetting.addArrayListParam(getStartDate);
+		httpsetting.addArrayListParam(getEndDate);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -171,6 +194,7 @@ public class HairReportActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "onEnd:"+json);
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");

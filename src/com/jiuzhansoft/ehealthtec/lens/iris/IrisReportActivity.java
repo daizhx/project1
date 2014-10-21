@@ -1,6 +1,8 @@
 package com.jiuzhansoft.ehealthtec.lens.iris;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -32,11 +34,18 @@ import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
 import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
+/**
+ * 查看虹膜体检报告
+ * @author Administrator
+ *
+ */
 public class IrisReportActivity extends BaseActivity implements OnClickListener {
-
+	private static final String TAG = "iris";
 	private TextView tvLeftEye, tvRightEye;
-	private String getStartDate, getEndDate;
+	private String getStartDate = "0", getEndDate;
 
 	private ArrayList<HashMap<String, String>> datelist;
 	private ArrayList<ArrayList<HashMap<String, String>>> contentlist;
@@ -112,22 +121,31 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 		datelist = new ArrayList<HashMap<String, String>>();
 		expandListView.setVisibility(View.VISIBLE);
 		isEmptytv.setVisibility(View.GONE);
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("clientId", "GZ-Hengxuan");
-			jsonObject.put("userPin", getUserPin);
-			jsonObject.put("startDate", getStartDate);
-			jsonObject.put("endDate", getEndDate);
-			jsonObject.put("eye", index);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		JSONObject jsonObject = new JSONObject();
+//		try {
+//			jsonObject.put("clientId", "GZ-Hengxuan");
+//			jsonObject.put("userId", getUserPin);
+//			jsonObject.put("startDate", getStartDate);
+//			jsonObject.put("endDate", getEndDate);
+//			jsonObject.put("eye", index);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.DATELIST);
-		httpsetting.setRequestMethod("POST");
-		httpsetting.setJsonParams(jsonObject);
+		httpsetting.setRequestMethod("GET");
+//		httpsetting.setJsonParams(jsonObject);
+		httpsetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+"");
+		httpsetting.addArrayListParam(getUserPin);
+		httpsetting.addArrayListParam(index+"");
+		httpsetting.addArrayListParam(getStartDate);
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = new Date(System.currentTimeMillis());
+//		getEndDate = sdf.format(date);
+		getEndDate = System.currentTimeMillis() + "";
+		httpsetting.addArrayListParam(getEndDate);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 
 			@Override
@@ -140,6 +158,7 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "showHistory:onEnd--"+json);
 				try {
 					int code = json.getInt("code");
 					JSONArrayPoxy object = json.getJSONArrayOrNull("object");

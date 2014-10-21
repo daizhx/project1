@@ -33,7 +33,7 @@ import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
 
 public class HairAnalysisResultActivity extends BaseActivity {
-	
+	private static final String TAG = "hair";
 	private int analysisMode;
 	private TextView contentText;
 	private TextView content;
@@ -160,20 +160,24 @@ public class HairAnalysisResultActivity extends BaseActivity {
 	private void getHairResult(String content) {
 		// TODO Auto-generated method stub
 
-		JSONObject jsonobject=new JSONObject();
-		try {
-			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
-			jsonobject.put("infotype", "1");
-			jsonobject.put("type", analysisMode);
-			jsonobject.put("content", content);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		JSONObject jsonobject=new JSONObject();
+//		try {
+//			jsonobject.put("local",CommonUtil.getLocalLauguage(this));
+//			jsonobject.put("infotype", "1");
+//			jsonobject.put("type", analysisMode);
+//			jsonobject.put("content", content);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		HttpSetting httpsetting=new HttpSetting();
 		httpsetting.setFunctionId(ConstFuncId.HAIRANALYSISRESULT);
-		httpsetting.setJsonParams(jsonobject);
+//		httpsetting.setJsonParams(jsonobject);
 		httpsetting.setRequestMethod("GET");
+		httpsetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+"");
+		httpsetting.addArrayListParam("1");
+		httpsetting.addArrayListParam(analysisMode + "");
+		httpsetting.addArrayListParam(content);
 		httpsetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -190,13 +194,14 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy data = response.getJSONObject();
+				Log.d(TAG, "getHairResult()-->onEnd:"+data);
 				if(data!=null){
 					try {
 						int code = data.getInt("code");
 						String msg = data.getString("msg");
 						JSONObject object = data.getJSONObjectOrNull("object");
 						if(1 == code && null != object){
-							state.setText(object.getString("description"));
+							state.setText(object.getString("status"));
 							reason.setText(object.getString("reason"));
 							suggest.setText(object.getString("suggestion"));	
 							addtoReportBtn.setEnabled(true);
@@ -226,10 +231,10 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			jsonobject.put("clientId", "GZ-Hengxuan");
 //			jsonobject.put("currentDate", currentDate);
 			jsonobject.put("userId", userPin);
-			jsonobject.put("Type", type);
-			jsonobject.put("Content", content);
-			jsonobject.put("Infotype", "1");
-			jsonobject.put("imgUrl", "null");
+			jsonobject.put("type", type);
+			jsonobject.put("content", content);
+			jsonobject.put("infoType", "1");
+			jsonobject.put("imgUrl", "0");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,6 +253,7 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy json = response.getJSONObject();
+				Log.d(TAG, "addToServer()->onEnd:"+json);
 				try {
 					int code = json.getInt("code");
 					if(code == 1){
@@ -273,6 +279,7 @@ public class HairAnalysisResultActivity extends BaseActivity {
 
 			}});
 		httpsetting.setNotifyUser(true);
+		httpsetting.setShowProgress(true);
 		HttpGroupaAsynPool.getHttpGroupaAsynPool(this).add(httpsetting);
 	}
 }

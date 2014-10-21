@@ -28,7 +28,7 @@ import com.jiuzhansoft.ehealthtec.lens.LensConstant;
 import com.jiuzhansoft.ehealthtec.log.Log;
 
 public class IrisAnalysisActivity extends BaseActivity {
-	private static final String TAG = "IrisAnalysisActivity";
+	private static final String TAG = "iris";
 	// photo image path
 	private String imagePath;
 	private int iris_index = -1;

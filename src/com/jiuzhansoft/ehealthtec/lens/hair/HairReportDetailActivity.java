@@ -36,6 +36,7 @@ public class HairReportDetailActivity extends BaseActivity {
 	private String getUserPin;
 	private TextView badnettv;
 	private Handler handler;
+	private HashMap<String, String> content;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,36 +45,47 @@ public class HairReportDetailActivity extends BaseActivity {
 		setContentView(R.layout.simple_list);
 		badnettv = (TextView) findViewById(R.id.isempty);
 		Intent intent = getIntent();
-		getDate = intent.getStringExtra("currentdate");
+//		getDate = intent.getStringExtra("currentdate");
+		content = (HashMap<String, String>)intent.getSerializableExtra("content");
 		getUserPin = getStringFromPreference(ConstHttpProp.USER_PIN);
 		list = new ArrayList<HashMap<String, String>>();
-		queryData();
+		list.add(content);
+//		queryData();
 		listview = (ListView) findViewById(R.id.expandlist);
-		handler = new Handler(){
-
-			@Override
-			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
-				switch(msg.what){
-				case 1:
-					listview.setAdapter(
-							new SimpleAdapter(HairReportDetailActivity.this, 
-									list, 
-									R.layout.skin_hair_report_detail, 
-									new String[]{"name", "description", "reason", "suggestion"}, 
-									new int[]{R.id.analysis_mode,
-									R.id.analysis_status,
-									R.id.cause_of_formation,
-									R.id.recommendations_for_improvement}));
-					break;
-				case 2:
-					badnettv.setVisibility(View.VISIBLE);
-					listview.setVisibility(View.GONE);
-				default:break;
-				}
-				super.handleMessage(msg);
-			}			
-		};
+		listview.setAdapter(
+		new SimpleAdapter(HairReportDetailActivity.this, 
+				list, 
+				R.layout.skin_hair_report_detail, 
+				new String[]{"name", "status", "reason", "suggestion"}, 
+				new int[]{R.id.analysis_mode,
+				R.id.analysis_status,
+				R.id.cause_of_formation,
+				R.id.recommendations_for_improvement}));		
+//		handler = new Handler(){
+//
+//			@Override
+//			public void handleMessage(Message msg) {
+//				// TODO Auto-generated method stub
+//				switch(msg.what){
+//				case 1:
+//					listview.setAdapter(
+//							new SimpleAdapter(HairReportDetailActivity.this, 
+//									list, 
+//									R.layout.skin_hair_report_detail, 
+//									new String[]{"name", "description", "reason", "suggestion"}, 
+//									new int[]{R.id.analysis_mode,
+//									R.id.analysis_status,
+//									R.id.cause_of_formation,
+//									R.id.recommendations_for_improvement}));
+//					break;
+//				case 2:
+//					badnettv.setVisibility(View.VISIBLE);
+//					listview.setVisibility(View.GONE);
+//				default:break;
+//				}
+//				super.handleMessage(msg);
+//			}			
+//		};
 	}
 	
 	private void dataToContentlist(JSONArrayPoxy jsonarraypoxy){

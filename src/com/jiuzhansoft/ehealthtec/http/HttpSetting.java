@@ -1,5 +1,6 @@
 package com.jiuzhansoft.ehealthtec.http;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import org.json.JSONException;
@@ -23,6 +24,8 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 	private String functionId;
 	private int id;
 	private JSONObject jsonParams;
+	//REST模式
+	private ArrayList<String> arrayListParams;
 	private boolean localFileCache;
 	private long localFileCacheTime;
 	private boolean localMemoryCache;
@@ -91,6 +94,13 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 			jsonParams = new JSONObject();
 		}
 		return jsonParams;
+	}
+	//REST模式 GET请求参数
+	public ArrayList<String> getArrayListParams(){
+		if(arrayListParams == null){
+			arrayListParams = new ArrayList<String>();
+		}
+		return arrayListParams;
 	}
 
 	public long getLocalFileCacheTime() {
@@ -256,6 +266,14 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 
 		}
 	}
+	
+	//REST模式 GET方式添加参数
+	public void addArrayListParam(String val){
+		if(arrayListParams == null){
+			arrayListParams = new ArrayList<String>();
+		}
+		arrayListParams.add(val);
+	}
 
 	public void putMapParams(String name, String value) {
 		if (mapParams == null) {
@@ -302,6 +320,10 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 			}
 		}
 
+	}
+	
+	public void setArrayListParams(ArrayList<String> a){
+			arrayListParams = a;
 	}
 
 	public void setListener(HttpGroup.HttpTaskListener listener) {
