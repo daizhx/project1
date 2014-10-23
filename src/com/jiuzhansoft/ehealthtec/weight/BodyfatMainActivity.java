@@ -69,7 +69,7 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 	private TextView weightText;
 	private TextView BMIText, suggestion;
 	private ImageButton bluetooth, input;
-	private ImageButton back;
+//	private ImageButton back;
 	private BluetoothAdapter mBtAdapter; 
 	private ImageView weightCircle;
 	
@@ -113,6 +113,7 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.weighting_scale);
 		setContentView(R.layout.bodyfat_main_activity);
 		
 		if(rbxt == null){
@@ -190,7 +191,7 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 		weightText = (TextView)findViewById(R.id.weight_data);
 		BMIText = (TextView)findViewById(R.id.bmi_data);
 		bluetooth = (ImageButton)findViewById(R.id.bodyfat_blue);
-		back = (ImageButton)findViewById(R.id.title_back);
+//		back = (ImageButton)findViewById(R.id.title_back);
 		weightCircle = (ImageView)findViewById(R.id.bodyfat_bmi_circle);
 		weightCircle.setOnClickListener(new OnClickListener(){
 
@@ -248,15 +249,15 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 			}
 			
 		});
-		back.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-			
-		});
+//		back.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				finish();
+//			}
+//			
+//		});
 		
 		input = (ImageButton)findViewById(R.id.bodyfat_input);
 		input.setOnClickListener(new OnClickListener(){

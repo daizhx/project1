@@ -10,6 +10,5 @@ public class ImprovePersonalInformation extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setTitle("improve personal information");
 	}
 }

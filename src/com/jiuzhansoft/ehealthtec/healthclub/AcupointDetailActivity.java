@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
+import com.jiuzhansoft.ehealthtec.activity.HealthClub;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
 import com.jiuzhansoft.ehealthtec.http.HttpGroupSetting;
@@ -19,21 +20,21 @@ import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
+import com.jiuzhansoft.ehealthtec.log.Log;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
+/**
+ * 查看穴位详情
+ * @author Administrator
+ *
+ */
 public class AcupointDetailActivity extends BaseActivity {
 	//服务器接口
-	private static final String GET_ACUPOINT_DETAIL = "getOneAcupointByPos";
+	private static final String GET_ACUPOINT_DETAIL = "acupoint/getAcupoint";
 	private TextView tvDescription;
 	private TextView tvCureSymptom;
 	private String str1, str2;
-	private Handler mHandler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			if(msg.what == 1){
-				tvDescription.setText(str1);
-				tvCureSymptom.setText(str2);
-			}
-		};
-	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,18 @@ public class AcupointDetailActivity extends BaseActivity {
 	private void queryData(int id){
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(GET_ACUPOINT_DETAIL);
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("id", id);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		httpSetting.setJsonParams(jsonObject);
+		httpSetting.setRequestMethod("GET");
+//		JSONObject jsonObject = new JSONObject();
+//		try {
+//			jsonObject.put("id", id);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		httpSetting.setJsonParams(jsonObject);
+		httpSetting.addArrayListParam(id+"");
+		httpSetting.addArrayListParam(HealthClub.gender+"");
+		httpSetting.addArrayListParam(CommonUtil.getLocalLauguage(this) + "");
 		httpSetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -80,21 +85,19 @@ public class AcupointDetailActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				JSONArrayPoxy jsonArrayPoxy = response.getJSONARRAY();
-				if(jsonArrayPoxy == null)return;
-				
-				for(int i=0; i < jsonArrayPoxy.length();i++){
-					try {
-						JSONObject jsonObject = jsonArrayPoxy.getJSONObject(i);
-						str1 = jsonObject.getString("symptoms_desc");
-						str2 = jsonObject.getString("selection_method");
-						mHandler.sendEmptyMessage(1);
-						
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				JSONObjectProxy json = response.getJSONObject();
+				JSONObject object = json.getJSONObjectOrNull("object");
+				if(object == null)return;
+				try {
+					str1 = object.getString("symptoms_desc");
+					str2 = object.getString("selection_method");
+					tvDescription.setText(str1);
+					tvCureSymptom.setText(str2);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
 			}
 			
 			@Override

@@ -11,6 +11,7 @@ import java.util.Map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -59,14 +60,32 @@ public class AsynImageLoader {
 	public void showImageAsyn(Context c,ImageView imageView, String url, int resId){
 		mContext = c;
 		imageView.setTag(url);
-		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView, resId));
+		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView));
 		
 		if(bitmap == null){
 			imageView.setImageResource(resId);
 		}else{
 			imageView.setImageBitmap(bitmap);
+//			fillBitmap(imageView, bitmap);
 		}
 
+	}
+	
+	private void fillBitmap(ImageView iv, Bitmap bitmap){
+		if(bitmap == null || iv == null){
+			return;
+		}
+		
+		int w = iv.getWidth();
+		int h = iv.getHeight();
+		
+		int w1 = bitmap.getWidth();
+		int h1 = bitmap.getHeight();
+		
+		Matrix m = new Matrix();
+		m.setScale(w/w1, h/h1);
+		Bitmap newBmp = Bitmap.createBitmap(bitmap, 0, 0, w1, h1, m, false);
+		iv.setImageBitmap(newBmp);
 	}
 	
 	public Bitmap loadImageAsyn(String path, ImageCallback callback){
@@ -120,19 +139,17 @@ public class AsynImageLoader {
 	
 	/**
 	 * 
-	 * @param imageView 
-	 * @param resId 图片加载完成前显示的图片资源ID
+	 * @param imageView
 	 * @return
 	 */
-	private ImageCallback getImageCallback(final ImageView imageView, final int resId){
+	private ImageCallback getImageCallback(final ImageView imageView){
 		return new ImageCallback() {
 			
 			@Override
 			public void loadImage(String path, Bitmap bitmap) {
 				if(path.equals(imageView.getTag().toString())){
 					imageView.setImageBitmap(bitmap);
-				}else{
-					imageView.setImageResource(resId);
+//					fillBitmap(imageView, bitmap);
 				}
 			}
 		};

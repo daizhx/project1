@@ -19,9 +19,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * ½«¿µ°ÉÊ×Ò³
+ * @author Administrator
+ *
+ */
 public class HealthClub extends BaseActivity implements OnClickListener{
 	private int flag;
-	private int gender;
+	public static int gender;
 	private static final int ACUPOINT = 1;
 	private static final int DISEASE = 2;
 	private static final int MAN = 1;

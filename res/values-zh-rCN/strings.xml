@@ -373,8 +373,8 @@
     <string name="bluetooth_is_not_available">蓝牙不可用</string>
     <string name="whether_connect_bluetooth">是否连接蓝牙?</string>
     <string name="blood_pressure_meter"></string>
-    <string name="start">Start</string>
-    <string name="measuring_blood_pressure">Blood pressure measurement</string>
+    <string name="start">开始</string>
+    <string name="measuring_blood_pressure">测量血压</string>
     <string name="please_connect_bluetooth">Please connect Bluetooth</string>
     <string name="reports_local_to_server">There are some reports stored locally, is submitted to the server?</string>
     <string name="blood_pressure_error_eeprom">Blood pressure is abnormal, contact your dealer</string>
@@ -401,4 +401,5 @@
     <string name="systolic_pressure_line_feed">systolic\nblood pressure\n(mmHg)</string>
     <string name="date">Date</string>
     <string name="trend">Trend</string>
+    <string name="acupoint_search">穴位搜索</string>
 </resources>

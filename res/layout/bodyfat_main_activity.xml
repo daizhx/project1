@@ -13,7 +13,9 @@
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:orientation="vertical">
+		<!--  
   		<include android:id="@+id/bodyfat_title" layout="@layout/title"/>
+  		-->
   		<Button
   			android:id="@+id/bodyfat_information_sex"
   			android:layout_width="wrap_content"
@@ -42,12 +44,13 @@
   			android:paddingLeft="20dip"
   			android:paddingRight="20dip"
   			android:paddingTop="5dip"
-  			android:paddingBottom="5dip"/>
+  			android:paddingBottom="5dip"
+  			android:visibility="gone"/>
   			
      	<FrameLayout android:id="@android:id/tabcontent" 
 			android:layout_width="fill_parent" 
 			android:layout_height="fill_parent"
-			android:layout_below="@id/bodyfat_title">  
+			>  
 			<RelativeLayout 
 				android:id="@+id/bodyfat_tab1"
 				android:layout_width="fill_parent"

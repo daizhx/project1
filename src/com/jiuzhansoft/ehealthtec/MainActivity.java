@@ -428,6 +428,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 			ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
 					ViewPager.LayoutParams.MATCH_PARENT,
 					ViewPager.LayoutParams.MATCH_PARENT);
+			
 			// 创建imageView,异步加载图片
 			ImageView imageView = new ImageView(MainActivity.this);
 			// BitmapWorkerTask task = new BitmapWorkerTask(imageView);
@@ -439,6 +440,7 @@ public class MainActivity extends SlidingActivity implements OnClickListener {
 					.showImageAsyn(MainActivity.this,imageView,
 							"http://182.254.137.149:8080/client/adv/" + position
 									+ ".jpg", R.drawable.placehold);
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 			container.addView(imageView, lp);
 			return imageView;
 		}

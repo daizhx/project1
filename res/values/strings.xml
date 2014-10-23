@@ -395,4 +395,5 @@
     <string name="systolic_pressure_line_feed">systolic\nblood pressure\n(mmHg)</string>
     <string name="date">Date</string>
     <string name="trend">Trend</string>
+    <string name="acupoint_search">search acupoint</string>
 </resources>

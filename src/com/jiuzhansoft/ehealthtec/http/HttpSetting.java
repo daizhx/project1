@@ -225,6 +225,10 @@ public class HttpSetting implements HttpGroup.HttpSettingParams {
 		if (onEndListener == null){
 			return;
 		}
+		
+		if(paramHttpResponse == null){
+			return;
+		}
 		//把回调函数放到主线程中执行
 		Handler handler = new Handler(paramHttpResponse.mContext.getMainLooper());
 		handler.post(new Runnable() {

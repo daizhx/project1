@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
+import com.jiuzhansoft.ehealthtec.activity.HealthClub;
 import com.jiuzhansoft.ehealthtec.http.HttpError;
 import com.jiuzhansoft.ehealthtec.http.HttpGroup;
 import com.jiuzhansoft.ehealthtec.http.HttpGroupSetting;
@@ -18,23 +19,22 @@ import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
 import com.jiuzhansoft.ehealthtec.http.json.JSONArrayPoxy;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
+import com.jiuzhansoft.ehealthtec.utils.CommonUtil;
 
+/**
+ * 查看症状详情信息
+ * @author Administrator
+ *
+ */
 public class SymptomDetailActivity extends BaseActivity {
 
 	//服务器接口
-	private static final String GET_SYMPTOM_DETAIL = "getOneDiseaseByPos";
+	private static final String GET_SYMPTOM_DETAIL = "disease/getOneDiseaseByPos";
 	private TextView tvDescription;
 	private TextView tvSymptom;
 	private String str1, str2;
-	private Handler mHandler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			if(msg.what == 1){
-				tvDescription.setText(str1);
-				tvSymptom.setText(str2);
-			}
-		};
-	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,14 +56,19 @@ public class SymptomDetailActivity extends BaseActivity {
 	private void queryData(int id){
 		HttpSetting httpSetting = new HttpSetting();
 		httpSetting.setFunctionId(GET_SYMPTOM_DETAIL);
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put("id", id);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		httpSetting.setJsonParams(jsonObject);
+		httpSetting.setRequestMethod("GET");
+//		JSONObject jsonObject = new JSONObject();
+//		try {
+//			jsonObject.put("id", id);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		httpSetting.setJsonParams(jsonObject);
+		httpSetting.addArrayListParam(id+"");
+		httpSetting.addArrayListParam(HealthClub.gender + "");
+		httpSetting.addArrayListParam(CommonUtil.getLocalLauguage(this)+"");
+		
 		httpSetting.setListener(new HttpGroup.OnAllListener() {
 			
 			@Override
@@ -81,23 +86,21 @@ public class SymptomDetailActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				JSONArrayPoxy jsonArrayPoxy = response.getJSONARRAY();
-				if(jsonArrayPoxy == null)return;
+				JSONObjectProxy json = response.getJSONObject();
+				JSONObject object = json.getJSONObjectOrNull("object");
+				if(object == null)return;
 				
-				for(int i=0; i < jsonArrayPoxy.length();i++){
-					try {
-						JSONObject jsonObject = jsonArrayPoxy.getJSONObject(i);
-						str1 = jsonObject.getString("disease_desc");
-						str2 = jsonObject.getString("manifestation");
-//						Log.d("daizhx","disease_desc=" +str1);
-//						Log.d("daizhx", "symptom="+str2);
-						mHandler.sendEmptyMessage(1);
-						
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				try {
+					str1 = object.getString("disease_desc");
+					str2 = object.getString("manifestation");
+					tvDescription.setText(str1);
+					tvSymptom.setText(str2);
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
 			}
 			
 			@Override
