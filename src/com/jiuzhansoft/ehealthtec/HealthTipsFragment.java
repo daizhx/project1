@@ -193,7 +193,7 @@ public class HealthTipsFragment extends Fragment {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "onEnd:response---");
+				if(json == null)return;
 				
 				// TODO Auto-generated method stub
 				try {

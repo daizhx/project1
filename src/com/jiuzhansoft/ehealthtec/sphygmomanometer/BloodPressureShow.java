@@ -19,6 +19,7 @@ import com.jiuzhansoft.ehealthtec.http.HttpResponse;
 import com.jiuzhansoft.ehealthtec.http.HttpSetting;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstFuncId;
 import com.jiuzhansoft.ehealthtec.http.constant.ConstHttpProp;
+import com.jiuzhansoft.ehealthtec.http.json.JSONObjectProxy;
 import com.jiuzhansoft.ehealthtec.log.Log;
 import com.jiuzhansoft.ehealthtec.sphygmomanometer.data.Data;
 import com.jiuzhansoft.ehealthtec.sphygmomanometer.data.Head;
@@ -544,7 +545,10 @@ public class BloodPressureShow extends BaseActivity implements OnClickListener, 
 			@Override
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
-				final int getcode = response.getJSONObject().getIntOrNull("code");
+				JSONObjectProxy json = response.getJSONObject();
+				if(json == null)return;
+				final int getcode = json.getIntOrNull("code");
+				
 				post(new Runnable() {
 					
 					@Override

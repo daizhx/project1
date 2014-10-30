@@ -63,9 +63,7 @@ public class SocketCamera implements CameraSource {
 			e1.printStackTrace();
 		}
 		
-		// int ggg=0;
 		if(getcode == 200){
-			// Log.e("isrun", "111");
 			try {
 				canvasBmp(canvas, readStream(in,canvas));
 			} catch (IOException e) {
@@ -74,13 +72,13 @@ public class SocketCamera implements CameraSource {
 				e.printStackTrace();
 			}
 		}
-		/*try {
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	}
 	private Matrix matrix;
+	/**
+	 * äÖÈ¾Í¼ÏñÊý¾Ý
+	 * @param canvas
+	 * @param buffer
+	 */
 	private void canvasBmp(Canvas canvas, byte[] buffer){
 		if(bitmap != null) {
 			if(!bitmap.isRecycled()){   

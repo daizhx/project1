@@ -229,6 +229,10 @@ public class LensBaseActivity extends BaseActivity implements
 		lensShootFragment.setHanleClick(this);
 		mFragmentManager.beginTransaction()
 				.replace(R.id.root, (Fragment) lensShootFragment).commit();
+		
+		// 初始化后面的fragment
+		shootConfirmFragment = new ShootConfirmFragment();
+		shootConfirmFragment.setHandleClick(this);
 	}
 
 	public void onConnectFail() {
@@ -279,9 +283,7 @@ public class LensBaseActivity extends BaseActivity implements
 			mWifiManager.setWifiEnabled(true);
 		}
 
-		// 初始化后面的fragment
-		shootConfirmFragment = new ShootConfirmFragment();
-		shootConfirmFragment.setHandleClick(this);
+		
 		
 	}
 

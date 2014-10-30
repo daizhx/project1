@@ -352,6 +352,7 @@ public class BloodPressureReport extends BaseActivity{
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");
@@ -713,7 +714,9 @@ public class BloodPressureReport extends BaseActivity{
 				@Override
 				public void onEnd(HttpResponse response) {
 					// TODO Auto-generated method stub
-					final int getcode = response.getJSONObject().getIntOrNull("code");
+					JSONObjectProxy json = response.getJSONObject();
+					if(json == null)return;
+					final int getcode = json.getIntOrNull("code");
 					post(new Runnable() {
 						
 						@Override
@@ -783,6 +786,7 @@ public class BloodPressureReport extends BaseActivity{
 					diaBarList.clear();
 					
 					JSONObjectProxy json = response.getJSONObject();
+					if(json == null)return;
 					try {
 						int code = json.getInt("code");
 						String msg = json.getString("msg");

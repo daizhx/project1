@@ -809,6 +809,7 @@ public class BodyfatMainActivity extends BaseActivity implements BodyfatCallback
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObject json = response.getJSONObject();
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					if(code == 1){

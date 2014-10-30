@@ -87,6 +87,7 @@ public class SymptomDetailActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				if(json == null)return;
 				JSONObject object = json.getJSONObjectOrNull("object");
 				if(object == null)return;
 				

@@ -172,7 +172,8 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "onEnd:response---"+json);
+				Log.d("daizhx", " json="+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");

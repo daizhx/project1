@@ -703,6 +703,7 @@ public class BodyfatRecord extends com.jiuzhansoft.ehealthtec.activity.BaseActiv
 				dateList.clear();
 				
 				JSONObjectProxy json = response.getJSONObject();
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");

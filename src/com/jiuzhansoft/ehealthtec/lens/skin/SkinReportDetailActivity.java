@@ -147,6 +147,7 @@ public class SkinReportDetailActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");

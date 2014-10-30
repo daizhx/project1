@@ -270,6 +270,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy data = response.getJSONObject();
+				if(json == null)return;
 				if(data != null){
 					try {
 						int code = data.getInt("code");
@@ -330,7 +331,7 @@ public class SkinAnalysisResultActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "addToServer:onEnd--"+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					if(code == 1){

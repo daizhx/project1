@@ -127,7 +127,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "response json = " + json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");
@@ -257,7 +257,7 @@ public class IrisDetailInfoActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "addToServer:onEnd---"+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					if(code == 1){

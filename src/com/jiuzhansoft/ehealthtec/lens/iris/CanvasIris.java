@@ -61,8 +61,8 @@ public class CanvasIris extends View implements Runnable {
 	private boolean flag = true;
 	// 十字架是否定位到当前点
 	private boolean crossFlag = false;
-	// 十字架是否停留在当前点(如果是则开始以此中心点画标尺圆)
-	private boolean isCurrent = false;
+//	// 十字架是否停留在当前点(如果是则开始以此中心点画标尺圆)
+//	private boolean isCurrent = false;
 	// 十字架移动后坐标
 	private float current_x, current_y;
 	// 当十字架位置选好后记录当前位置坐标
@@ -96,10 +96,11 @@ public class CanvasIris extends View implements Runnable {
 	
 	public PointF getCenter(){
 		PointF pointF = new PointF();
-		if(crossFlag && !isCurrent && !isFirst){
-			Log.i("isExsit", "center_x ="+current_x+"\tcenter_y ="+current_y);
-			pointF.set(current_x, current_y);			
-		}
+//		if(crossFlag && !isCurrent && !isFirst){
+//			Log.i("isExsit", "center_x ="+current_x+"\tcenter_y ="+current_y);
+//			pointF.set(current_x, current_y);			
+//		}
+		pointF.set(current_x, current_y);
 		return pointF;
 	}
 	
@@ -531,7 +532,9 @@ public class CanvasIris extends View implements Runnable {
 				reportCurrentX = current_x;
 				reportCurrentY = current_y;
 			}
+			
 			if(crossFlag){
+				//确定十字架后，获取3个主圆圈的半径
 				float radius = (float) Math.sqrt((startPoint.x - endPoint.x) * (startPoint.x - endPoint.x) +
 						(startPoint.y - endPoint.y) * (startPoint.y - endPoint.y));
 				radius = Math.min(radius, maxRadius);
@@ -546,15 +549,10 @@ public class CanvasIris extends View implements Runnable {
 					getRadius1 = radius1;
 					getRadius2 = radius2;
 					getRadius3 = radius3;
-					Log.i("GUDING", "getRadius1 = "+ getRadius1);
-					Log.i("GUDING", "getRadius2 = "+ getRadius2);
-					Log.i("GUDING", "getRadius3 = "+ getRadius3);
 				}
-				Log.i("isCurrent", "ACTION_UP "+crossFlag+"_1");
 			}else{
-				isCurrent = true;
-				Log.i("isCurrent", "ACTION_UP "+crossFlag + "_2");
-				
+				//弹出是否确定中心十字架
+//				isCurrent = true;
 				final AlertDialog dialog = (new AlertDialog.Builder(getContext())).create();
 				dialog.setMessage(getResources().getString(R.string.isOrNot));
 				dialog.setButton(AlertDialog.BUTTON_POSITIVE, getResources().getString(R.string.yes), new DialogInterface.OnClickListener(){
@@ -563,7 +561,7 @@ public class CanvasIris extends View implements Runnable {
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						crossFlag = true;
-						isCurrent = false;
+//						isCurrent = false;
 						isFirst = false;
 						maxRadius = Math.min(Math.min(current_x, screenWidth - current_x) ,Math.min(current_y, screenHeight - current_y));
 						dialog.dismiss();
@@ -576,7 +574,7 @@ public class CanvasIris extends View implements Runnable {
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						crossFlag = false;
-						isCurrent = true;
+//						isCurrent = true;
 						isFirst = true;
 						center_x = reportCurrentX;
 						center_y = reportCurrentY;
@@ -585,42 +583,6 @@ public class CanvasIris extends View implements Runnable {
 					
 				});
 				dialog.show();
-//				final AlertDialog dialog = (new AlertDialog.Builder(getContext())).create();
-//				dialog.show();
-//				Window window = dialog.getWindow();
-//				window.setContentView(R.layout.myalert);
-//				((TextView) window.findViewById(R.id.msgtv)).setText(getResources().getString(R.string.isOrNot));
-//				((LinearLayout) window.findViewById(R.id.btnll)).setVisibility(View.VISIBLE);
-//				((Button) window.findViewById(R.id.btn3)).setVisibility(View.GONE);
-//				Button btn1 = (Button) window.findViewById(R.id.btn1);
-//				btn1.setText(getResources().getString(R.string.yes));
-//				btn1.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View arg0) {
-//						// TODO Auto-generated method stub
-//						crossFlag = true;
-//						isCurrent = false;
-//						isFirst = false;
-//						maxRadius = Math.min(Math.min(current_x, screenWidth - current_x) ,Math.min(current_y, screenHeight - current_y));
-//						dialog.dismiss();
-//					}
-//				});
-//				Button btn2 = (Button) window.findViewById(R.id.btn2);
-//				btn2.setText(getResources().getString(R.string.no));
-//				btn2.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View arg0) {
-//						// TODO Auto-generated method stub
-//						crossFlag = false;
-//						isCurrent = true;
-//						isFirst = true;
-//						center_x = reportCurrentX;
-//						center_y = reportCurrentY;
-//						dialog.dismiss();
-//					}
-//				});
 			}
 			break;
 		default: break;

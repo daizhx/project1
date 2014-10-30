@@ -158,6 +158,9 @@ public class UpdateManager {
 				public void onEnd(HttpResponse response) {
 					// TODO Auto-generated method stub
 					JSONObjectProxy json = response.getJSONObject();
+					if(json == null)return;
+					//服务器不正常
+					if(json == null)return;
 					try {
 	                    if(json.getInt("code") == 1){
 	                        //可更新-弹出提示框

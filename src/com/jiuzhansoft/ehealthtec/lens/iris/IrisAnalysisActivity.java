@@ -37,8 +37,10 @@ public class IrisAnalysisActivity extends BaseActivity {
 	private IrisImageView irisImageView;
 	private int displayHeight;
 	private LinearLayout linearL;
+	//虹膜网络图
 	private View getIrisView;
 	private PointF centerPoint;
+	//大,中，小半径
 	private float getStandardR;
 	private float getStandardMidR;
 	private float getStandardMinR;
@@ -60,6 +62,10 @@ public class IrisAnalysisActivity extends BaseActivity {
 		
 	}
 
+	/**
+	 * 获取网格
+	 * @return
+	 */
 	public View getStandardView() {
 		float center_x = mContainerWidth / 2;
 		float center_y = mContainerHeight / 2;
@@ -192,6 +198,7 @@ public class IrisAnalysisActivity extends BaseActivity {
 			new IrisImageHandlerThread(proDialog, 2, getIrisView,
 					centerPoint, getStandardR, getStandardMinR, getStandardMidR)
 					.start();
+			//合并后移除网格层
 			linearL.removeAllViews();
 			getIrisView = null;
 			linearL = null;
@@ -202,6 +209,7 @@ public class IrisAnalysisActivity extends BaseActivity {
 	private class IrisImageHandlerThread extends Thread {
 		private ProgressDialog progressDlg = null;
 		private int index;
+		//虹膜网格
 		private View getCurrentView;
 		private PointF getCenterP = new PointF();
 		private float getStandardR, getStandardMinR, getStandardMidR;

@@ -194,7 +194,7 @@ public class HairReportActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "onEnd:"+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					String msg = json.getString("msg");

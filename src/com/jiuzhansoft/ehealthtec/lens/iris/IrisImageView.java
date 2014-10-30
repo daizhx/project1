@@ -42,6 +42,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 虹膜
+ * @author Administrator
+ *
+ */
 public class IrisImageView extends View {
 	private static final String TAG = "IrisImageView";
 
@@ -69,6 +74,7 @@ public class IrisImageView extends View {
 	private float[] x1, y1, x2, y2, x3, y3, x4, y4;
 
 	private Canvas canvas;
+	//眼睛index,左眼或右眼
 	private int getindex;
 
 	public void setIndex(int index) {
@@ -635,6 +641,10 @@ public class IrisImageView extends View {
 	private int p[];
 	private int[] reportxl, reportxr, reportyt, reportyb;
 
+	/**
+	 * 
+	 * @param bmp
+	 */
 	private void removeTransparent(Bitmap bmp) {
 		int getw = bmp.getWidth();
 		int geth = bmp.getHeight();
@@ -707,6 +717,16 @@ public class IrisImageView extends View {
 		return dropTransparent;
 	}
 
+	/**
+	 * 
+	 * @param index 2
+	 * @param iris_index  左眼或右眼
+	 * @param getCurrentView 虹膜网格
+	 * @param getP 网格中心点坐标
+	 * @param getR 网格大圆半径
+	 * @param getMinR 网格小圆半径
+	 * @param getMidR 网格中间圆半径
+	 */
 	public void setTouchEventHandler(int index, int iris_index,
 			View getCurrentView, PointF getP, float getR, float getMinR,
 			float getMidR) {
@@ -883,6 +903,13 @@ public class IrisImageView extends View {
 		}
 	}
 
+	/**
+	 * 
+	 * @param getView 虹膜网格view
+	 * @param getP 网格中心点坐标
+	 * @param getR 网格大圆半径
+	 * @return bitmap
+	 */
 	private Bitmap mergeBitmap(View getView, PointF getP, float getR) {
 
 		View getStandardView = getView;

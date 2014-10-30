@@ -112,9 +112,7 @@ public class UserLoginActivity extends BaseActivity {
 					httpsetting.setListener(new HttpGroup.OnAllListener() {
 						public void onEnd(HttpResponse httpresponse){
 							JSONObjectProxy json = httpresponse.getJSONObject();
-							if (Log.D) {
-								Log.d(TAG, "Login.onEnd:"+json);
-							}
+							if(json == null)return;
 							try {
 								int code = json.getInt("code");
 								String msg = json.getString("msg");

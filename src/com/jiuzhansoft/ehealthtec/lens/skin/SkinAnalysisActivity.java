@@ -497,7 +497,7 @@ public class SkinAnalysisActivity extends BaseActivity implements
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		if(mannulAnalysisFragment != null){
+		if(mannulAnalysisFragment != null && analysisClass == MANNUL_ANALYSIS){
 		return mannulAnalysisFragment.imageView.getMultiTouchController()
 				.onTouchEvent(event);
 		}else{

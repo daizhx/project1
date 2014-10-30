@@ -194,7 +194,7 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy data = response.getJSONObject();
-				Log.d(TAG, "getHairResult()-->onEnd:"+data);
+				if(json == null)return;
 				if(data!=null){
 					try {
 						int code = data.getInt("code");
@@ -253,7 +253,7 @@ public class HairAnalysisResultActivity extends BaseActivity {
 			@Override
 			public void onEnd(HttpResponse response) {
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "addToServer()->onEnd:"+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					if(code == 1){

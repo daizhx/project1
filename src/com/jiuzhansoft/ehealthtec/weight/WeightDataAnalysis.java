@@ -587,6 +587,7 @@ public class WeightDataAnalysis extends BaseActivity{
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObject json = response.getJSONObject();
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					if(code == 1){

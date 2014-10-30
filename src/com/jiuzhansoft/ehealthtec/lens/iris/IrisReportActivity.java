@@ -158,7 +158,7 @@ public class IrisReportActivity extends BaseActivity implements OnClickListener 
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy json = response.getJSONObject();
-				Log.d(TAG, "showHistory:onEnd--"+json);
+				if(json == null)return;
 				try {
 					int code = json.getInt("code");
 					JSONArrayPoxy object = json.getJSONArrayOrNull("object");

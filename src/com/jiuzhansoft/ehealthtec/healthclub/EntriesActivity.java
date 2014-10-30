@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.util.SimpleArrayMap;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -58,7 +60,7 @@ public class EntriesActivity extends BaseActivity {
 	private int currentPosition = 1;
 	private String[] positionStrIds;
 	private SearchView mSearchView;
-	private SearchManager mSearchManager;
+//	private SearchManager mSearchManager;
 	
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
@@ -74,16 +76,46 @@ public class EntriesActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContent(R.layout.activity_entry);
 		mSearchView = (SearchView)findViewById(R.id.searchView1);
-		mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//		mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		Intent intent = getIntent();
 		flag = intent.getIntExtra("index", 0);
 		if(flag == ACUPOINT){
 			setTitle(R.string.common_acupoint);
-			mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
+//			mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
 		}else if(flag == DISEASE){
 			setTitle(R.string.common_disease);
-			mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
+//			mSearchView.setSearchableInfo(mSearchManager.getSearchableInfo(getComponentName()));
 		}
+		mSearchView.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				// TODO Auto-generated method stub
+				Log.d("daizhx", "--------------------"+hasFocus);
+				if(hasFocus){
+					
+				}
+			}
+		});
+		mSearchView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(EntriesActivity.this, SearchActivity.class));
+//				onSearchRequested();
+			}
+		});
+		mSearchView.setOnSearchClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent(EntriesActivity.this, SearchActivity.class));
+//				onSearchRequested();
+			}
+		});
+		
 		lvPosition = (ListView)findViewById(R.id.list1);
 		positionStrIds = new String[]{
 					getString(R.string.back),
@@ -190,7 +222,7 @@ public class EntriesActivity extends BaseActivity {
 			public void onEnd(HttpResponse response) {
 				// TODO Auto-generated method stub
 				JSONObjectProxy resjson = response.getJSONObject();
-				Log.d(TAG, "onEnd:response="+resjson);
+				if(resjson == null)return;
 				JSONArrayPoxy object = resjson.getJSONArrayOrNull("object");
 				if(object == null)return;
 				

@@ -173,17 +173,23 @@
         </activity>
         <activity android:name=".weight.ImprovePersonalInformation" >
         </activity>
-        <activity android:name=".healthclub.EntriesActivity"
-            android:label="@string/app_name">
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/search_acupoint"/>
+        <activity android:name=".healthclub.EntriesActivity">
+            <!-- 
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".healthclub.SearchActivity"/>
+                 -->
         </activity>
         <activity android:name=".healthclub.AcupointDetailActivity" >
+        </activity>
+        <activity android:name=".healthclub.SymptomDetailActivity" >
+        </activity>
+        <activity android:name=".healthclub.SearchActivity"
+            android:launchMode="singleTop">
             <intent-filter >
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".healthclub.SymptomDetailActivity" >
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/search_acupoint"/>
         </activity>
         <activity android:name=".lens.LensPhotoList" >
         </activity>

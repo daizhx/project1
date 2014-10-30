@@ -48,6 +48,7 @@
 	    android:background="@drawable/edit_text_bg"
 	    android:singleLine="true"
 	    android:id="@+id/edit_pw"
+	    android:inputType="textPassword"
 	    />
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
 	    android:background="@drawable/edit_text_bg"
 	    android:singleLine="true"
 	    android:id="@+id/edit_pw2"
+	    android:inputType="textPassword"
 	 />
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
