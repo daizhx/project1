@@ -43,7 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * 虹膜
+ * 显示虹膜与标尺网格
+ * 用objList中第一个TouchObject对象来绘制图像
  * @author Administrator
  *
  */
@@ -71,6 +72,7 @@ public class IrisImageView extends View {
 	private int colorId;
 	private float[] current_Raduis, current_MinRaduis, current_MidRaduis;
 
+	//x3,y3实时的中心点坐标
 	private float[] x1, y1, x2, y2, x3, y3, x4, y4;
 
 	private Canvas canvas;
@@ -143,6 +145,14 @@ public class IrisImageView extends View {
 		return isMerged[getindex];
 	}
 
+	/**
+	 * 初始化objList
+	 * 1，创建objList对象
+	 * 2，new 一个TouchObject对象，并用虹膜图像初始化它
+	 * 3，添加到objList中
+	 * @param iris_image_paths 虹膜照片路径
+	 * @param iris_index 左右眼标识
+	 */
 	public void initObjList(String[] iris_image_paths, int iris_index) {
 		if (Log.D) {
 			Log.d(TAG, "+++++++++++initObjList+++++++++++++++++");
@@ -639,10 +649,11 @@ public class IrisImageView extends View {
 	}
 
 	private int p[];
+	//网格图上下左右的像数点位置
 	private int[] reportxl, reportxr, reportyt, reportyb;
 
 	/**
-	 * 
+	 * 获取bitmap有效显示的上下左右的位置
 	 * @param bmp
 	 */
 	private void removeTransparent(Bitmap bmp) {
@@ -696,6 +707,14 @@ public class IrisImageView extends View {
 		}
 	}
 
+	/**
+	 * 获取绘制的网格图bitmap
+	 * @param getCenterX
+	 * @param getCenterY
+	 * @param getRLen
+	 * @param mView
+	 * @return
+	 */
 	private Bitmap getBitmapFromView(float getCenterX, float getCenterY,
 			int getRLen, View mView) {
 		/*
@@ -718,7 +737,8 @@ public class IrisImageView extends View {
 	}
 
 	/**
-	 * 
+	 * 1，合并虹膜图像与标尺网格
+	 * 2，
 	 * @param index 2
 	 * @param iris_index  左眼或右眼
 	 * @param getCurrentView 虹膜网格
@@ -904,7 +924,7 @@ public class IrisImageView extends View {
 	}
 
 	/**
-	 * 
+	 * 合并虹膜图像与标尺图像成一个bitmap对象
 	 * @param getView 虹膜网格view
 	 * @param getP 网格中心点坐标
 	 * @param getR 网格大圆半径
@@ -1078,6 +1098,11 @@ public class IrisImageView extends View {
 		}
 	}
 
+	/**
+	 * 获取虹膜图像的bitmap对象
+	 * @param index
+	 * @return
+	 */
 	private Bitmap getScaledBitmap(int index) {
 		Bitmap scaledBitmap = null;
 		TouchObject to = this.objList.get(index);

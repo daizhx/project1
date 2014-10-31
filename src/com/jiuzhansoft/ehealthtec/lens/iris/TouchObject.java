@@ -93,11 +93,13 @@ MultiTouchController.MultiTouchObjectCanvas{
 		this.imgViewSelector = imgViewSelector;
 	}
 
+
 	/**
-	 * 初始化该iamgeview
+	 * 初始化
 	 * @param context
 	 * @param bitmap
 	 * @param galleryHeight
+	 * @param scale 缩放比例
 	 */
 	public void init(Context context, Bitmap bitmap, int galleryHeight, float scale) {
 		Resources resources = context.getResources();
