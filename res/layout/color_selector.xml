@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+	<RadioGroup	
+		android:id="@+id/color_selections" 
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:background="@drawable/android_big_button_normal">
+		<RadioButton 
+			android:id="@+id/color_light"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/iris_color_light"
+			android:textColor="#00ffff"/>
+		<RadioButton 
+			android:id="@+id/color_dark_brown"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/iris_color_dark_brown"
+			android:textColor="#00ffff"/>
+		<RadioButton 
+			android:id="@+id/color_dead_brown"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/iris_color_dead_brown"
+			android:textColor="#00ffff"/>
+		<RadioButton 
+			android:id="@+id/color_deeply_black"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:checked="false"
+			android:text="@string/iris_color_deeply_black"
+			android:textColor="#00ffff"/>
+	</RadioGroup>
+</LinearLayout>

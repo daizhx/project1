@@ -28,9 +28,10 @@ import android.widget.TextView;
 
 import com.jiuzhansoft.ehealthtec.R;
 import com.jiuzhansoft.ehealthtec.activity.BaseActivity;
+import com.jiuzhansoft.ehealthtec.iris.old.IrisAnalysisActivity;
 import com.jiuzhansoft.ehealthtec.lens.MyDataBaseContract.ImagesInfo;
 import com.jiuzhansoft.ehealthtec.lens.hair.HairAnalysisActivity;
-import com.jiuzhansoft.ehealthtec.lens.iris.IrisAnalysisActivity;
+//import com.jiuzhansoft.ehealthtec.lens.iris.IrisAnalysisActivity;
 import com.jiuzhansoft.ehealthtec.lens.naevus.NaevusAnalysisActivity;
 import com.jiuzhansoft.ehealthtec.lens.skin.SkinAnalysisActivity;
 import com.jiuzhansoft.ehealthtec.utils.MyAsynImageLoader;

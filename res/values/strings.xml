@@ -288,8 +288,6 @@
     <string name="fat_suggestion">You already are obese, recommend that you immediately start to lose weight, and do regular physical examination</string>
     <string name="weight_age">Age</string>
     <string name="daily_calorie_consumption">Daily calorie consumption</string>
-    <string name="low">Low</string>
-    <string name="high">High</string>
     <string name="please_fill_in_the_necessary_personal_information">Please fill in the necessary personal information</string>
     <string name="normal_value">Normal value</string>
     <string name="weight1">Weight</string>
@@ -396,4 +394,14 @@
     <string name="date">Date</string>
     <string name="trend">Trend</string>
     <string name="acupoint_search">search acupoint</string>
+    <string name="nocolor">Please select a color</string>
+    <string name="iris_editor">Edit</string>
+    <string name="oper_iris">Iris</string>
+    <string name="oper_staff">Staff</string>
+    <string name="oper_merge">Merge</string>
+    <string name="isclick">Please click on the ruler radio button and draw a good ruler and then merge</string>
+    <string name="color_light">Light-colored is selected</string>
+    <string name="color_dark_brown">Dark brown is selected</string>
+    <string name="color_dead_brown">Deep brown is selected</string>
+    <string name="color_deeply_black">Dark black is selected</string>
 </resources>

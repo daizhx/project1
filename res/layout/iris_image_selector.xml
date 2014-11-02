@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+	<RadioGroup	
+		android:id="@+id/edit_group" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:background="@drawable/android_big_button_normal"
+		android:padding="10dip">
+		<RadioButton 
+			android:id="@id/iris_image"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:checked="true"
+			android:text="@string/oper_iris"
+			android:textColor="#00ffff"/>
+		<RadioButton 
+			android:id="@id/standrad_image"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:checked="false"
+			android:text="@string/oper_staff"
+			android:textColor="#00ffff"/>
+		<RadioButton 
+			android:id="@id/merge_image"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:checked="false"
+			android:text="@string/oper_merge"
+			android:textColor="#00ffff"/>
+	</RadioGroup>
+</LinearLayout>
+

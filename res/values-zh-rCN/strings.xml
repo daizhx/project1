@@ -291,8 +291,6 @@
     <string name="fat_suggestion">您已经是肥胖，建议您立即开始减肥，并且定期做身体检查</string>
     <string name="weight_age">年龄</string>
     <string name="daily_calorie_consumption">每天卡路里消耗量</string>
-    <string name="low">偏低</string>
-    <string name="high">偏高</string>
     <string name="please_fill_in_the_necessary_personal_information">请填写必要的个人信息</string>
     <string name="normal_value">正常值</string>
     <string name="weight1">体重</string>
@@ -402,4 +400,12 @@
     <string name="date">Date</string>
     <string name="trend">Trend</string>
     <string name="acupoint_search">穴位搜索</string>
+    <string name="oper_iris">虹膜</string>
+    <string name="oper_staff">标尺</string>
+    <string name="oper_merge">合并</string>
+    <string name="isclick">请先点击标尺单选钮并画好标尺后再合并</string>
+    <string name="color_light">选择的是浅色期</string>
+    <string name="color_dark_brown">选择的是茶褐色</string>
+    <string name="color_dead_brown">选择的是暗褐色</string>
+    <string name="color_deeply_black">选择的是深黑色</string>
 </resources>

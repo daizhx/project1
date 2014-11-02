@@ -78,6 +78,8 @@
         </activity>
         <activity android:name=".lens.iris.IrisAnalysisActivity" >
         </activity>
+        <activity android:name=".iris.old.IrisAnalysisActivity" >
+        </activity>
         <activity
             android:name=".lens.LensConnectActivity"
             android:launchMode="singleTop" >

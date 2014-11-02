@@ -36,6 +36,11 @@ public class IrisDataCache {
 		return _instance;
 	}
 	
+	/**
+	 * 获取xml文件中所有器官中outRaduis最大的一个值90
+	 * @param list
+	 * @return
+	 */
 	public float getMaxRaduis(List list){
 		Iterator<Organ> iter = list.iterator();
 		while(iter.hasNext()){
@@ -127,10 +132,20 @@ public class IrisDataCache {
 		return this.findOrganInfo(isLeftIris, angle, distance,outRaduis, minRaduis, midRaduis, scale_x,scale_y);
 	}
 	
-	// getinr, getoutr:xml读取的内外径
-	// current_R:合并后虹膜标尺的最外半径
-	// thisinr:合并后虹膜标尺的最内主环半径
-	// thismidr:合并后虹膜标尺第二主环半径
+	 //getinr, getoutr:xml读取的内外径
+	 //current_R:合并后虹膜标尺的最外半径
+	 //thisinr:合并后虹膜标尺的最内主环半径
+	 //thismidr:合并后虹膜标尺第二主环半径
+	 /**
+	  * 根据标尺上的3道绘制的环分成8分环区
+	  * @param getinr 传入从xml读取的内径
+	  * @param getoutr 传入从xml读取的内径
+	  * @param current_R 合并后虹膜标尺的最外半径
+	  * @param getscale 没有用到
+	  * @param thisinr 合并后虹膜标尺的最内主环半径
+	  * @param thismidr 合并后虹膜标尺第二主环半径
+	  * @return
+	  */
 	private float[] calculateInAndOutR(float getinr, 
 			float getoutr, float current_R, float getscale,
 			float thisinr, float thismidr){
@@ -194,6 +209,18 @@ public class IrisDataCache {
 		// Log.d(TAG, "getRealInRadius:"+ inr+"\tgetRealOutRadius:"+outr+"\tgetinr:"+getinr+"\tgetour:"+getoutr);
 	}
 	
+	/**
+	 * 
+	 * @param isLeftIris
+	 * @param angle 触摸点以标尺中心点为坐标原点的角度
+	 * @param distance
+	 * @param out_Raduis
+	 * @param in_Raduis
+	 * @param mid_Raduis
+	 * @param scale_x 没有用到
+	 * @param scale_y 没有用到
+	 * @return
+	 */
 	private Organ findOrganInfo(boolean isLeftIris,double angle,double distance,
 			float out_Raduis, float in_Raduis, float mid_Raduis, float scale_x,float scale_y) {
 		Organ organ = null;
@@ -309,6 +336,7 @@ public class IrisDataCache {
 	}
 	/**
 	 * 先不考虑放大的倍数
+	 * 在工程中未被引用
 	 * @param radius
 	 * @return
 	 */
